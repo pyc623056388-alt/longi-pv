@@ -1,0 +1,200 @@
+# 隆基智能光伏 · 全生命周期增益测算（v3）
+
+Next.js 页面，本地在 Cursor 修改，通过 **GitHub + Vercel** 自动部署（推荐方式）。
+
+---
+
+## 一、一次性准备（约 15 分钟）
+
+### 1. 安装 Node.js 与 Git（本机若已用 winget 安装可跳过）
+
+已通过 winget 安装时可跳过下载，**请务必完全退出并重新打开 Cursor**，再在终端验证：
+
+1. 打开 https://nodejs.org/ ，下载 **LTS** 并安装。
+2. 关闭并重新打开终端 / Cursor。
+3. 验证：
+
+```powershell
+node -v
+npm -v
+```
+
+### 2. 安装 Git
+
+1. 打开 https://git-scm.com/download/win 安装 **Git for Windows**。
+2. 重新打开终端后验证：
+
+```powershell
+git --version
+```
+
+### 3. 注册账号（若还没有）
+
+- GitHub：https://github.com/signup  
+- Vercel：https://vercel.com/signup（建议用 **GitHub 登录**，后面导入仓库更方便）
+
+---
+
+## 二、本地运行与改代码
+
+在项目目录打开终端（路径含空格请加引号）：
+
+```powershell
+cd "$env:USERPROFILE\Documents\long-i-pv"
+```
+
+> **推荐工作目录**：`C:\Users\dennispan\Documents\long-i-pv`（已从 Google Drive 复制到本地，开发更快）。Drive 上的副本可保留作备份。
+
+安装依赖（任选一种）：
+
+```powershell
+# 方式 A：npm（Node 自带）
+npm install
+
+# 方式 B：pnpm（与 lock 文件一致，需先执行 npm install -g pnpm）
+pnpm install
+```
+
+开发预览：
+
+```powershell
+npm run dev
+# 或 pnpm dev
+```
+
+浏览器打开 http://localhost:3000 。改 `app/page.tsx` 等文件会自动刷新。
+
+上线前本地构建检查：
+
+```powershell
+npm run build
+```
+
+无报错再继续部署。
+
+---
+
+## 三、推到 GitHub（首次）
+
+### 1. 在 GitHub 新建仓库
+
+- 登录 GitHub → **New repository**
+- 名称例如：`longi-pv`
+- 选 **Private** 或 Public
+- **不要**勾选 “Add a README”（本地已有代码）
+- 创建后记下仓库地址，例如：  
+  `https://github.com/你的用户名/longi-pv.git`
+
+### 2. 本地初始化并推送
+
+```powershell
+cd "g:\My Drive\Longi\AI Tool\long-i-pv"
+
+git init
+git add .
+git commit -m "LONGi PV v3 初始版本"
+git branch -M main
+git remote add origin https://github.com/你的用户名/longi-pv.git
+git push -u origin main
+```
+
+首次 push 可能弹出 GitHub 登录窗口，按提示完成授权。
+
+---
+
+## 四、在 v0 上部署（你当前选择的方式）
+
+v0 与 Vercel 共用同一套 Next.js 构建；**在 Cursor 里改好的代码需要先进入 Git**，再在 v0 里关联或同步。
+
+### 推荐流程
+
+1. **本地验证**（见第二节 `npm run build`）
+2. **推送到 GitHub**（见第三节）
+3. 打开 [v0.dev](https://v0.dev) → 你的项目 → **Settings / Git**（或 **Connect to GitHub**）
+4. 选择仓库 `long-i-pv`，分支 `main`
+5. 在 v0 中点击 **Deploy**（底层由 Vercel 构建，与 Dashboard 部署等价）
+
+### 与「只在 v0 画布改代码」的区别
+
+| 方式 | 适合场景 |
+|------|----------|
+| **Cursor 改代码 → Git push → v0/Vercel 自动部署** | 正式迭代、版本可追溯（推荐） |
+| **仅在 v0 聊天里改 UI** | 快速试布局；需再 Sync 到 Git 才能和本地一致 |
+
+### 本次 Cursor 已做的部署向优化
+
+- `lib/pv-calculation.ts`：测算逻辑独立，便于维护
+- `app/page.tsx`：表单参数驱动结果区，非写死演示数字
+- `app/layout.tsx`：Geist 字体变量正确挂载
+- `next.config.mjs`：移除 `ignoreBuildErrors`，构建失败会在本地/Vercel 提前暴露
+
+---
+
+## 五、在 Vercel 首次部署（不经过 v0 控制台亦可）
+
+1. 打开 https://vercel.com/dashboard  
+2. **Add New…** → **Project**  
+3. 选择刚推送的 `longi-pv` 仓库 → **Import**  
+4. 保持默认即可（Framework: **Next.js**）  
+   - 若检测到 `pnpm-lock.yaml`，Install Command 一般为 `pnpm install`  
+5. 点击 **Deploy**，等待 1～3 分钟  
+6. 完成后得到线上地址，例如：`https://longi-pv-xxx.vercel.app`
+
+**不需要**在 v0.dev 里点 Deploy。
+
+---
+
+## 六、以后每次更新（日常流程）
+
+1. 在 Cursor 修改代码  
+2. 本地 `npm run dev` / `npm run build` 确认无误  
+3. 提交并推送：
+
+```powershell
+git add .
+git commit -m "描述本次修改"
+git push
+```
+
+4. Vercel 会自动重新构建；在 Dashboard → **Deployments** 查看进度。
+
+---
+
+## 七、主要文件说明
+
+| 文件 | 用途 |
+|------|------|
+| `app/page.tsx` | 四屏滚动页面、测算与图表（v3 主体） |
+| `lib/pv-calculation.ts` | 装机容量 / 发电量 / 成本 / 回本测算 |
+| `app/layout.tsx` | 标题、SEO、Vercel Analytics |
+| `app/globals.css` | 全局样式 |
+| `public/` | 图标与静态资源 |
+
+---
+
+## 八、常见问题
+
+**Q：为什么推荐 GitHub + Vercel，而不是只在 v0 部署？**  
+A：你在 Cursor 改的是本地仓库；连 Git 后每次 `git push` 自动上线，版本可追溯，和 v0 草稿无关。
+
+**Q：没有装 pnpm 可以吗？**  
+A：可以。本地用 `npm install` / `npm run dev` 即可；Vercel 仍可根据 `pnpm-lock.yaml` 用 pnpm 构建。
+
+**Q：构建失败？**  
+A：先在本地执行 `npm run build` 看报错；Vercel 项目 → **Deployments** → 点失败记录查看 **Build Logs**。
+
+**Q：想用公司域名？**  
+A：Vercel 项目 → **Settings** → **Domains** 添加域名并按提示配置 DNS。
+
+---
+
+## 九、备选：不用 Git，仅 CLI 部署（临时方案）
+
+已安装 Node 后，在项目目录：
+
+```powershell
+npx vercel
+npx vercel --prod
+```
+
+适合快速试部署；长期仍建议用第三节的 GitHub 方式。

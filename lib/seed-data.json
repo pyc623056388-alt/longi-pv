@@ -1,0 +1,94 @@
+{
+  "longiModules": [
+    {
+      "id": "longi-himo7-590",
+      "manufacturer": "LONGi",
+      "model": "Hi-MO 7 LR7-72HVD-590M",
+      "powerWp": 590,
+      "lengthMm": 2278,
+      "widthMm": 1134,
+      "pmpTempCoef": -0.29,
+      "firstYearDegradationPct": 1.0,
+      "annualDegradationPct": 0.4,
+      "pricePerW": 0.95,
+      "library": "longi",
+      "source": "manual"
+    },
+    {
+      "id": "longi-lr7-490",
+      "manufacturer": "LONGi",
+      "model": "LR7-54HVD-490M",
+      "powerWp": 490,
+      "lengthMm": 1800,
+      "widthMm": 1134,
+      "pmpTempCoef": -0.29,
+      "firstYearDegradationPct": 1.0,
+      "annualDegradationPct": 0.4,
+      "pricePerW": 0.8,
+      "library": "longi",
+      "source": "manual"
+    }
+  ],
+  "competitorModules": [
+    {
+      "id": "comp-topcon-580",
+      "manufacturer": "竞品",
+      "model": "TOPCon 580W",
+      "powerWp": 580,
+      "lengthMm": 2278,
+      "widthMm": 1134,
+      "pmpTempCoef": -0.34,
+      "firstYearDegradationPct": 1.5,
+      "annualDegradationPct": 0.45,
+      "pricePerW": 0.88,
+      "library": "competitor",
+      "source": "manual"
+    },
+    {
+      "id": "comp-lr7-485",
+      "manufacturer": "竞品",
+      "model": "LR7-54HVH-485M",
+      "powerWp": 485,
+      "lengthMm": 1800,
+      "widthMm": 1134,
+      "pmpTempCoef": -0.34,
+      "firstYearDegradationPct": 1.5,
+      "annualDegradationPct": 0.45,
+      "pricePerW": 0.78,
+      "library": "competitor",
+      "source": "manual"
+    }
+  ],
+  "weather": [
+    {
+      "id": "ningxia",
+      "name": "宁夏银川",
+      "location": "宁夏回族自治区银川市",
+      "lat": 38.47,
+      "lon": 106.27,
+      "monthlyIrradianceKwhM2Day": [2.8, 3.6, 4.5, 5.2, 5.8, 6.1, 6.0, 5.5, 4.8, 3.9, 3.0, 2.5],
+      "yearlyEquivalentHours": 1650,
+      "source": "manual"
+    },
+    {
+      "id": "qinghai",
+      "name": "青海格尔木",
+      "location": "青海省格尔木市",
+      "lat": 36.42,
+      "lon": 94.89,
+      "monthlyIrradianceKwhM2Day": [3.2, 4.0, 5.0, 5.8, 6.4, 6.6, 6.5, 6.0, 5.2, 4.2, 3.4, 2.9],
+      "yearlyEquivalentHours": 2225,
+      "source": "manual"
+    },
+    {
+      "id": "xinjiang",
+      "name": "新疆哈密",
+      "location": "新疆维吾尔自治区哈密市",
+      "lat": 42.82,
+      "lon": 93.51,
+      "monthlyIrradianceKwhM2Day": [2.5, 3.4, 4.8, 5.6, 6.2, 6.5, 6.4, 5.8, 5.0, 3.8, 2.8, 2.2],
+      "yearlyEquivalentHours": 1980,
+      "source": "manual"
+    }
+  ]
+}
