@@ -1,4 +1,4 @@
-import topconPresetModules from "../data/builtin/topcon-preset-modules.json";
+import topconPresetModules from "./topcon-preset-modules.json";
 import { enrichModuleRecord } from "./module-library-defaults";
 import seedData from "./seed-data.json";
 import type { ModuleLibrary, ModuleRecord, WeatherRecord } from "./pv-types";
