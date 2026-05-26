@@ -13,13 +13,24 @@ import {
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Table,
   TableBody,
@@ -28,7 +39,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useI18n } from "@/components/locale-provider";
 import { generateId } from "@/lib/data-store";
+import { libraryDefaults } from "@/lib/module-library-defaults";
 import {
   formatModuleDimensions,
   moduleRecordNeedsCompletion,
@@ -60,19 +73,28 @@ interface DatabaseDialogProps {
   onBulkModules: (library: ModuleLibrary, modules: ModuleRecord[]) => void;
   onUpsertWeather: (record: WeatherRecord) => void;
   onDeleteWeather: (id: string) => void;
+  onSyncBuiltinWeather: () => void;
+  onSyncBuiltinModules: () => void;
 }
 
-const EMPTY_MODULE = (library: ModuleLibrary): ModuleRecord => ({
-  id: generateId("mod"),
-  manufacturer: library === "longi" ? "LONGi" : "竞品",
-  model: "",
-  powerWp: 0,
-  pmpTempCoef: -0.29,
-  firstYearDegradationPct: 1,
-  annualDegradationPct: 0.4,
-  library,
-  source: "manual",
-});
+const EMPTY_MODULE = (
+  library: ModuleLibrary,
+  competitorLabel: string
+): ModuleRecord => {
+  const d = libraryDefaults(library);
+  return {
+    id: generateId("mod"),
+    manufacturer: library === "longi" ? "LONGi" : competitorLabel,
+    model: "",
+    powerWp: 0,
+    pmpTempCoef: d.pmpTempCoef,
+    firstYearDegradationPct: d.firstYearDegradationPct,
+    annualDegradationPct: d.annualDegradationPct,
+    pricePerW: d.pricePerW,
+    library,
+    source: "manual",
+  };
+};
 
 function ModuleTable({
   modules,
@@ -87,74 +109,75 @@ function ModuleTable({
   onEdit: (m: ModuleRecord) => void;
   onDelete: (id: string) => void;
 }) {
+  const { m: t } = useI18n();
   const sym = CURRENCY_SYMBOLS[currency];
   const q = search.toLowerCase();
   const filtered = modules.filter(
-    (m) =>
-      m.model.toLowerCase().includes(q) ||
-      m.manufacturer.toLowerCase().includes(q)
+    (mod) =>
+      mod.model.toLowerCase().includes(q) ||
+      mod.manufacturer.toLowerCase().includes(q)
   );
 
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>型号</TableHead>
-          <TableHead>功率</TableHead>
-          <TableHead>尺寸</TableHead>
-          <TableHead>温度系数</TableHead>
-          <TableHead>首年/年衰减</TableHead>
-          <TableHead>单价 ({currency}/W)</TableHead>
-          <TableHead className="w-28">操作</TableHead>
+          <TableHead>{t.database.table.model}</TableHead>
+          <TableHead>{t.database.table.power}</TableHead>
+          <TableHead>{t.database.table.dimensions}</TableHead>
+          <TableHead>{t.database.table.tempCoef}</TableHead>
+          <TableHead>{t.database.table.deg}</TableHead>
+          <TableHead>{t.database.table.price(currency)}</TableHead>
+          <TableHead className="w-28">{t.common.actions}</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {filtered.map((m) => {
-          const needsCompletion = moduleRecordNeedsCompletion(m);
+        {filtered.map((mod) => {
+          const needsCompletion = moduleRecordNeedsCompletion(mod);
           return (
             <TableRow
-              key={m.id}
+              key={mod.id}
               className="cursor-pointer hover:bg-slate-50"
-              onClick={() => onEdit(m)}
+              onClick={() => onEdit(mod)}
             >
               <TableCell className="font-medium max-w-[240px]">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span>
-                    {m.manufacturer} {m.model}
+                    {mod.manufacturer} {mod.model}
                   </span>
                   {needsCompletion && (
                     <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">
-                      待补全
+                      {t.common.pendingCompletion}
                     </span>
                   )}
                 </div>
               </TableCell>
-              <TableCell>{m.powerWp} W</TableCell>
-              <TableCell>{formatModuleDimensions(m) ?? "—"}</TableCell>
+              <TableCell>{mod.powerWp} W</TableCell>
+              <TableCell>{formatModuleDimensions(mod) ?? "—"}</TableCell>
               <TableCell>
-                {m.pmpTempCoef != null ? `${m.pmpTempCoef} %/°C` : "—"}
+                {mod.pmpTempCoef != null ? `${mod.pmpTempCoef} %/°C` : "—"}
               </TableCell>
               <TableCell>
-                {m.firstYearDegradationPct ?? "—"}% /{" "}
-                {m.annualDegradationPct ?? "—"}%
+                {mod.firstYearDegradationPct ?? "—"}% /{" "}
+                {mod.annualDegradationPct ?? "—"}%
               </TableCell>
               <TableCell>
-                {m.pricePerW != null ? `${sym}${m.pricePerW}` : "—"}
+                {mod.pricePerW != null ? `${sym}${mod.pricePerW}` : "—"}
               </TableCell>
               <TableCell onClick={(e) => e.stopPropagation()}>
                 <div className="flex gap-1">
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => onEdit(m)}
+                    onClick={() => onEdit(mod)}
                   >
-                    编辑
+                    {t.common.edit}
                   </Button>
                   <Button
                     variant="ghost"
                     size="sm"
                     className="text-rose-600"
-                    onClick={() => onDelete(m.id)}
+                    onClick={() => onDelete(mod.id)}
                   >
                     <Trash2 className="w-4 h-4" />
                   </Button>
@@ -166,7 +189,7 @@ function ModuleTable({
         {filtered.length === 0 && (
           <TableRow>
             <TableCell colSpan={7} className="text-center text-slate-500 py-8">
-              暂无数据，请导入或新增
+              {t.database.emptyTable}
             </TableCell>
           </TableRow>
         )}
@@ -175,161 +198,254 @@ function ModuleTable({
   );
 }
 
+function libraryLabel(
+  library: ModuleLibrary,
+  labels: { longi: string; competitor: string }
+): string {
+  return library === "longi" ? labels.longi : labels.competitor;
+}
+
+const DB_TAB_TRIGGER_CLASS =
+  "rounded-md text-slate-500 font-medium transition-all data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:font-semibold data-[state=active]:shadow-sm data-[state=active]:ring-1 data-[state=active]:ring-slate-200";
+
+function EditorField({
+  label,
+  hint,
+  children,
+}: {
+  label: string;
+  hint?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Field orientation="vertical">
+      <FieldLabel>{label}</FieldLabel>
+      {hint ? <FieldDescription>{hint}</FieldDescription> : null}
+      <FieldContent>{children}</FieldContent>
+    </Field>
+  );
+}
+
 function ModuleEditor({
   module,
   currency,
   onChange,
-  onSave,
-  onCancel,
 }: {
   module: ModuleRecord;
   currency: CurrencyCode;
   onChange: (m: ModuleRecord) => void;
-  onSave: () => void;
-  onCancel: () => void;
 }) {
+  const { m } = useI18n();
   return (
-    <div className="space-y-4 flex-1 overflow-y-auto px-1">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <Label>制造商</Label>
-          <Input
-            value={module.manufacturer}
-            onChange={(e) =>
-              onChange({ ...module, manufacturer: e.target.value })
-            }
-          />
+    <FieldGroup>
+      <FieldSet>
+        <FieldLegend variant="legend" className="text-sm font-semibold">
+          {m.database.editor.basicInfo}
+        </FieldLegend>
+        <div className="grid grid-cols-2 gap-x-5 gap-y-5">
+          <EditorField label={m.database.editor.manufacturer}>
+            <Input
+              value={module.manufacturer}
+              onChange={(e) =>
+                onChange({ ...module, manufacturer: e.target.value })
+              }
+            />
+          </EditorField>
+          <EditorField label={m.database.editor.model}>
+            <Input
+              value={module.model}
+              onChange={(e) => onChange({ ...module, model: e.target.value })}
+            />
+          </EditorField>
         </div>
-        <div>
-          <Label>型号</Label>
-          <Input
-            value={module.model}
-            onChange={(e) => onChange({ ...module, model: e.target.value })}
-          />
+      </FieldSet>
+
+      <FieldSet>
+        <FieldLegend variant="legend" className="text-sm font-semibold">
+          {m.database.editor.powerAndSize}
+        </FieldLegend>
+        <div className="grid grid-cols-2 gap-x-5 gap-y-5">
+          <EditorField label={m.database.editor.powerWp}>
+            <Input
+              type="number"
+              value={module.powerWp || ""}
+              onChange={(e) =>
+                onChange({
+                  ...module,
+                  powerWp: parseFloat(e.target.value) || 0,
+                })
+              }
+            />
+          </EditorField>
+          <EditorField label={m.database.editor.length}>
+            <Input
+              type="number"
+              value={module.lengthMm ?? ""}
+              onChange={(e) =>
+                onChange({
+                  ...module,
+                  lengthMm: parseFloat(e.target.value) || undefined,
+                })
+              }
+            />
+          </EditorField>
+          <EditorField label={m.database.editor.width}>
+            <Input
+              type="number"
+              value={module.widthMm ?? ""}
+              onChange={(e) =>
+                onChange({
+                  ...module,
+                  widthMm: parseFloat(e.target.value) || undefined,
+                })
+              }
+            />
+          </EditorField>
         </div>
-        <div>
-          <Label>功率 (Wp)</Label>
-          <Input
-            type="number"
-            value={module.powerWp || ""}
-            onChange={(e) =>
-              onChange({ ...module, powerWp: parseFloat(e.target.value) || 0 })
-            }
-          />
+      </FieldSet>
+
+      <FieldSet>
+        <FieldLegend variant="legend" className="text-sm font-semibold">
+          {m.database.editor.stcParams}
+        </FieldLegend>
+        <FieldDescription className="text-xs -mt-1 mb-1">
+          {m.database.editor.stcHint}
+        </FieldDescription>
+        <div className="grid grid-cols-2 gap-x-5 gap-y-5">
+          <EditorField label="Voc (V)">
+            <Input
+              type="number"
+              step="0.01"
+              value={module.voc ?? ""}
+              onChange={(e) =>
+                onChange({
+                  ...module,
+                  voc: e.target.value ? parseFloat(e.target.value) : undefined,
+                })
+              }
+            />
+          </EditorField>
+          <EditorField label="Isc (A)">
+            <Input
+              type="number"
+              step="0.01"
+              value={module.isc ?? ""}
+              onChange={(e) =>
+                onChange({
+                  ...module,
+                  isc: e.target.value ? parseFloat(e.target.value) : undefined,
+                })
+              }
+            />
+          </EditorField>
+          <EditorField label="Vmp (V)">
+            <Input
+              type="number"
+              step="0.01"
+              value={module.vmp ?? ""}
+              onChange={(e) =>
+                onChange({
+                  ...module,
+                  vmp: e.target.value ? parseFloat(e.target.value) : undefined,
+                })
+              }
+            />
+          </EditorField>
+          <EditorField label="Imp (A)">
+            <Input
+              type="number"
+              step="0.01"
+              value={module.imp ?? ""}
+              onChange={(e) =>
+                onChange({
+                  ...module,
+                  imp: e.target.value ? parseFloat(e.target.value) : undefined,
+                })
+              }
+            />
+          </EditorField>
         </div>
-        <div>
-          <Label>长度 (mm)</Label>
-          <Input
-            type="number"
-            value={module.lengthMm ?? ""}
-            onChange={(e) =>
-              onChange({
-                ...module,
-                lengthMm: parseFloat(e.target.value) || undefined,
-              })
-            }
-          />
+      </FieldSet>
+
+      <FieldSet>
+        <FieldLegend variant="legend" className="text-sm font-semibold">
+          {m.database.editor.electrical}
+        </FieldLegend>
+        <FieldDescription className="text-xs -mt-1 mb-1">
+          {m.database.editor.electricalHint}
+        </FieldDescription>
+        <div className="grid grid-cols-2 gap-x-5 gap-y-5">
+          <EditorField label={m.database.editor.pmpTempCoef}>
+            <Input
+              type="number"
+              step="0.01"
+              value={module.pmpTempCoef ?? ""}
+              onChange={(e) =>
+                onChange({
+                  ...module,
+                  pmpTempCoef: e.target.value
+                    ? parseFloat(e.target.value)
+                    : undefined,
+                })
+              }
+            />
+          </EditorField>
+          <EditorField label={m.database.editor.firstYearDeg}>
+            <Input
+              type="number"
+              step="0.1"
+              value={module.firstYearDegradationPct ?? ""}
+              onChange={(e) =>
+                onChange({
+                  ...module,
+                  firstYearDegradationPct: e.target.value
+                    ? parseFloat(e.target.value)
+                    : undefined,
+                })
+              }
+            />
+          </EditorField>
+          <EditorField label={m.database.editor.annualDeg}>
+            <Input
+              type="number"
+              step="0.01"
+              value={module.annualDegradationPct ?? ""}
+              onChange={(e) =>
+                onChange({
+                  ...module,
+                  annualDegradationPct: e.target.value
+                    ? parseFloat(e.target.value)
+                    : undefined,
+                })
+              }
+            />
+          </EditorField>
         </div>
-        <div>
-          <Label>宽度 (mm)</Label>
-          <Input
-            type="number"
-            value={module.widthMm ?? ""}
-            onChange={(e) =>
-              onChange({
-                ...module,
-                widthMm: parseFloat(e.target.value) || undefined,
-              })
-            }
-          />
+      </FieldSet>
+
+      <FieldSet>
+        <FieldLegend variant="legend" className="text-sm font-semibold">
+          {m.database.editor.pricing}
+        </FieldLegend>
+        <div className="grid grid-cols-2 gap-x-5 gap-y-5">
+          <EditorField label={m.database.editor.unitPrice(currency)}>
+            <Input
+              type="number"
+              step="0.01"
+              value={module.pricePerW ?? ""}
+              onChange={(e) =>
+                onChange({
+                  ...module,
+                  pricePerW: e.target.value
+                    ? parseFloat(e.target.value)
+                    : undefined,
+                })
+              }
+            />
+          </EditorField>
         </div>
-        <div>
-          <Label>
-            Pmp 温度系数 (%/°C)
-            <span className="text-xs text-slate-500 font-normal ml-1">
-              Pan 可能缺失，可手动填写
-            </span>
-          </Label>
-          <Input
-            type="number"
-            step="0.01"
-            value={module.pmpTempCoef ?? ""}
-            onChange={(e) =>
-              onChange({
-                ...module,
-                pmpTempCoef: e.target.value
-                  ? parseFloat(e.target.value)
-                  : undefined,
-              })
-            }
-          />
-        </div>
-        <div>
-          <Label>
-            首年衰减 (%)
-            <span className="text-xs text-slate-500 font-normal ml-1">
-              Pan 可能缺失，可手动填写
-            </span>
-          </Label>
-          <Input
-            type="number"
-            step="0.1"
-            value={module.firstYearDegradationPct ?? ""}
-            onChange={(e) =>
-              onChange({
-                ...module,
-                firstYearDegradationPct: e.target.value
-                  ? parseFloat(e.target.value)
-                  : undefined,
-              })
-            }
-          />
-        </div>
-        <div>
-          <Label>
-            年衰减 (%)
-            <span className="text-xs text-slate-500 font-normal ml-1">
-              Pan 可能缺失，可手动填写
-            </span>
-          </Label>
-          <Input
-            type="number"
-            step="0.01"
-            value={module.annualDegradationPct ?? ""}
-            onChange={(e) =>
-              onChange({
-                ...module,
-                annualDegradationPct: e.target.value
-                  ? parseFloat(e.target.value)
-                  : undefined,
-              })
-            }
-          />
-        </div>
-        <div>
-          <Label>单价 ({currency}/W)</Label>
-          <Input
-            type="number"
-            step="0.01"
-            value={module.pricePerW ?? ""}
-            onChange={(e) =>
-              onChange({
-                ...module,
-                pricePerW: e.target.value
-                  ? parseFloat(e.target.value)
-                  : undefined,
-              })
-            }
-          />
-        </div>
-      </div>
-      <div className="flex gap-2 justify-end pt-2 border-t">
-        <Button variant="outline" onClick={onCancel}>
-          取消
-        </Button>
-        <Button onClick={onSave}>保存</Button>
-      </div>
-    </div>
+      </FieldSet>
+    </FieldGroup>
   );
 }
 
@@ -345,7 +461,10 @@ export function DatabaseDialog({
   onBulkModules,
   onUpsertWeather,
   onDeleteWeather,
+  onSyncBuiltinWeather,
+  onSyncBuiltinModules,
 }: DatabaseDialogProps) {
+  const { m } = useI18n();
   const [search, setSearch] = useState("");
   const [editing, setEditing] = useState<ModuleRecord | null>(null);
   const panInputRef = useRef<HTMLInputElement>(null);
@@ -354,9 +473,9 @@ export function DatabaseDialog({
   const epwInputRef = useRef<HTMLInputElement>(null);
   const [activeLib, setActiveLib] = useState<ModuleLibrary>("longi");
 
-  const startEdit = (library: ModuleLibrary, m?: ModuleRecord) => {
+  const startEdit = (library: ModuleLibrary, mod?: ModuleRecord) => {
     setActiveLib(library);
-    setEditing(m ?? EMPTY_MODULE(library));
+    setEditing(mod ?? EMPTY_MODULE(library, m.database.defaultCompetitorName));
   };
 
   const saveModule = () => {
@@ -369,11 +488,13 @@ export function DatabaseDialog({
     const fullErrors = validateModuleForStorage(editing);
     if (fullErrors.length) {
       toast.warning(
-        `已保存，但尚缺：${fullErrors.filter((e) => !errors.includes(e)).join("、")}，对比测算将使用默认值直至补全`
+        m.database.saveIncomplete(
+          fullErrors.filter((e) => !errors.includes(e)).join("、")
+        )
       );
     }
     onUpsertModule(editing.library, editing);
-    toast.success("组件已保存");
+    toast.success(m.database.moduleSaved);
     setEditing(null);
   };
 
@@ -385,7 +506,7 @@ export function DatabaseDialog({
       f.name.toLowerCase().endsWith(".pan")
     );
     if (!list.length) {
-      toast.warning("未找到 .pan 文件");
+      toast.warning(m.database.noPanFiles);
       return;
     }
     let ok = 0;
@@ -397,7 +518,7 @@ export function DatabaseDialog({
         const errs = validateModuleForStorage(mod);
         if (errs.length) {
           fail++;
-          toast.warning(`${file.name}: ${errs.join("，")}（已导入，请编辑补全）`);
+          toast.warning(m.database.importIncomplete(file.name, errs.join("，")));
           imported.push(mod);
         } else {
           ok++;
@@ -406,7 +527,7 @@ export function DatabaseDialog({
       } else fail++;
     }
     if (imported.length) onBulkModules(library, imported);
-    toast.info(`Panfile 导入完成：成功 ${ok}，失败/需补全 ${fail}`);
+    toast.info(m.database.panImportDone(ok, fail));
   };
 
   return (
@@ -414,14 +535,33 @@ export function DatabaseDialog({
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-6xl max-w-[calc(100%-2rem)] max-h-[92vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>数据库管理</DialogTitle>
+            <DialogTitle>{m.database.title}</DialogTitle>
           </DialogHeader>
 
+          <div className="flex flex-wrap gap-2 -mt-1 mb-2">
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                onSyncBuiltinModules();
+                toast.success(m.database.syncModulesSuccess);
+              }}
+            >
+              {m.database.syncModules}
+            </Button>
+          </div>
+
           <Tabs defaultValue="longi">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="longi">隆基组件库</TabsTrigger>
-              <TabsTrigger value="competitor">竞品组件库</TabsTrigger>
-              <TabsTrigger value="weather">天气文件</TabsTrigger>
+            <TabsList className="mb-1 grid h-11 w-full grid-cols-3 rounded-lg border border-slate-200 bg-slate-100 p-1">
+              <TabsTrigger value="longi" className={DB_TAB_TRIGGER_CLASS}>
+                {m.database.tabs.longi}
+              </TabsTrigger>
+              <TabsTrigger value="competitor" className={DB_TAB_TRIGGER_CLASS}>
+                {m.database.tabs.competitor}
+              </TabsTrigger>
+              <TabsTrigger value="weather" className={DB_TAB_TRIGGER_CLASS}>
+                {m.database.tabs.weather}
+              </TabsTrigger>
             </TabsList>
 
             {(["longi", "competitor"] as ModuleLibrary[]).map((lib) => (
@@ -431,14 +571,14 @@ export function DatabaseDialog({
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     <Input
                       className="pl-9"
-                      placeholder="搜索型号或制造商..."
+                      placeholder={m.database.searchModules}
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
                     />
                   </div>
                   <Button size="sm" onClick={() => startEdit(lib)}>
                     <Plus className="w-4 h-4 mr-1" />
-                    新增
+                    {m.common.add}
                   </Button>
                   <Button
                     size="sm"
@@ -449,7 +589,7 @@ export function DatabaseDialog({
                     }}
                   >
                     <Upload className="w-4 h-4 mr-1" />
-                    导入 .pan
+                    {m.database.importPan}
                   </Button>
                   <Button
                     size="sm"
@@ -460,7 +600,7 @@ export function DatabaseDialog({
                     }}
                   >
                     <FolderOpen className="w-4 h-4 mr-1" />
-                    导入 Panfile 文件夹
+                    {m.database.importPanFolder}
                   </Button>
                   <Button
                     size="sm"
@@ -471,7 +611,7 @@ export function DatabaseDialog({
                     }}
                   >
                     <Upload className="w-4 h-4 mr-1" />
-                    导入 CSV
+                    {m.database.importCsv}
                   </Button>
                 </div>
 
@@ -481,9 +621,9 @@ export function DatabaseDialog({
                   currency={currency}
                   onEdit={(m) => startEdit(lib, m)}
                   onDelete={(id) => {
-                    if (confirm("确定删除该组件？")) {
+                    if (confirm(m.common.confirmDeleteModule)) {
                       onDeleteModule(lib, id);
-                      toast.success("已删除");
+                      toast.success(m.database.moduleDeleted);
                     }
                   }}
                 />
@@ -491,23 +631,33 @@ export function DatabaseDialog({
             ))}
 
             <TabsContent value="weather" className="space-y-4">
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    onSyncBuiltinWeather();
+                    toast.success(m.database.syncWeatherSuccess);
+                  }}
+                >
+                  {m.database.syncWeather}
+                </Button>
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={() => epwInputRef.current?.click()}
                 >
                   <Upload className="w-4 h-4 mr-1" />
-                  导入 EPW
+                  {m.database.importEpw}
                 </Button>
               </div>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>名称</TableHead>
-                    <TableHead>地点</TableHead>
-                    <TableHead>年等效小时</TableHead>
-                    <TableHead className="w-20">操作</TableHead>
+                    <TableHead>{m.database.table.name}</TableHead>
+                    <TableHead>{m.database.table.location}</TableHead>
+                    <TableHead>{m.database.table.yearlyHours}</TableHead>
+                    <TableHead className="w-20">{m.common.actions}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -522,9 +672,9 @@ export function DatabaseDialog({
                           size="sm"
                           className="text-rose-600"
                           onClick={() => {
-                            if (confirm("确定删除？")) {
+                            if (confirm(m.common.confirmDelete)) {
                               onDeleteWeather(w.id);
-                              toast.success("已删除");
+                              toast.success(m.database.moduleDeleted);
                             }
                           }}
                         >
@@ -571,8 +721,8 @@ export function DatabaseDialog({
               const mods = await parseSpreadsheetFile(file, activeLib);
               if (mods.length) {
                 onBulkModules(activeLib, mods);
-                toast.success(`已导入 ${mods.length} 条组件`);
-              } else toast.error("未能解析 CSV");
+                toast.success(m.database.csvImported(mods.length));
+              } else toast.error(m.database.csvParseFail);
               e.target.value = "";
             }}
           />
@@ -587,8 +737,8 @@ export function DatabaseDialog({
               const wx = await parseEpwFile(file);
               if (wx) {
                 onUpsertWeather(wx);
-                toast.success(`已导入气象：${wx.name}`);
-              } else toast.error("EPW 解析失败");
+                toast.success(m.database.epwImported(wx.name));
+              } else toast.error(m.database.epwParseFail);
               e.target.value = "";
             }}
           />
@@ -596,20 +746,54 @@ export function DatabaseDialog({
       </Dialog>
 
       <Sheet open={!!editing} onOpenChange={(o) => !o && setEditing(null)}>
-        <SheetContent side="right" className="sm:max-w-xl w-full overflow-y-auto">
-          <SheetHeader>
-            <SheetTitle>
-              {editing?.model ? `编辑 ${editing.model}` : "新增组件"}
-            </SheetTitle>
+        <SheetContent
+          side="right"
+          className="flex h-full w-full flex-col gap-0 p-0 sm:max-w-xl"
+        >
+          <SheetHeader className="shrink-0 space-y-2 border-b px-6 py-5 pr-12">
+            <div className="flex flex-wrap items-center gap-2">
+              <SheetTitle className="truncate text-lg">
+                {editing?.model
+                  ? m.database.editor.editModule(editing.model)
+                  : m.database.editor.newModule}
+              </SheetTitle>
+              {editing && moduleRecordNeedsCompletion(editing) && (
+                <Badge
+                  variant="outline"
+                  className="border-amber-200 bg-amber-50 text-amber-800"
+                >
+                  {m.common.pendingCompletion}
+                </Badge>
+              )}
+            </div>
+            {editing && (
+              <SheetDescription>
+                {editing.model
+                  ? `${editing.manufacturer} · ${libraryLabel(editing.library, m.database.libraryLabel)}`
+                  : m.database.editor.fillAndSave(
+                      libraryLabel(editing.library, m.database.libraryLabel)
+                    )}
+              </SheetDescription>
+            )}
           </SheetHeader>
           {editing && (
-            <ModuleEditor
-              module={editing}
-              currency={currency}
-              onChange={setEditing}
-              onSave={saveModule}
-              onCancel={() => setEditing(null)}
-            />
+            <>
+              <div className="min-h-0 flex-1 overflow-y-auto px-6 py-6">
+                <ModuleEditor
+                  module={editing}
+                  currency={currency}
+                  onChange={setEditing}
+                />
+              </div>
+              <SheetFooter className="shrink-0 flex-row justify-end gap-3 border-t bg-background px-6 py-4">
+                <Button variant="outline" onClick={() => setEditing(null)}>
+                  {m.common.cancel}
+                </Button>
+                <Button className="min-w-24" onClick={saveModule}>
+                  {m.common.save}
+                </Button>
+              </SheetFooter>
+            </>
           )}
         </SheetContent>
       </Sheet>

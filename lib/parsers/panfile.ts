@@ -1,5 +1,11 @@
-import type { ModuleLibrary, ModuleRecord } from "../pv-types";
+import type {
+  LowLightIrradianceWm2,
+  LowLightRelEffic,
+  ModuleLibrary,
+  ModuleRecord,
+} from "../pv-types";
 import { generateId } from "../data-store";
+import { stableModuleId } from "../seed-id";
 
 /** PVsyst .PAN 文件解析（移植自 1111111 FileImporter INI 逻辑，并扩展温度系数与衰减字段） */
 export interface ParsedPanModule {
@@ -16,7 +22,17 @@ export interface ParsedPanModule {
   pmpTempCoef?: number;
   firstYearDegradationPct?: number;
   annualDegradationPct?: number;
+  lowLightRelEffic?: LowLightRelEffic;
+  rSerieOhm?: number;
+  rShuntOhm?: number;
 }
+
+const REL_EFFIC_KEY_MAP: Record<string, LowLightIrradianceWm2> = {
+  releffic200: 200,
+  releffic400: 400,
+  releffic600: 600,
+  releffic800: 800,
+};
 
 /** Pmp 温度系数字段优先级（不含 gamma——其为二极管 ideality factor） */
 const PMP_TEMP_COEF_KEY_PRIORITY = [
@@ -54,6 +70,7 @@ function parseIniContent(content: string, type: "PAN"): ParsedPanModule | null {
   const lines = content.split("\n");
   const n: ParsedPanModule = {};
   const tempCoefCandidates: Partial<Record<PmpTempCoefKey, number>> = {};
+  const lowLightRelEffic: LowLightRelEffic = {};
 
   for (const line of lines) {
     const trimmed = line.trim();
@@ -92,8 +109,21 @@ function parseIniContent(content: string, type: "PAN"): ParsedPanModule | null {
         key === "efficiencylossyear2"
       ) {
         if (Number.isFinite(num)) n.annualDegradationPct = num;
+      } else if (key === "rserie" && Number.isFinite(num)) {
+        n.rSerieOhm = num;
+      } else if (key === "rshunt" && Number.isFinite(num)) {
+        n.rShuntOhm = num;
+      } else {
+        const relG = REL_EFFIC_KEY_MAP[key];
+        if (relG !== undefined && Number.isFinite(num)) {
+          lowLightRelEffic[relG] = num;
+        }
       }
     }
+  }
+
+  if (Object.keys(lowLightRelEffic).length > 0) {
+    n.lowLightRelEffic = lowLightRelEffic;
   }
 
   n.pmpTempCoef = pickPmpTempCoef(tempCoefCandidates);
@@ -114,21 +144,34 @@ function parseIniContent(content: string, type: "PAN"): ParsedPanModule | null {
 
 export function parsePanFileContent(
   content: string,
-  library: ModuleLibrary
+  library: ModuleLibrary,
+  options?: { stableId?: boolean }
 ): ModuleRecord | null {
   const parsed = parseIniContent(content, "PAN");
   if (!parsed || !parsed.model || !parsed.pnom) return null;
 
+  const manufacturer = parsed.manufacturer || "Custom";
+  const id = options?.stableId
+    ? stableModuleId(library, manufacturer, parsed.model)
+    : generateId("mod");
+
   return {
-    id: generateId("mod"),
-    manufacturer: parsed.manufacturer || "Custom",
+    id,
+    manufacturer,
     model: parsed.model,
     powerWp: parsed.pnom,
     lengthMm: parsed.length,
     widthMm: parsed.width,
+    voc: parsed.voc,
+    isc: parsed.isc,
+    vmp: parsed.vmp,
+    imp: parsed.imp,
     pmpTempCoef: parsed.pmpTempCoef,
     firstYearDegradationPct: parsed.firstYearDegradationPct,
     annualDegradationPct: parsed.annualDegradationPct,
+    lowLightRelEffic: parsed.lowLightRelEffic,
+    rSerieOhm: parsed.rSerieOhm,
+    rShuntOhm: parsed.rShuntOhm,
     library,
     source: "pan",
   };

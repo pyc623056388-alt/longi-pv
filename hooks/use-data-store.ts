@@ -11,6 +11,8 @@ import {
   listWeather,
   saveModules,
   saveWeather,
+  syncBuiltinWeather,
+  syncBuiltinModules,
 } from "@/lib/data-store";
 import type { ModuleLibrary, ModuleRecord, WeatherRecord } from "@/lib/pv-types";
 
@@ -88,6 +90,16 @@ export function useDataStore() {
     [refresh]
   );
 
+  const syncBuiltinWeatherFromSeed = useCallback(() => {
+    syncBuiltinWeather();
+    refresh();
+  }, [refresh]);
+
+  const syncBuiltinModulesFromSeed = useCallback(() => {
+    syncBuiltinModules();
+    refresh();
+  }, [refresh]);
+
   return {
     ready,
     longiModules,
@@ -100,5 +112,7 @@ export function useDataStore() {
     upsertWeather,
     removeWeather,
     bulkAddWeather,
+    syncBuiltinWeather: syncBuiltinWeatherFromSeed,
+    syncBuiltinModules: syncBuiltinModulesFromSeed,
   };
 }

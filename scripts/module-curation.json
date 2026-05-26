@@ -1,0 +1,16 @@
+{
+  "longi": {
+    "minVersion": 7.2,
+    "cellPowerRules": [
+      { "cellCount": 48, "powerWp": 475 },
+      { "cellCount": 54, "powerWp": 475 },
+      { "cellCount": 60, "powerWp": 540 },
+      { "cellCount": 66, "powerWp": 650 },
+      { "cellCount": 72, "powerWp": 650 }
+    ]
+  },
+  "competitor": {
+    "reviewFile": "data/builtin/datasheet-extract-review.json",
+    "onlyApproved": true
+  }
+}

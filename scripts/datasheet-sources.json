@@ -1,0 +1,79 @@
+{
+  "residentialDir": "数据库/竞品/Residential",
+  "utilityDir": "数据库/竞品/Utility",
+  "sources": [
+    {
+      "file": "Risen 475 Datasheet.pdf",
+      "manufacturer": "Risen",
+      "model": "Risen-475W",
+      "segment": "residential475",
+      "targetPowerWp": 475
+    },
+    {
+      "file": "TCL_T5Pro-S_HSM-NT48-JH_450-475_IT_2026-04.pdf",
+      "manufacturer": "TCL",
+      "model": "TCL-475W",
+      "segment": "residential475",
+      "targetPowerWp": 475
+    },
+    {
+      "file": "TW 465w Datasheet - Transparent Black.pdf",
+      "manufacturer": "Tongwei",
+      "model": "TW-475W",
+      "segment": "residential475",
+      "targetPowerWp": 475
+    },
+    {
+      "file": "JKM450-475N-48QL6-DB-F2C2-OC.pdf",
+      "manufacturer": "Jinko",
+      "model": "JKM475N",
+      "segment": "residential475",
+      "targetPowerWp": 475
+    },
+    {
+      "file": "Neostar-3P54-Mono-Glass-475-500W.pdf",
+      "manufacturer": "Trina",
+      "model": "Neostar-475W",
+      "segment": "residential475",
+      "targetPowerWp": 475
+    },
+    {
+      "file": "JA 460-485.pdf",
+      "manufacturer": "JA Solar",
+      "model": "JA-475W",
+      "segment": "residential475",
+      "targetPowerWp": 475
+    },
+    {
+      "file": "canadiansolar465-525.pdf",
+      "manufacturer": "Canadian Solar",
+      "model": "CS-475W",
+      "segment": "residential475",
+      "targetPowerWp": 475
+    },
+    {
+      "file": "canadiansolar465-525.pdf",
+      "manufacturer": "Canadian Solar",
+      "model": "CS-510W",
+      "segment": "medium60",
+      "targetPowerWp": 510,
+      "subdir": "residential"
+    },
+    {
+      "file": "JA 460-485.pdf",
+      "manufacturer": "JA Solar",
+      "model": "JA-515W",
+      "segment": "medium60",
+      "targetPowerWp": 515,
+      "subdir": "residential"
+    },
+    {
+      "file": "JKM630-670N-66QL6-BDV-F1C2-OC.pdf",
+      "manufacturer": "Jinko",
+      "model": "JKM630N",
+      "segment": "large620",
+      "targetPowerWp": 630,
+      "subdir": "utility"
+    }
+  ]
+}

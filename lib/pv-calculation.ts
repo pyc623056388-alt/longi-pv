@@ -2,7 +2,10 @@ import {
   longiBasePerformanceFactor,
   longiStrategyGainMultiplier,
 } from "./gain-algorithms";
-import type { BasicParams, GainStrategies } from "./pv-types";
+import { getMessages, type AppLocale } from "./i18n";
+import type { ResultMetricId } from "./i18n/types";
+import { staticPaybackYears } from "./payback-audit";
+import type { BasicParams, GainStrategies, LowLightRelEffic } from "./pv-types";
 
 export interface ModuleSpec {
   power: string;
@@ -12,6 +15,8 @@ export interface ModuleSpec {
   price: string;
   dimensions?: string;
   name?: string;
+  /** PAN RelEffic200/400/600/800：相对 STC 的弱光相对效率（%） */
+  lowLightRelEffic?: LowLightRelEffic;
 }
 
 export interface PvComparisonInput {
@@ -23,9 +28,11 @@ export interface PvComparisonInput {
   gainStrategies: GainStrategies;
   modulesPerString?: number;
   stringCount?: number;
+  locale?: AppLocale;
 }
 
 export interface ResultMetricRow {
+  metricId: ResultMetricId;
   metric: string;
   longi: string;
   competitor: string;
@@ -51,7 +58,13 @@ export interface PvComparisonResult {
   compNetProfit: number;
   longiPaybackYears: number;
   compPaybackYears: number;
+  longiFirstYearRevenue: number;
+  compFirstYearRevenue: number;
+  longiStaticPaybackYears: number;
+  compStaticPaybackYears: number;
   yieldGainPct: number;
+  costReductionPct: number;
+  paybackReductionYears: number;
   chartData: Array<{
     name: string;
     yield: number;
@@ -95,6 +108,66 @@ function yearDelta(longi: number, comp: number): string {
   return `${sign}${diff.toFixed(3)}`;
 }
 
+export interface DynamicPaybackInput {
+  projectCost: number;
+  annualMwhYear1: number;
+  firstYearDegPct: number;
+  annualDegPct: number;
+  ppa: number;
+  maxYears: number;
+}
+
+/** 动态投资回收期：累计售电收入（含衰减）直至 ≥ 全站投资；未回本返回 null */
+export function dynamicPaybackYears(input: DynamicPaybackInput): number | null {
+  const {
+    projectCost,
+    annualMwhYear1,
+    firstYearDegPct,
+    annualDegPct,
+    ppa,
+    maxYears,
+  } = input;
+
+  if (projectCost <= 0) return 0;
+  if (annualMwhYear1 <= 0 || ppa <= 0 || maxYears < 1) return null;
+
+  const fy = firstYearDegPct / 100;
+  const annual = annualDegPct / 100;
+  let cumulative = 0;
+
+  for (let y = 1; y <= maxYears; y++) {
+    const yearMwh = annualMwhYear1 * (1 - fy) * Math.pow(1 - annual, y - 1);
+    const revenue = yearMwh * 1000 * ppa;
+    const prevCumulative = cumulative;
+    cumulative += revenue;
+    if (cumulative >= projectCost) {
+      const fraction = revenue > 0 ? (projectCost - prevCumulative) / revenue : 0;
+      return y - 1 + Math.min(1, Math.max(0, fraction));
+    }
+  }
+
+  return null;
+}
+
+/** 运维年限内未回本时用于图表的占位年数 */
+export function paybackBeyondHorizonValue(maxYears: number): number {
+  return maxYears + 1;
+}
+
+export function isPaybackBeyondHorizon(
+  years: number,
+  maxYears: number
+): boolean {
+  return years > maxYears + 1e-6;
+}
+
+export function formatPaybackYears(years: number, maxYears: number): string {
+  if (!Number.isFinite(years) || isPaybackBeyondHorizon(years, maxYears)) {
+    return `>${maxYears}`;
+  }
+  return years.toFixed(2);
+}
+
 export function calculatePvComparison(input: PvComparisonInput): PvComparisonResult {
   const {
     moduleCount,
@@ -105,12 +178,15 @@ export function calculatePvComparison(input: PvComparisonInput): PvComparisonRes
     gainStrategies,
     modulesPerString = 0,
     stringCount = 0,
+    locale = "zh",
   } = input;
+  const m = getMessages(locale);
+  const metricLabel = (id: ResultMetricId) => m.resultMetrics[id];
 
   const longiW = parseNum(longi.power, 590);
   const compW = parseNum(competitor.power, 580);
-  const longiPrice = parseNum(longi.price, 0.95);
-  const compPrice = parseNum(competitor.price, 0.88);
+  const longiPrice = parseNum(longi.price, 0.25);
+  const compPrice = parseNum(competitor.price, 0.23);
   const yearlyHours = basicParams.yearlyEquivalentHours;
   const opYears = basicParams.operationYears;
   const ppa = basicParams.ppaPrice;
@@ -151,13 +227,13 @@ export function calculatePvComparison(input: PvComparisonInput): PvComparisonRes
   const compAnnualMwh = annualBaseCompMwh;
 
   const longiLifeFactor = lifetimeYieldFactor(
-    parseNum(longi.firstYearDeg, 1),
-    parseNum(longi.annualDeg, 0.4),
+    parseNum(longi.firstYearDeg, 0.8),
+    parseNum(longi.annualDeg, 0.35),
     opYears
   );
   const compLifeFactor = lifetimeYieldFactor(
-    parseNum(competitor.firstYearDeg, 1.5),
-    parseNum(competitor.annualDeg, 0.45),
+    parseNum(competitor.firstYearDeg, 1),
+    parseNum(competitor.annualDeg, 0.4),
     opYears
   );
 
@@ -171,78 +247,148 @@ export function calculatePvComparison(input: PvComparisonInput): PvComparisonRes
   const longiProjectCost = longiModuleCost + longiAccessoryCost;
   const compProjectCost = compModuleCost + compAccessoryCost;
 
+  const longiFirstYearRevenue = longiAnnualMwh * 1000 * ppa;
+  const compFirstYearRevenue = compAnnualMwh * 1000 * ppa;
   const longiRevenue = longiYieldMwh * 1000 * ppa;
   const compRevenue = compYieldMwh * 1000 * ppa;
   const longiNetProfit = longiRevenue - longiProjectCost;
   const compNetProfit = compRevenue - compProjectCost;
 
+  const longiStaticPaybackYears = staticPaybackYears(
+    longiProjectCost,
+    longiFirstYearRevenue
+  );
+  const compStaticPaybackYears = staticPaybackYears(
+    compProjectCost,
+    compFirstYearRevenue
+  );
+
+  const longiDeg = parseNum(longi.firstYearDeg, 0.8);
+  const longiAnnualDeg = parseNum(longi.annualDeg, 0.35);
+  const compDeg = parseNum(competitor.firstYearDeg, 1);
+  const compAnnualDeg = parseNum(competitor.annualDeg, 0.4);
+
+  const longiPaybackRaw = dynamicPaybackYears({
+    projectCost: longiProjectCost,
+    annualMwhYear1: longiAnnualMwh,
+    firstYearDegPct: longiDeg,
+    annualDegPct: longiAnnualDeg,
+    ppa,
+    maxYears: opYears,
+  });
+  const compPaybackRaw = dynamicPaybackYears({
+    projectCost: compProjectCost,
+    annualMwhYear1: compAnnualMwh,
+    firstYearDegPct: compDeg,
+    annualDegPct: compAnnualDeg,
+    ppa,
+    maxYears: opYears,
+  });
+
   const longiPaybackYears =
-    longiRevenue > 0 ? longiProjectCost / (longiAnnualMwh * 1000 * ppa) : 0;
+    longiPaybackRaw ?? paybackBeyondHorizonValue(opYears);
   const compPaybackYears =
-    compRevenue > 0 ? compProjectCost / (compAnnualMwh * 1000 * ppa) : 0;
+    compPaybackRaw ?? paybackBeyondHorizonValue(opYears);
 
   const yieldGainPct =
     compYieldMwh > 0 ? ((longiYieldMwh - compYieldMwh) / compYieldMwh) * 100 : 0;
 
-  const longiLabel = longi.name || "隆基组件";
-  const compLabel = competitor.name || "竞品组件";
+  const costReductionPct =
+    compProjectCost > 0
+      ? ((compProjectCost - longiProjectCost) / compProjectCost) * 100
+      : 0;
+
+  const paybackReductionYears = compPaybackYears - longiPaybackYears;
+
+  const longiLabel = longi.name || m.common.longiModule;
+  const compLabel = competitor.name || m.common.competitorModule;
 
   const fmt = (n: number, digits = 2) =>
-    n.toLocaleString("zh-CN", { maximumFractionDigits: digits });
+    n.toLocaleString(m.numberLocale, { maximumFractionDigits: digits });
 
   const rows: ResultMetricRow[] = [
     {
-      metric: "组件块数",
+      metricId: "moduleCount",
+      metric: metricLabel("moduleCount"),
       longi: String(longiModuleCount),
       competitor: String(compModuleCount),
       delta: pctDelta(longiModuleCount, compModuleCount),
     },
     {
-      metric: "实际装机容量 (kW)",
+      metricId: "capacity",
+      metric: metricLabel("capacity"),
       longi: fmt(longiCapacityKw, 2),
       competitor: fmt(compCapacityKw, 2),
       delta: pctDelta(longiCapacityKw, compCapacityKw),
     },
     {
-      metric: "预期发电量 (MWh)",
+      metricId: "firstYearYield",
+      metric: metricLabel("firstYearYield"),
+      longi: fmt(longiAnnualMwh, 2),
+      competitor: fmt(compAnnualMwh, 2),
+      delta: pctDelta(longiAnnualMwh, compAnnualMwh),
+    },
+    {
+      metricId: "lifetimeYield",
+      metric: metricLabel("lifetimeYield"),
       longi: fmt(longiYieldMwh, 2),
       competitor: fmt(compYieldMwh, 2),
       delta: pctDelta(longiYieldMwh, compYieldMwh),
     },
     {
-      metric: "总发电收益",
+      metricId: "firstYearRevenue",
+      metric: metricLabel("firstYearRevenue"),
+      longi: fmt(longiFirstYearRevenue, 2),
+      competitor: fmt(compFirstYearRevenue, 2),
+      delta: pctDelta(longiFirstYearRevenue, compFirstYearRevenue),
+    },
+    {
+      metricId: "lifetimeRevenue",
+      metric: metricLabel("lifetimeRevenue"),
       longi: fmt(longiRevenue, 2),
       competitor: fmt(compRevenue, 2),
       delta: pctDelta(longiRevenue, compRevenue),
     },
     {
-      metric: "组件总成本",
+      metricId: "moduleCost",
+      metric: metricLabel("moduleCost"),
       longi: fmt(longiModuleCost, 2),
       competitor: fmt(compModuleCost, 2),
       delta: pctDelta(longiModuleCost, compModuleCost),
     },
     {
-      metric: "配件总成本",
+      metricId: "accessoryCost",
+      metric: metricLabel("accessoryCost"),
       longi: fmt(longiAccessoryCost, 2),
       competitor: fmt(compAccessoryCost, 2),
       delta: pctDelta(longiAccessoryCost, compAccessoryCost),
     },
     {
-      metric: "项目总成本",
+      metricId: "projectCost",
+      metric: metricLabel("projectCost"),
       longi: fmt(longiProjectCost, 2),
       competitor: fmt(compProjectCost, 2),
       delta: pctDelta(longiProjectCost, compProjectCost),
     },
     {
-      metric: "净收益",
+      metricId: "netProfit",
+      metric: metricLabel("netProfit"),
       longi: fmt(longiNetProfit, 2),
       competitor: fmt(compNetProfit, 2),
       delta: pctDelta(longiNetProfit, compNetProfit),
     },
     {
-      metric: "回收期 (年)",
-      longi: fmt(longiPaybackYears, 3),
-      competitor: fmt(compPaybackYears, 3),
+      metricId: "staticPayback",
+      metric: metricLabel("staticPayback"),
+      longi: formatPaybackYears(longiStaticPaybackYears, opYears),
+      competitor: formatPaybackYears(compStaticPaybackYears, opYears),
+      delta: yearDelta(longiStaticPaybackYears, compStaticPaybackYears),
+    },
+    {
+      metricId: "dynamicPayback",
+      metric: metricLabel("dynamicPayback"),
+      longi: formatPaybackYears(longiPaybackYears, opYears),
+      competitor: formatPaybackYears(compPaybackYears, opYears),
       delta: yearDelta(longiPaybackYears, compPaybackYears),
     },
   ];
@@ -266,16 +412,22 @@ export function calculatePvComparison(input: PvComparisonInput): PvComparisonRes
     compNetProfit: round(compNetProfit, 2),
     longiPaybackYears: round(longiPaybackYears, 3),
     compPaybackYears: round(compPaybackYears, 3),
+    longiFirstYearRevenue: round(longiFirstYearRevenue, 2),
+    compFirstYearRevenue: round(compFirstYearRevenue, 2),
+    longiStaticPaybackYears: round(longiStaticPaybackYears, 3),
+    compStaticPaybackYears: round(compStaticPaybackYears, 3),
     yieldGainPct: round(yieldGainPct, 2),
+    costReductionPct: round(costReductionPct, 2),
+    paybackReductionYears: round(paybackReductionYears, 2),
     chartData: [
       {
-        name: "隆基",
+        name: m.chart.longi,
         yield: round(longiYieldMwh, 0),
         cost: round(longiProjectCost, 0),
         payback: round(longiPaybackYears, 2),
       },
       {
-        name: "竞品",
+        name: m.chart.competitor,
         yield: round(compYieldMwh, 0),
         cost: round(compProjectCost, 0),
         payback: round(compPaybackYears, 2),

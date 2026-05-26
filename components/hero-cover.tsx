@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
@@ -12,32 +12,10 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CurrencySwitcher } from "@/components/currency-switcher";
-import {
-  LanguageSwitcher,
-  type AppLocale,
-} from "@/components/language-switcher";
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { useI18n } from "@/components/locale-provider";
+import type { AppLocale } from "@/lib/i18n";
 import type { CurrencyCode } from "@/lib/pv-types";
-
-const advantages = [
-  {
-    icon: Thermometer,
-    title: "温度系数",
-    description: "高温工况下功率输出更稳定，衰减更可控",
-    image: "/placeholders/advantage-1.svg",
-  },
-  {
-    icon: Shield,
-    title: "强大的抗阴影遮挡能力",
-    description: "局部遮挡场景下仍能保持较高发电效率",
-    image: "/placeholders/advantage-2.svg",
-  },
-  {
-    icon: Zap,
-    title: "弱光发电能力",
-    description: "清晨、傍晚及多云条件下发电表现更优",
-    image: "/placeholders/advantage-3.svg",
-  },
-];
 
 interface HeroCoverProps {
   onOpenDatabase: () => void;
@@ -54,6 +32,7 @@ export function HeroCover({
   locale,
   onLocaleChange,
 }: HeroCoverProps) {
+  const { m } = useI18n();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -63,6 +42,40 @@ export function HeroCover({
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
   const y = useTransform(scrollYProgress, [0, 0.8], [0, -100]);
   const scale = useTransform(scrollYProgress, [0, 0.8], [1, 0.95]);
+
+  const advantages = useMemo(
+    () => [
+      {
+        id: "temperature",
+        icon: Thermometer,
+        title: m.hero.advantages.temperature.title,
+        description: m.hero.advantages.temperature.description,
+        image: "/hero/advantage-temperature.png",
+        alt: m.hero.advantages.temperature.alt,
+        imageObjectPosition: "center 18%",
+        imageScale: 1.08,
+      },
+      {
+        id: "anti-shading",
+        icon: Shield,
+        title: m.hero.advantages.antiShading.title,
+        description: m.hero.advantages.antiShading.description,
+        image: "/hero/advantage-anti-shading.png",
+        alt: m.hero.advantages.antiShading.alt,
+        imageObjectPosition: "center 20%",
+        imageScale: 1.08,
+      },
+      {
+        id: "low-light",
+        icon: Zap,
+        title: m.hero.advantages.lowLight.title,
+        description: m.hero.advantages.lowLight.description,
+        image: "/hero/advantage-low-light.png",
+        alt: m.hero.advantages.lowLight.alt,
+      },
+    ],
+    [m]
+  );
 
   return (
     <motion.section
@@ -110,20 +123,20 @@ export function HeroCover({
           onClick={onOpenDatabase}
         >
           <Database className="w-4 h-4 mr-2" />
-          数据库
+          {m.common.database}
         </Button>
       </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-6 text-center pt-16">
+      <div className="relative z-10 w-full max-w-[min(96rem,94vw)] mx-auto px-4 sm:px-6 lg:px-8 text-center pt-16">
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1 }}
-          className="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-6"
+          className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight mb-4"
         >
-          <span className="block">隆基智能光伏</span>
+          <span className="block">{m.hero.titleLine1}</span>
           <span className="block bg-gradient-to-r from-[#E40011] via-[#ff4d5a] to-[#ff8080] bg-clip-text text-transparent">
-            全生命周期增益测算
+            {m.hero.titleLine2}
           </span>
         </motion.h1>
 
@@ -131,36 +144,41 @@ export function HeroCover({
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-xl text-white/50 max-w-2xl mx-auto mb-16 leading-relaxed"
+          className="text-lg md:text-xl text-white/50 max-w-2xl mx-auto mb-10 leading-relaxed"
         >
-          基于实际项目参数与气象数据的 ROI 评估
+          {m.hero.subtitle}
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="grid md:grid-cols-3 gap-6 mb-20"
+          className="grid md:grid-cols-3 gap-6 lg:gap-8 mb-16"
         >
           {advantages.map((item, idx) => (
             <motion.div
-              key={idx}
+              key={item.id}
               whileHover={{ scale: 1.03, y: -5 }}
-              className="group relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 hover:bg-white/10 transition-all"
+              className="group relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-4 md:p-5 hover:bg-white/10 transition-all"
             >
-              <div className="relative aspect-video rounded-xl overflow-hidden mb-4 bg-white/5 border border-white/10">
+              <div className="relative aspect-[4/3] rounded-xl overflow-hidden mb-3 bg-white/5 border border-white/10">
                 <Image
                   src={item.image}
-                  alt={`${item.title}（待替换）`}
+                  alt={item.alt}
                   fill
-                  className="object-cover opacity-60"
+                  sizes="(max-width: 768px) 100vw, 40vw"
+                  priority={idx === 0}
+                  className="object-cover opacity-90 transition-opacity group-hover:opacity-100"
+                  style={{
+                    objectPosition: item.imageObjectPosition ?? "center",
+                    transform: item.imageScale
+                      ? `scale(${item.imageScale})`
+                      : undefined,
+                  }}
                 />
-                <span className="absolute bottom-2 right-2 text-[10px] text-white/40 bg-black/40 px-2 py-0.5 rounded">
-                  图片占位
-                </span>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#E40011] to-[#ff4d5a] flex items-center justify-center mb-4">
-                <item.icon className="w-6 h-6 text-white" />
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#E40011] to-[#ff4d5a] flex items-center justify-center mb-3">
+                <item.icon className="w-5 h-5 text-white" />
               </div>
               <h3 className="text-lg font-bold text-white mb-2">{item.title}</h3>
               <p className="text-sm text-white/40">{item.description}</p>
@@ -174,7 +192,7 @@ export function HeroCover({
           transition={{ duration: 0.8, delay: 0.5 }}
           className="flex flex-col items-center gap-3"
         >
-          <span className="text-sm text-white/40">向下滚动开始测算</span>
+          <span className="text-sm text-white/40">{m.hero.scrollHint}</span>
           <motion.div
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity }}

@@ -1,0 +1,117 @@
+{
+  "manufacturer": "LONGi Solar",
+  "products": [
+    {
+      "model": "LR7-54HVB-475M",
+      "cellCount": 54,
+      "powerWp": 475,
+      "family": "hvh",
+      "lengthMm": 1800,
+      "widthMm": 1134
+    },
+    {
+      "model": "LR7-54HVD-T-475M",
+      "cellCount": 54,
+      "powerWp": 475,
+      "family": "hvd",
+      "lengthMm": 1800,
+      "widthMm": 1134
+    },
+    {
+      "model": "LR7-54HVH-475M",
+      "cellCount": 54,
+      "powerWp": 475,
+      "family": "hvh",
+      "lengthMm": 1800,
+      "widthMm": 1134
+    },
+    {
+      "model": "LR8-48HVH-475M",
+      "cellCount": 48,
+      "powerWp": 475,
+      "family": "hvh",
+      "lengthMm": 1762,
+      "widthMm": 1134
+    },
+    {
+      "model": "LR8-48HVHF-475M",
+      "cellCount": 48,
+      "powerWp": 475,
+      "family": "hvh",
+      "lengthMm": 1762,
+      "widthMm": 1134
+    },
+    {
+      "model": "LR7-60HVD-540M",
+      "cellCount": 60,
+      "powerWp": 540,
+      "family": "hvd",
+      "lengthMm": 1990,
+      "widthMm": 1134
+    },
+    {
+      "model": "LR7-60HVH-540M",
+      "cellCount": 60,
+      "powerWp": 540,
+      "family": "hvh",
+      "lengthMm": 1990,
+      "widthMm": 1134
+    },
+    {
+      "model": "LR7-60HVHL-540M",
+      "cellCount": 60,
+      "powerWp": 540,
+      "family": "hvhl",
+      "lengthMm": 1990,
+      "widthMm": 1134
+    },
+    {
+      "model": "LR7-72HVD-650M",
+      "cellCount": 72,
+      "powerWp": 650,
+      "family": "hvd",
+      "lengthMm": 2382,
+      "widthMm": 1134
+    },
+    {
+      "model": "LR7-72HVDF-650M",
+      "cellCount": 72,
+      "powerWp": 650,
+      "family": "hvd",
+      "lengthMm": 2382,
+      "widthMm": 1134
+    },
+    {
+      "model": "LR7-72HVH-650M",
+      "cellCount": 72,
+      "powerWp": 650,
+      "family": "hvh",
+      "lengthMm": 2382,
+      "widthMm": 1134
+    },
+    {
+      "model": "LR7-72HVHF-650M",
+      "cellCount": 72,
+      "powerWp": 650,
+      "family": "hvh",
+      "lengthMm": 2382,
+      "widthMm": 1134
+    },
+    {
+      "model": "LR8-66HVD-650M",
+      "cellCount": 66,
+      "powerWp": 650,
+      "family": "hvd",
+      "lengthMm": 2182,
+      "widthMm": 1134
+    },
+    {
+      "model": "LR8-66HVDF-650M",
+      "cellCount": 66,
+      "powerWp": 650,
+      "family": "hvd",
+      "lengthMm": 2182,
+      "widthMm": 1134
+    }
+  ]
+}

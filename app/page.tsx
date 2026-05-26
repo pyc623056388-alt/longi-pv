@@ -2,14 +2,17 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import type { AppLocale } from "@/components/language-switcher";
+import { getMessages, type AppLocale } from "@/lib/i18n";
+import { LocaleProvider } from "@/components/locale-provider";
 import { HeroCover } from "@/components/hero-cover";
 import { SetupSection } from "@/components/setup-section";
 import { SpecsSection } from "@/components/specs-section";
 import { ResultsSection } from "@/components/results-section";
+import { AppLegalFooter } from "@/components/app-legal-footer";
 import { DatabaseDialog } from "@/components/database-dialog";
 import { useDataStore } from "@/hooks/use-data-store";
 import { calculatePvComparison } from "@/lib/pv-calculation";
+import { buildReportSnapshot } from "@/lib/report-snapshot";
 import type { ModuleSpec } from "@/lib/pv-calculation";
 import {
   applySpecFieldToRecord,
@@ -18,7 +21,25 @@ import {
   moduleSpecForCalculation,
   type ModuleSpecField,
 } from "@/lib/module-utils";
-import { validateModuleForStorage } from "@/lib/parsers/panfile";
+import {
+  prepareModuleForPersist,
+  recordWithAllOverrides,
+} from "@/lib/module-persist";
+import { getDefaultWeatherId, getWeatherById } from "@/lib/data-store";
+import {
+  applyModulePairPreset,
+  findActiveQuickPreset,
+  isModulePairPresetId,
+  type ModulePairPresetId,
+  type QuickModulePairPresetId,
+} from "@/lib/module-pair-presets";
+import {
+  buildSessionSnapshot,
+  clearSession,
+  loadSession,
+  saveSession,
+  type SpecOverridesSnapshot,
+} from "@/lib/session-store";
 import {
   convertBasicParams,
   convertMoney,
@@ -34,10 +55,7 @@ import {
 
 const LOCALE_STORAGE_KEY = "longi-pv:locale";
 
-export type SpecOverridesState = {
-  longi: Record<string, Partial<ModuleSpec>>;
-  competitor: Record<string, Partial<ModuleSpec>>;
-};
+export type SpecOverridesState = SpecOverridesSnapshot;
 
 const FALLBACK_LONGI = {
   id: "fallback-l",
@@ -46,10 +64,10 @@ const FALLBACK_LONGI = {
   powerWp: 590,
   lengthMm: 2278,
   widthMm: 1134,
-  pmpTempCoef: -0.29,
-  firstYearDegradationPct: 1,
-  annualDegradationPct: 0.4,
-  pricePerW: 0.95,
+  pmpTempCoef: -0.26,
+  firstYearDegradationPct: 0.8,
+  annualDegradationPct: 0.35,
+  pricePerW: 0.25,
   library: "longi" as const,
 };
 
@@ -60,10 +78,10 @@ const FALLBACK_COMP = {
   powerWp: 580,
   lengthMm: 2278,
   widthMm: 1134,
-  pmpTempCoef: -0.34,
-  firstYearDegradationPct: 1.5,
-  annualDegradationPct: 0.45,
-  pricePerW: 0.88,
+  pmpTempCoef: -0.29,
+  firstYearDegradationPct: 1,
+  annualDegradationPct: 0.4,
+  pricePerW: 0.23,
   library: "competitor" as const,
 };
 
@@ -83,6 +101,9 @@ export default function ModuleComparisonPage() {
     competitor: {},
   });
   const [locale, setLocale] = useState<AppLocale>("zh");
+  const [modulePairPreset, setModulePairPreset] =
+    useState<ModulePairPresetId>("custom");
+  const [sessionHydrated, setSessionHydrated] = useState(false);
 
   useEffect(() => {
     try {
@@ -91,6 +112,21 @@ export default function ModuleComparisonPage() {
     } catch {
       /* ignore */
     }
+    const saved = loadSession();
+    if (saved) {
+      setProjectName(saved.projectName);
+      setSelectedWeather(saved.selectedWeather);
+      setComparisonMode(saved.comparisonMode);
+      setModuleCount(saved.moduleCount);
+      setBasicParams(saved.basicParams);
+      setGainStrategies(saved.gainStrategies);
+      setHoursManualOverride(saved.hoursManualOverride);
+      setSpecOverrides(saved.specOverrides);
+      setSelectedLongiId(saved.selectedLongiId);
+      setSelectedCompetitorId(saved.selectedCompetitorId);
+      setModulePairPreset(saved.modulePairPreset);
+    }
+    setSessionHydrated(true);
   }, []);
 
   const handleLocaleChange = useCallback((next: AppLocale) => {
@@ -111,6 +147,8 @@ export default function ModuleComparisonPage() {
     bulkAddModules,
     upsertWeather,
     removeWeather,
+    syncBuiltinWeather,
+    syncBuiltinModules,
   } = useDataStore();
 
   const [selectedLongiId, setSelectedLongiId] = useState(
@@ -135,6 +173,51 @@ export default function ModuleComparisonPage() {
     }
   }, [competitorModules, selectedCompetitorId]);
 
+  useEffect(() => {
+    if (!sessionHydrated || selectedWeather) return;
+    const defaultId = getDefaultWeatherId();
+    if (defaultId && weatherList.some((w) => w.id === defaultId)) {
+      setSelectedWeather(defaultId);
+    } else if (weatherList[0]) {
+      setSelectedWeather(weatherList[0].id);
+    }
+  }, [sessionHydrated, selectedWeather, weatherList]);
+
+  useEffect(() => {
+    if (!sessionHydrated) return;
+    const timer = window.setTimeout(() => {
+      saveSession(
+        buildSessionSnapshot({
+          projectName,
+          selectedWeather,
+          comparisonMode,
+          moduleCount,
+          basicParams,
+          gainStrategies,
+          hoursManualOverride,
+          specOverrides,
+          selectedLongiId,
+          selectedCompetitorId,
+          modulePairPreset,
+        })
+      );
+    }, 300);
+    return () => window.clearTimeout(timer);
+  }, [
+    sessionHydrated,
+    projectName,
+    selectedWeather,
+    comparisonMode,
+    moduleCount,
+    basicParams,
+    gainStrategies,
+    hoursManualOverride,
+    specOverrides,
+    selectedLongiId,
+    selectedCompetitorId,
+    modulePairPreset,
+  ]);
+
   const effectiveLongiId =
     selectedLongiId && longiModules.some((m) => m.id === selectedLongiId)
       ? selectedLongiId
@@ -144,6 +227,57 @@ export default function ModuleComparisonPage() {
     competitorModules.some((m) => m.id === selectedCompetitorId)
       ? selectedCompetitorId
       : competitorModules[0]?.id ?? "";
+
+  const syncModulePairPresetFromSelection = useCallback(
+    (longiId: string, compId: string) => {
+      const active = findActiveQuickPreset(
+        longiId,
+        compId,
+        longiModules,
+        competitorModules
+      );
+      setModulePairPreset(active ?? "custom");
+    },
+    [longiModules, competitorModules]
+  );
+
+  const handleModulePairPresetChange = useCallback(
+    (next: ModulePairPresetId) => {
+      setModulePairPreset(next);
+      if (next === "custom") return;
+
+      const msgs = getMessages(locale).specs;
+      const { longiId, competitorId, warnings } = applyModulePairPreset(
+        next as QuickModulePairPresetId,
+        longiModules,
+        competitorModules,
+        {
+          hvhFallback: msgs.presetHvhFallback,
+          missingPair: msgs.presetMissingPair,
+        }
+      );
+      if (longiId) setSelectedLongiId(longiId);
+      if (competitorId) setSelectedCompetitorId(competitorId);
+      for (const w of warnings) toast.warning(w);
+    },
+    [longiModules, competitorModules, locale]
+  );
+
+  const handleSelectLongi = useCallback(
+    (id: string) => {
+      setSelectedLongiId(id);
+      syncModulePairPresetFromSelection(id, effectiveCompId);
+    },
+    [effectiveCompId, syncModulePairPresetFromSelection]
+  );
+
+  const handleSelectCompetitor = useCallback(
+    (id: string) => {
+      setSelectedCompetitorId(id);
+      syncModulePairPresetFromSelection(effectiveLongiId, id);
+    },
+    [effectiveLongiId, syncModulePairPresetFromSelection]
+  );
 
   const longiRecord = longiModules.find((m) => m.id === effectiveLongiId);
   const compRecord = competitorModules.find((m) => m.id === effectiveCompId);
@@ -183,12 +317,12 @@ export default function ModuleComparisonPage() {
   );
 
   const longiCalcSpec = useMemo(
-    () => moduleSpecForCalculation(longiDisplaySpec),
+    () => moduleSpecForCalculation(longiDisplaySpec, "longi"),
     [longiDisplaySpec]
   );
 
   const competitorCalcSpec = useMemo(
-    () => moduleSpecForCalculation(competitorDisplaySpec),
+    () => moduleSpecForCalculation(competitorDisplaySpec, "competitor"),
     [competitorDisplaySpec]
   );
 
@@ -307,7 +441,7 @@ export default function ModuleComparisonPage() {
       );
 
       toast.success(
-        `已切换为 ${CURRENCY_LABELS[next]}，相关金额已按汇率换算`
+        getMessages(locale).toast.currencySwitched(CURRENCY_LABELS[next])
       );
     },
     [
@@ -316,37 +450,99 @@ export default function ModuleComparisonPage() {
       competitorModules,
       upsertModule,
       convertSpecOverridesForCurrency,
+      locale,
     ]
+  );
+
+  const persistSideToLibrary = useCallback(
+    (
+      record: ModuleRecord,
+      library: "longi" | "competitor",
+      label: string,
+      overrides: Partial<ModuleSpec> | undefined,
+      field: ModuleSpecField,
+      value: string
+    ): boolean => {
+      let updated = recordWithAllOverrides(record, overrides);
+      if (value.trim()) {
+        updated = applySpecFieldToRecord(updated, field, value);
+      }
+      const result = prepareModuleForPersist(updated);
+      if (!result.ok) {
+        const msgs = getMessages(locale);
+        toast.error(msgs.toast.saveFailed(label, result.errors.join("；")));
+        return false;
+      }
+      upsertModule(library, result.record);
+      if (result.warnings.length) {
+        const msgs = getMessages(locale);
+        toast.warning(
+          msgs.toast.saveWarning(label, result.warnings.join("、"))
+        );
+      }
+      return true;
+    },
+    [upsertModule, locale]
   );
 
   const saveFieldToLibrary = useCallback(
     (field: ModuleSpecField, values: { longi: string; competitor: string }) => {
-      if (longiRecord && values.longi.trim()) {
-        const updated = applySpecFieldToRecord(longiRecord, field, values.longi);
-        const errs = validateModuleForStorage(updated);
-        if (errs.length) {
-          toast.error(`隆基：${errs.join("；")}`);
-          return;
-        }
-        upsertModule("longi", updated);
+      const longiTrim = values.longi.trim();
+      const compTrim = values.competitor.trim();
+      if (!longiTrim && !compTrim) {
+        toast.error(getMessages(locale).toast.fillOneSide);
+        return;
       }
-      if (compRecord && values.competitor.trim()) {
-        const updated = applySpecFieldToRecord(
-          compRecord,
-          field,
-          values.competitor
-        );
-        const errs = validateModuleForStorage(updated);
-        if (errs.length) {
-          toast.error(`竞品：${errs.join("；")}`);
-          return;
-        }
-        upsertModule("competitor", updated);
+      const msgs = getMessages(locale);
+      let saved = false;
+      if (longiRecord && longiTrim) {
+        saved =
+          persistSideToLibrary(
+            longiRecord,
+            "longi",
+            msgs.common.longi,
+            specOverrides.longi[effectiveLongiId],
+            field,
+            longiTrim
+          ) || saved;
       }
+      if (compRecord && compTrim) {
+        saved =
+          persistSideToLibrary(
+            compRecord,
+            "competitor",
+            msgs.common.competitor,
+            specOverrides.competitor[effectiveCompId],
+            field,
+            compTrim
+          ) || saved;
+      }
+      if (!saved) return;
       resetFieldOverride(field);
+      toast.success(getMessages(locale).toast.savedToLibrary);
     },
-    [longiRecord, compRecord, upsertModule, resetFieldOverride]
+    [
+      longiRecord,
+      compRecord,
+      specOverrides,
+      effectiveLongiId,
+      effectiveCompId,
+      persistSideToLibrary,
+      resetFieldOverride,
+      locale,
+    ]
   );
+
+  const epcHelper = useMemo(() => {
+    const count = Math.max(1, parseInt(moduleCount, 10) || 1);
+    const power = parseFloat(longiCalcSpec.power) || 590;
+    const price = parseFloat(longiCalcSpec.price) || 0.25;
+    return {
+      moduleCount: count,
+      longiPowerWp: power,
+      longiPricePerW: price,
+    };
+  }, [moduleCount, longiCalcSpec.power, longiCalcSpec.price]);
 
   const results = useMemo(
     () =>
@@ -357,6 +553,7 @@ export default function ModuleComparisonPage() {
         competitor: competitorCalcSpec,
         basicParams,
         gainStrategies,
+        locale,
       }),
     [
       moduleCount,
@@ -365,6 +562,42 @@ export default function ModuleComparisonPage() {
       competitorCalcSpec,
       basicParams,
       gainStrategies,
+      locale,
+    ]
+  );
+
+  const getReportSnapshot = useCallback(
+    () =>
+      buildReportSnapshot({
+        projectName,
+        weather:
+          weatherList.find((w) => w.id === selectedWeather) ??
+          (selectedWeather ? getWeatherById(selectedWeather) : undefined),
+        comparisonMode,
+        moduleCount,
+        basicParams,
+        gainStrategies,
+        longi: longiCalcSpec,
+        competitor: competitorCalcSpec,
+        longiRecord,
+        compRecord,
+        results,
+        locale,
+      }),
+    [
+      projectName,
+      weatherList,
+      selectedWeather,
+      comparisonMode,
+      moduleCount,
+      basicParams,
+      gainStrategies,
+      longiCalcSpec,
+      competitorCalcSpec,
+      longiRecord,
+      compRecord,
+      results,
+      locale,
     ]
   );
 
@@ -377,10 +610,13 @@ export default function ModuleComparisonPage() {
     setGainStrategies(DEFAULT_GAIN_STRATEGIES);
     setHoursManualOverride(false);
     setSpecOverrides({ longi: {}, competitor: {} });
+    setModulePairPreset("custom");
+    clearSession();
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
+    <LocaleProvider locale={locale}>
     <main className="bg-slate-950">
       <HeroCover
         onOpenDatabase={() => setDbOpen(true)}
@@ -404,6 +640,7 @@ export default function ModuleComparisonPage() {
         hoursManualOverride={hoursManualOverride}
         setHoursManualOverride={setHoursManualOverride}
         onCurrencyChange={handleCurrencyChange}
+        epcHelper={epcHelper}
       />
       <SpecsSection
         longi={longiDisplaySpec}
@@ -415,8 +652,10 @@ export default function ModuleComparisonPage() {
         competitorModules={competitorModules}
         selectedLongiId={effectiveLongiId}
         selectedCompetitorId={effectiveCompId}
-        onSelectLongi={setSelectedLongiId}
-        onSelectCompetitor={setSelectedCompetitorId}
+        onSelectLongi={handleSelectLongi}
+        onSelectCompetitor={handleSelectCompetitor}
+        modulePairPreset={modulePairPreset}
+        onModulePairPresetChange={handleModulePairPresetChange}
         currency={basicParams.currency}
         longiRecord={longiRecord}
         compRecord={compRecord}
@@ -431,6 +670,8 @@ export default function ModuleComparisonPage() {
         longi={longiCalcSpec}
         competitor={competitorCalcSpec}
         currency={basicParams.currency}
+        operationYears={basicParams.operationYears}
+        getReportSnapshot={getReportSnapshot}
         onReset={handleReset}
       />
 
@@ -446,7 +687,12 @@ export default function ModuleComparisonPage() {
         onBulkModules={bulkAddModules}
         onUpsertWeather={upsertWeather}
         onDeleteWeather={removeWeather}
+        onSyncBuiltinWeather={syncBuiltinWeather}
+        onSyncBuiltinModules={syncBuiltinModules}
       />
+
+      <AppLegalFooter />
     </main>
+    </LocaleProvider>
   );
 }

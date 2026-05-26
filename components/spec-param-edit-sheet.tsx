@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useI18n } from "@/components/locale-provider";
 import {
   Sheet,
   SheetContent,
@@ -14,13 +15,11 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import type { ModuleSpec } from "@/lib/pv-calculation";
-import {
-  applySpecFieldToRecord,
-  SPEC_PARAM_LABELS,
-  type ModuleSpecField,
-} from "@/lib/module-utils";
-import { validateModuleForStorage } from "@/lib/parsers/panfile";
-import type { ModuleRecord } from "@/lib/pv-types";
+import type { ModuleSpecFieldKey } from "@/lib/i18n/types";
+import { libraryDefaultSpecStrings } from "@/lib/module-library-defaults";
+import type { ModuleLibrary, ModuleRecord } from "@/lib/pv-types";
+
+type ModuleSpecField = ModuleSpecFieldKey;
 
 interface SpecParamEditSheetProps {
   open: boolean;
@@ -38,26 +37,33 @@ interface SpecParamEditSheetProps {
   ) => void;
 }
 
-function fieldPlaceholder(field: ModuleSpecField): string {
+function fieldPlaceholder(
+  field: ModuleSpecField,
+  library: ModuleLibrary
+): string {
+  const d = libraryDefaultSpecStrings(library);
   switch (field) {
     case "power":
-      return "590";
+      return library === "longi" ? "475" : "475";
     case "dimensions":
-      return "2278×1134 mm";
+      return library === "longi" ? "1800×1134 mm" : "1762×1134 mm";
     case "tempCoef":
-      return "-0.29";
+      return d.tempCoef;
     case "firstYearDeg":
-      return "1";
+      return d.firstYearDeg;
     case "annualDeg":
-      return "0.4";
+      return d.annualDeg;
     case "price":
-      return "0.95";
+      return d.price;
     default:
       return "";
   }
 }
 
-function fieldUnitHint(field: ModuleSpecField): string {
+function fieldUnitHint(
+  field: ModuleSpecField,
+  m: ReturnType<typeof useI18n>["m"]
+): string {
   switch (field) {
     case "power":
       return "W";
@@ -69,7 +75,7 @@ function fieldUnitHint(field: ModuleSpecField): string {
     case "price":
       return "/W";
     case "dimensions":
-      return "长×宽 mm，如 2278×1134";
+      return m.specs.fieldHints.dimensions;
     default:
       return "";
   }
@@ -87,6 +93,7 @@ export function SpecParamEditSheet({
   onReset,
   onSaveToLibrary,
 }: SpecParamEditSheetProps) {
+  const { m } = useI18n();
   const [longiInput, setLongiInput] = useState("");
   const [compInput, setCompInput] = useState("");
 
@@ -99,85 +106,72 @@ export function SpecParamEditSheet({
 
   if (!field) return null;
 
-  const label = SPEC_PARAM_LABELS[field];
-  const hint = fieldUnitHint(field);
+  const label = m.specParams[field];
+  const hint = fieldUnitHint(field, m);
 
   const handleApply = () => {
     onApply(field, { longi: longiInput.trim(), competitor: compInput.trim() });
     onOpenChange(false);
-    toast.success("已应用本次对比参数");
+    toast.success(m.specs.editSheet.appliedToast);
   };
 
   const handleReset = () => {
     onReset(field);
     onOpenChange(false);
-    toast.info("已恢复为组件库数值");
+    toast.info(m.specs.editSheet.resetToast);
   };
 
   const handleSaveToLibrary = () => {
     if (!longiRecord && !compRecord) {
-      toast.error("无可用组件记录");
+      toast.error(m.specs.editSheet.noRecord);
       return;
     }
     const values = { longi: longiInput.trim(), competitor: compInput.trim() };
-    if (longiRecord && values.longi) {
-      const updated = applySpecFieldToRecord(longiRecord, field, values.longi);
-      const errs = validateModuleForStorage(updated);
-      if (errs.length) {
-        toast.error(`隆基：${errs.join("；")}`);
-        return;
-      }
-    }
-    if (compRecord && values.competitor) {
-      const updated = applySpecFieldToRecord(compRecord, field, values.competitor);
-      const errs = validateModuleForStorage(updated);
-      if (errs.length) {
-        toast.error(`竞品：${errs.join("；")}`);
-        return;
-      }
+    if (!values.longi && !values.competitor) {
+      toast.error(m.specs.editSheet.fillOneSide);
+      return;
     }
     onSaveToLibrary(field, values);
     onOpenChange(false);
-    toast.success("已保存到组件库");
   };
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="sm:max-w-md w-full">
         <SheetHeader>
-          <SheetTitle>编辑 {label}</SheetTitle>
+          <SheetTitle>{m.specs.editSheet.title(label)}</SheetTitle>
           <SheetDescription>
-            修改仅影响本次对比会话；也可选择写回组件库永久保存。
-            {hint ? ` 单位：${hint}` : ""}
+            {m.specs.editSheet.description}
+            {hint ? m.specs.editSheet.unit(hint) : ""}
           </SheetDescription>
         </SheetHeader>
         <div className="space-y-4 py-4">
           <div>
-            <Label>隆基组件</Label>
+            <Label>{m.specs.longiSelect}</Label>
             <Input
               value={longiInput}
               onChange={(e) => setLongiInput(e.target.value)}
-              placeholder={fieldPlaceholder(field)}
+              placeholder={fieldPlaceholder(field, "longi")}
             />
           </div>
           <div>
-            <Label>竞品组件</Label>
+            <Label>{m.specs.competitorSelect}</Label>
             <Input
               value={compInput}
               onChange={(e) => setCompInput(e.target.value)}
-              placeholder={fieldPlaceholder(field)}
+              placeholder={fieldPlaceholder(field, "competitor")}
             />
           </div>
         </div>
         <SheetFooter className="flex-col gap-2 sm:flex-col">
           <Button onClick={handleApply} className="w-full">
-            应用（本次对比）
+            {m.specs.editSheet.apply}
           </Button>
           <Button variant="outline" onClick={handleReset} className="w-full">
-            恢复组件库数值
+            {m.specs.editSheet.reset}
           </Button>
           <Button variant="secondary" onClick={handleSaveToLibrary} className="w-full">
-            保存到组件库
+            {m.specs.editSheet.saveToLibrary}
           </Button>
         </SheetFooter>
       </SheetContent>

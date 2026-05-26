@@ -1,0 +1,348 @@
+{
+  "regionBase": "https://climate.onebuilding.org/WMO_Region_5_Southwest_Pacific",
+  "stations": [
+    {
+      "id": "adelaide",
+      "label": "阿德莱德 Adelaide",
+      "dir": "AUS_Australia/SA_South_Australia",
+      "zip": "AUS_SA_Adelaide-Kent.Town.946750_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "emerald",
+      "label": "埃默拉尔德 Emerald",
+      "dir": "AUS_Australia/QLD_Queensland",
+      "zip": "AUS_QLD_Emerald.AP.943630_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "esperance",
+      "label": "埃斯佩兰斯 Esperance",
+      "dir": "AUS_Australia/WA_Western_Australia",
+      "zip": "AUS_WA_Esperance.946380_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "alice_springs",
+      "label": "爱丽丝泉 Alice Springs",
+      "dir": "AUS_Australia/NT_Northern_Territory",
+      "zip": "AUS_NT_Alice.Springs.AP.943260_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "albany",
+      "label": "奥尔巴尼 Albany",
+      "dir": "AUS_Australia/WA_Western_Australia",
+      "zip": "AUS_WA_Albany.948010_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "port_augusta",
+      "label": "奥古斯塔港 Port Augusta",
+      "dir": "AUS_Australia/SA_South_Australia",
+      "zip": "AUS_SA_Port.Augusta.AP.956660_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "auckland",
+      "label": "奥克兰 Auckland",
+      "dir": "NZL_New_Zealand/AUK_Auckland",
+      "zip": "NZL_AUK_Auckland.Intl.AP.931100_TMYx.2011-2025.zip",
+      "country": "NZL"
+    },
+    {
+      "id": "orange",
+      "label": "奥兰治 Orange",
+      "dir": "AUS_Australia/NSW_New_South_Wales",
+      "zip": "AUS_NSW_Orange.AP.957260_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "ballarat",
+      "label": "巴拉瑞特 Ballarat",
+      "dir": "AUS_Australia/VIC_Victoria",
+      "zip": "AUS_VIC_Ballarat.AP.948520_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "bunbury",
+      "label": "班伯里 Bunbury",
+      "dir": "AUS_Australia/WA_Western_Australia",
+      "zip": "AUS_WA_Bunbury.946040_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "bundaberg",
+      "label": "班达伯格 Bundaberg",
+      "dir": "AUS_Australia/QLD_Queensland",
+      "zip": "AUS_QLD_Bundaberg.AP.943870_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "bendigo",
+      "label": "本迪戈 Bendigo",
+      "dir": "AUS_Australia/VIC_Victoria",
+      "zip": "AUS_VIC_Bendigo.AP.948550_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "brisbane",
+      "label": "布里斯班 Brisbane",
+      "dir": "AUS_Australia/QLD_Queensland",
+      "zip": "AUS_QLD_Brisbane-Archerfield.AP.945750_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "broome",
+      "label": "布鲁姆 Broome",
+      "dir": "AUS_Australia/WA_Western_Australia",
+      "zip": "AUS_WA_Broome.Intl.AP.942030_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "dubbo",
+      "label": "达博 Dubbo",
+      "dir": "AUS_Australia/NSW_New_South_Wales",
+      "zip": "AUS_NSW_Dubbo.City.Rgnl.AP.957190_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "darwin",
+      "label": "达尔文 Darwin",
+      "dir": "AUS_Australia/NT_Northern_Territory",
+      "zip": "AUS_NT_Darwin.Intl.AP.941200_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "dunedin",
+      "label": "但尼丁 Dunedin",
+      "dir": "NZL_New_Zealand/OTA_Otago",
+      "zip": "NZL_OTA_Dunedin.Intl.AP.938910_TMYx.2011-2025.zip",
+      "country": "NZL"
+    },
+    {
+      "id": "devonport",
+      "label": "德文波特 Devonport",
+      "dir": "AUS_Australia/TAS_Tasmania",
+      "zip": "AUS_TAS_Devonport.AP.959600_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "hervey_bay",
+      "label": "赫维湾 Hervey Bay",
+      "dir": "AUS_Australia/QLD_Queensland",
+      "zip": "AUS_QLD_Hervey.Bay.AP.955650_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "whyalla",
+      "label": "怀阿拉 Whyalla",
+      "dir": "AUS_Australia/SA_South_Australia",
+      "zip": "AUS_SA_Whyalla.AP.956640_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "queenstown",
+      "label": "皇后镇 Queenstown",
+      "dir": "NZL_New_Zealand/OTA_Otago",
+      "zip": "NZL_OTA_Queenstown.AP.938310_TMYx.2011-2025.zip",
+      "country": "NZL"
+    },
+    {
+      "id": "gold_coast",
+      "label": "黄金海岸 Gold Coast",
+      "dir": "AUS_Australia/QLD_Queensland",
+      "zip": "AUS_QLD_Gold.Coast.AP.945920_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "wellington",
+      "label": "惠灵顿 Wellington",
+      "dir": "NZL_New_Zealand/WGN_Wellington",
+      "zip": "NZL_WGN_Wellington.Intl.AP.934360_TMYx.2011-2025.zip",
+      "country": "NZL"
+    },
+    {
+      "id": "hobart",
+      "label": "霍巴特 Hobart",
+      "dir": "AUS_Australia/TAS_Tasmania",
+      "zip": "AUS_TAS_Hobart.Ellerslie.Road.949700_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "christchurch",
+      "label": "基督城 Christchurch",
+      "dir": "NZL_New_Zealand/CAN_Canterbury",
+      "zip": "NZL_CAN_Christchurch.Intl.AP.937800_TMYx.2011-2025.zip",
+      "country": "NZL"
+    },
+    {
+      "id": "geelong",
+      "label": "吉朗 Geelong",
+      "dir": "AUS_Australia/VIC_Victoria",
+      "zip": "AUS_VIC_Geelong.Racecourse.948570_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "geraldton",
+      "label": "杰拉尔顿 Geraldton",
+      "dir": "AUS_Australia/WA_Western_Australia",
+      "zip": "AUS_WA_Geraldton.AP.944030_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "kalgoorlie",
+      "label": "卡尔古利 Kalgoorlie",
+      "dir": "AUS_Australia/WA_Western_Australia",
+      "zip": "AUS_WA_Kalgoorlie-Boulder.AP.946370_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "cairns",
+      "label": "凯恩斯 Cairns",
+      "dir": "AUS_Australia/QLD_Queensland",
+      "zip": "AUS_QLD_Cairns.Intl.AP.942870_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "katherine",
+      "label": "凯瑟琳 Katherine",
+      "dir": "AUS_Australia/NT_Northern_Territory",
+      "zip": "AUS_NT_Katherine-RAAF.Tindal.941310_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "canberra",
+      "label": "堪培拉 Canberra",
+      "dir": "AUS_Australia/ACT_Australian_Capital_Territory",
+      "zip": "AUS_ACT_Canberra.Intl.AP.949260_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "coffs_harbour",
+      "label": "科夫斯港 Coffs Harbour",
+      "dir": "AUS_Australia/NSW_New_South_Wales",
+      "zip": "AUS_NSW_Coffs.Harbour.AP.947910_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "launceston",
+      "label": "朗塞斯顿 Launceston",
+      "dir": "AUS_Australia/TAS_Tasmania",
+      "zip": "AUS_TAS_Launceston.AP.959660_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "rockhampton",
+      "label": "罗克汉普顿 Rockhampton",
+      "dir": "AUS_Australia/QLD_Queensland",
+      "zip": "AUS_QLD_Rockhampton.AP.943740_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "mackay",
+      "label": "麦凯 Mackay",
+      "dir": "AUS_Australia/QLD_Queensland",
+      "zip": "AUS_QLD_Mackay.943670_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "mount_isa",
+      "label": "芒特艾萨 Mount Isa",
+      "dir": "AUS_Australia/QLD_Queensland",
+      "zip": "AUS_QLD_Mount.Isa.AP.943320_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "mount_gambier",
+      "label": "芒特甘比尔 Mount Gambier",
+      "dir": "AUS_Australia/SA_South_Australia",
+      "zip": "AUS_SA_Mount.Gambier.AP.948210_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "melbourne",
+      "label": "墨尔本 Melbourne",
+      "dir": "AUS_Australia/VIC_Victoria",
+      "zip": "AUS_VIC_Melbourne-Essendon.Fields.948640_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "napier",
+      "label": "内皮尔 Napier",
+      "dir": "NZL_New_Zealand/HKB_Hawkes_Bay",
+      "zip": "NZL_HKB_Napier-Hawkes.Bay.AP.933730_TMYx.2011-2025.zip",
+      "country": "NZL"
+    },
+    {
+      "id": "newcastle",
+      "label": "纽卡斯尔 Newcastle",
+      "dir": "AUS_Australia/NSW_New_South_Wales",
+      "zip": "AUS_NSW_Newcastle.AP-RAAF.Williamtown.947760_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "perth",
+      "label": "珀斯 Perth",
+      "dir": "AUS_Australia/WA_Western_Australia",
+      "zip": "AUS_WA_Kalamunda-Bickley-Perth.Obs.956100_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "townsville",
+      "label": "汤斯维尔 Townsville",
+      "dir": "AUS_Australia/QLD_Queensland",
+      "zip": "AUS_QLD_Townsville.AP-RAAF.Townsville.942940_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "taupo",
+      "label": "陶波 Taupo",
+      "dir": "NZL_New_Zealand/WKO_Waikato",
+      "zip": "NZL_WKO_Taupo.AP.932450_TMYx.2011-2025.zip",
+      "country": "NZL"
+    },
+    {
+      "id": "tauranga",
+      "label": "陶朗加 Tauranga",
+      "dir": "NZL_New_Zealand/BOP_Bay_of_Plenty",
+      "zip": "NZL_BOP_Tauranga.AP.931860_TMYx.2011-2025.zip",
+      "country": "NZL"
+    },
+    {
+      "id": "toowoomba",
+      "label": "图文巴 Toowoomba",
+      "dir": "AUS_Australia/QLD_Queensland",
+      "zip": "AUS_QLD_Toowoomba.AP.955510_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "wagga_wagga",
+      "label": "沃加沃加 Wagga Wagga",
+      "dir": "AUS_Australia/NSW_New_South_Wales",
+      "zip": "AUS_NSW_Wagga.Wagga.AP-RAAF.Wagga.949100_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "wollongong",
+      "label": "卧龙岗 Wollongong",
+      "dir": "AUS_Australia/NSW_New_South_Wales",
+      "zip": "AUS_NSW_Illawarra.Rgnl.AP.957480_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "sydney",
+      "label": "悉尼 Sydney",
+      "dir": "AUS_Australia/NSW_New_South_Wales",
+      "zip": "AUS_NSW_Mascot.AP-Sydney.Intl.AP.947670_TMYx.2011-2025.zip",
+      "country": "AUS"
+    },
+    {
+      "id": "sunshine_coast",
+      "label": "阳光海岸 Sunshine Coast",
+      "dir": "AUS_Australia/QLD_Queensland",
+      "zip": "AUS_QLD_Sunshine.Coast.AP.945690_TMYx.2011-2025.zip",
+      "country": "AUS"
+    }
+  ]
+}

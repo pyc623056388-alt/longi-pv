@@ -4,9 +4,15 @@ import type React from "react";
 import { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Check, MapPin } from "lucide-react";
-import { BasicParamsPanel } from "@/components/basic-params-panel";
+import {
+  BasicParamsPanel,
+  type EpcHelperContext,
+} from "@/components/basic-params-panel";
+import { useI18n } from "@/components/locale-provider";
+import { SearchableSelect } from "@/components/ui/searchable-select";
 import { getWeatherById } from "@/lib/data-store";
 import type { BasicParams, CurrencyCode, WeatherRecord } from "@/lib/pv-types";
+import { getWeatherLocation, getWeatherName } from "@/lib/weather-display";
 import { estimateYearlyHoursFromWeather } from "@/lib/weather-utils";
 
 interface SetupSectionProps {
@@ -24,6 +30,7 @@ interface SetupSectionProps {
   hoursManualOverride: boolean;
   setHoursManualOverride: (v: boolean) => void;
   onCurrencyChange?: (currency: CurrencyCode) => void;
+  epcHelper?: EpcHelperContext;
 }
 
 export function SetupSection({
@@ -41,7 +48,9 @@ export function SetupSection({
   hoursManualOverride,
   setHoursManualOverride,
   onCurrencyChange,
+  epcHelper,
 }: SetupSectionProps) {
+  const { m, locale } = useI18n();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -63,6 +72,19 @@ export function SetupSection({
     setBasicParams((prev) => ({ ...prev, yearlyEquivalentHours: hours }));
   }, [selectedWeather, weatherList, hoursManualOverride, setBasicParams]);
 
+  const comparisonModes = [
+    {
+      id: "sameCount" as const,
+      title: m.setup.modes.sameCount.title,
+      desc: m.setup.modes.sameCount.desc,
+    },
+    {
+      id: "fixedCapacity" as const,
+      title: m.setup.modes.fixedCapacity.title,
+      desc: m.setup.modes.fixedCapacity.desc,
+    },
+  ];
+
   return (
     <motion.section
       ref={ref}
@@ -77,47 +99,63 @@ export function SetupSection({
           className="text-center mb-16"
         >
           <span className="inline-block px-4 py-1.5 rounded-full bg-[#E40011]/10 text-[#E40011] text-sm font-semibold mb-4">
-            第一步
+            {m.setup.stepBadge}
           </span>
           <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
-            项目初始化
+            {m.setup.title}
           </h2>
-          <p className="text-lg text-slate-500">配置您的项目信息与测算模式</p>
+          <p className="text-lg text-slate-500">{m.setup.subtitle}</p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-8 mb-8">
           <div className="space-y-3">
-            <label className="text-sm font-semibold text-slate-700">项目名称</label>
+            <label className="text-sm font-semibold text-slate-700">
+              {m.setup.projectName}
+            </label>
             <input
               type="text"
               value={projectName}
               onChange={(e) => setProjectName(e.target.value)}
-              placeholder="输入项目名称..."
+              placeholder={m.setup.projectNamePlaceholder}
               className="w-full px-6 py-4 bg-white/80 rounded-2xl shadow-lg shadow-slate-200/50 text-lg focus:outline-none focus:ring-2 focus:ring-[#E40011]/30"
             />
           </div>
           <div className="space-y-3">
-            <label className="text-sm font-semibold text-slate-700">气象站选择</label>
-            <select
+            <label className="text-sm font-semibold text-slate-700">
+              {m.setup.weather}
+            </label>
+            <SearchableSelect
               value={selectedWeather}
-              onChange={(e) => {
-                setSelectedWeather(e.target.value);
+              onValueChange={(id) => {
+                setSelectedWeather(id);
                 setHoursManualOverride(false);
               }}
-              className="w-full px-6 py-4 bg-white/80 rounded-2xl shadow-lg shadow-slate-200/50 text-lg focus:outline-none focus:ring-2 focus:ring-[#E40011]/30 cursor-pointer"
-            >
-              <option value="">选择气象站...</option>
-              {weatherList.map((w) => (
-                <option key={w.id} value={w.id}>
-                  {w.name}
-                </option>
-              ))}
-            </select>
+              placeholder={m.setup.weatherPlaceholder}
+              searchPlaceholder={m.setup.weatherSearch}
+              triggerClassName="w-full h-auto px-6 py-4 bg-white/80 rounded-2xl shadow-lg shadow-slate-200/50 text-lg border-0 hover:bg-white/80"
+              options={[
+                { value: "", label: m.setup.weatherPlaceholder },
+                ...weatherList.map((w) => ({
+                  value: w.id,
+                  label: getWeatherName(w, locale),
+                  keywords: [
+                    w.name,
+                    w.nameZh,
+                    w.nameEn,
+                    w.location,
+                    w.locationZh,
+                    w.locationEn,
+                  ]
+                    .filter(Boolean)
+                    .join(" "),
+                })),
+              ]}
+            />
             {selectedWeatherData && (
               <div className="flex items-center gap-2 text-sm text-slate-500">
                 <MapPin className="w-4 h-4 text-[#E40011]" />
                 <span>
-                  {selectedWeatherData.location}
+                  {getWeatherLocation(selectedWeatherData, locale)}
                   {selectedWeatherData.lat != null &&
                     ` · ${selectedWeatherData.lat}°N, ${selectedWeatherData.lon}°E`}
                 </span>
@@ -134,19 +172,15 @@ export function SetupSection({
           }}
           onCurrencyChange={onCurrencyChange}
           hoursAutoHint={!hoursManualOverride && !!selectedWeather}
+          epcHelper={epcHelper}
         />
 
         <div className="mb-12 mt-8">
-          <h3 className="text-lg font-bold text-slate-900 mb-6 text-center">选择对比模式</h3>
+          <h3 className="text-lg font-bold text-slate-900 mb-6 text-center">
+            {m.setup.comparisonModeTitle}
+          </h3>
           <div className="grid md:grid-cols-2 gap-6">
-            {[
-              { id: "sameCount" as const, title: "同片数对比", desc: "以相同组件数量对比发电效率" },
-              {
-                id: "fixedCapacity" as const,
-                title: "固定装机量对比",
-                desc: "以相同装机容量对比系统成本",
-              },
-            ].map((mode) => (
+            {comparisonModes.map((mode) => (
               <button
                 key={mode.id}
                 type="button"
@@ -177,7 +211,9 @@ export function SetupSection({
 
         <div className="flex flex-col items-center">
           <label className="text-sm font-semibold text-slate-700 mb-4">
-            {comparisonMode === "sameCount" ? "组件数量" : "装机容量 (kW)"}
+            {comparisonMode === "sameCount"
+              ? m.setup.moduleCountLabel
+              : m.setup.capacityLabel}
           </label>
           <div className="relative">
             <input
@@ -187,7 +223,7 @@ export function SetupSection({
               className="w-64 text-center text-6xl font-extrabold text-slate-900 bg-transparent border-0 border-b-4 border-slate-200 focus:border-[#E40011] focus:outline-none pb-2"
             />
             <span className="absolute -right-16 bottom-4 text-xl text-slate-400">
-              {comparisonMode === "sameCount" ? "片" : "kW"}
+              {comparisonMode === "sameCount" ? m.common.panelUnit : "kW"}
             </span>
           </div>
         </div>

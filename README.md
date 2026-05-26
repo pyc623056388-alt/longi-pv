@@ -169,6 +169,26 @@ git push
 | `app/layout.tsx` | 标题、SEO、Vercel Analytics |
 | `app/globals.css` | 全局样式 |
 | `public/` | 图标与静态资源 |
+| `数据库/` | 隆基 PAN、竞品 PDF 源文件（构建用） |
+| `data/builtin/datasheet-extract-review.json` | 竞品 PDF 抽取 + 校对结果 |
+| `data/builtin/weather/epw/` | 澳新城市 EPW 源文件 |
+| `lib/seed-data.json` | 由 `npm run build:seed` 生成的默认组件库与气象 |
+
+### 更新内置 PAN / 气象
+
+```powershell
+# 1. 更新 数据库/longi 或 数据库/竞品 下文件
+# 2. 竞品 PDF：抽取并校对
+npm run extract:datasheet
+# 3. 下载/更新澳新 EPW
+npm run fetch:epw
+# 4. 生成 lib/seed-data.json
+npm run build:seed
+```
+
+内置气象库约 **40** 个澳新主流城市（友好中文名，如「悉尼 Sydney」）。若页面仍只见少量旧站点：数据库 → **同步内置气象库**，或清除浏览器本站数据后刷新。
+
+详见 [docs/panfile-sourcing.md](docs/panfile-sourcing.md)。
 
 ---
 
@@ -186,6 +206,9 @@ A：先在本地执行 `npm run build` 看报错；Vercel 项目 → **Deploymen
 **Q：想用公司域名？**  
 A：Vercel 项目 → **Settings** → **Domains** 添加域名并按提示配置 DNS。
 
+**Q：刷新页面后对比参数没了？**  
+A：对比页表单与「已手动调整」会自动写入浏览器 `localStorage`（键 `longi-pv:session-v1`）。组件库在 `longi-pv:modules:*` / `longi-pv:weather`；内置库版本为 `longi-pv:seeded-v5`（**14** 款隆基、**10** 款竞品、约 40 个气象站）。STC 电参数（Voc/Isc/Vmp/Imp）在 **数据库 → 编辑组件** 中查看，对比页表格不展示。若库未更新，清除 `longi-pv:seeded-v5` 与 `longi-pv:modules:*` 后刷新，或重新执行 `npm run build:seed`。
+
 ---
 
 ## 九、备选：不用 Git，仅 CLI 部署（临时方案）
@@ -198,3 +221,17 @@ npx vercel --prod
 ```
 
 适合快速试部署；长期仍建议用第三节的 GitHub 方式。
+
+---
+
+## 十、Legal / 知识产权
+
+本仓库及配套测算工具为**隆基绿能内部专用**：
+
+- **严禁外发**：不得向客户、第三方或公开渠道传播（含截图、转发、上传公网或对外部署）。
+- **仅供参考**：测算与导出报告结果不构成投资建议、正式工程承诺或合同依据。
+- **知识产权**：工具界面、算法、报告版式及数据组织等归隆基绿能所有；未经授权不得复制、修改或传播。
+- **署名**：软件开发 **Dennis Pan**；技术支持 **TaoTao Cai**。
+- **反馈**：dennispan@longi.com
+
+应用内页脚与 PDF 报告页脚/水印会同步展示上述声明。正式对外材料须经公司法务审核。

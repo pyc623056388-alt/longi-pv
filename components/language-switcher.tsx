@@ -1,8 +1,8 @@
 "use client";
 
 import { Languages, Check } from "lucide-react";
-import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import type { AppLocale } from "@/lib/i18n";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export type AppLocale = "zh" | "en";
+export type { AppLocale } from "@/lib/i18n";
 
 const LOCALE_OPTIONS: { id: AppLocale; label: string }[] = [
   { id: "zh", label: "中文" },
@@ -36,9 +36,6 @@ export function LanguageSwitcher({
 
   const handleSelect = (next: AppLocale) => {
     onLocaleChange(next);
-    if (next === "en") {
-      toast.info("英文界面即将推出");
-    }
   };
 
   return (
