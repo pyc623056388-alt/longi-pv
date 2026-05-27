@@ -6,12 +6,16 @@ import {
 } from "./payback-audit";
 
 describe("suggestAccessoryPerModule", () => {
-  it("computes (epc - modulePrice) * Wp", () => {
-    expect(suggestAccessoryPerModule(3.5, 1.0, 590)).toBeCloseTo(1475, 0);
+  it("computes otherCostPerWp * Wp", () => {
+    expect(suggestAccessoryPerModule(0.6, 475)).toBe(285);
   });
 
   it("never returns negative", () => {
-    expect(suggestAccessoryPerModule(0.5, 1.0, 590)).toBe(0);
+    expect(suggestAccessoryPerModule(-0.5, 590)).toBe(0);
+  });
+
+  it("returns 0 when powerWp is invalid", () => {
+    expect(suggestAccessoryPerModule(0.6, 0)).toBe(0);
   });
 });
 

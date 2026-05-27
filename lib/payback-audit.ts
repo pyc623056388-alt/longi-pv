@@ -19,16 +19,15 @@ export function isPpaOutsideReference(
   return ppa > 0 && (ppa < range.min * 0.5 || ppa > range.max * 1.5);
 }
 
-/** 由目标全站 EPC（货币/Wp）反推每块除组件外成本 */
+/** 由除组件外单价（货币/Wp）反推每块除组件外其他费用 */
 export function suggestAccessoryPerModule(
-  epcPerWp: number,
-  modulePricePerW: number,
+  otherCostPerWp: number,
   powerWp: number
 ): number {
-  if (!Number.isFinite(epcPerWp) || !Number.isFinite(modulePricePerW) || powerWp <= 0) {
+  if (!Number.isFinite(otherCostPerWp) || powerWp <= 0) {
     return 0;
   }
-  return Math.max(0, (epcPerWp - modulePricePerW) * powerWp);
+  return Math.max(0, otherCostPerWp * powerWp);
 }
 
 export function staticPaybackYears(

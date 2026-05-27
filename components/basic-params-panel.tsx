@@ -60,11 +60,7 @@ export function BasicParamsPanel({
   const suggestedAccessory = useMemo(() => {
     const epc = parseFloat(targetEpcPerWp);
     if (!epcHelper || !Number.isFinite(epc)) return null;
-    return suggestAccessoryPerModule(
-      epc,
-      epcHelper.longiPricePerW,
-      epcHelper.longiPowerWp
-    );
+    return suggestAccessoryPerModule(epc, epcHelper.longiPowerWp);
   }, [targetEpcPerWp, epcHelper]);
 
   const applyAccessorySuggestion = () => {
@@ -175,7 +171,6 @@ export function BasicParamsPanel({
                     {m.basicParams.epcSuggestion(
                       epcHelper.longiPowerWp,
                       sym,
-                      epcHelper.longiPricePerW,
                       suggestedAccessory.toFixed(2)
                     )}
                   </p>
