@@ -27,10 +27,17 @@ describe("formatPricePerWParts", () => {
     expect(formatPricePerWParts("", 645, "A$")).toEqual({ unset: true });
   });
 
-  it("includes per-panel line when power is known", () => {
+  it("includes per-panel line when power is known (zh unit)", () => {
     expect(formatPricePerWParts("0.1924", 475, "A$")).toEqual({
       perW: "A$0.1924/W",
       perPanel: "≈ A$91.39/块",
+    });
+  });
+
+  it("uses English per-module unit when provided", () => {
+    expect(formatPricePerWParts("0.1924", 475, "A$", "module")).toEqual({
+      perW: "A$0.1924/W",
+      perPanel: "≈ A$91.39/module",
     });
   });
 
@@ -40,6 +47,12 @@ describe("formatPricePerWParts", () => {
     expect(formatPricePerWDisplay("0.1924", 475, "A$")).toBe(
       `${parts.perW}（${parts.perPanel}）`
     );
+  });
+
+  it("formatPricePerWDisplay uses notSet from options", () => {
+    expect(
+      formatPricePerWDisplay("", 475, "A$", { notSet: "Not set" })
+    ).toBe("Not set");
   });
 });
 

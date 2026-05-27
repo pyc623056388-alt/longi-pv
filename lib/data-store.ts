@@ -1,5 +1,12 @@
 import topconPresetModules from "./topcon-preset-modules.json";
-import { enrichModuleRecord } from "./module-library-defaults";
+import {
+  clampLongiPmpTempCoef,
+  enrichModuleRecord,
+} from "./module-library-defaults";
+import {
+  applyCompetitorCatalogDefaults,
+  mergeCompetitorModulesFromSeed,
+} from "./module-catalog";
 import seedData from "./seed-data.json";
 import type { ModuleLibrary, ModuleRecord, WeatherRecord } from "./pv-types";
 
@@ -10,7 +17,9 @@ const SEED_KEY_V2 = "longi-pv:seeded-v2";
 const SEED_KEY_V3 = "longi-pv:seeded-v3";
 const SEED_KEY_V4 = "longi-pv:seeded-v4";
 const SEED_KEY_V5 = "longi-pv:seeded-v5";
-const SEED_KEY = "longi-pv:seeded-v6";
+const SEED_KEY_V6 = "longi-pv:seeded-v6";
+const SEED_KEY_V7 = "longi-pv:seeded-v7";
+const SEED_KEY = "longi-pv:seeded-v8";
 const MODULE_KEY = (lib: ModuleLibrary) => `longi-pv:modules:${lib}`;
 const WEATHER_KEY = "longi-pv:weather";
 
@@ -46,8 +55,26 @@ function mergeById<T extends { id: string }>(existing: T[], incoming: T[]): T[] 
   return [...map.values()];
 }
 
+function seedCompetitorModules(): ModuleRecord[] {
+  return applyCompetitorCatalogDefaults(
+    seedData.competitorModules as ModuleRecord[]
+  );
+}
+
 function withTopconPresets(modules: ModuleRecord[]): ModuleRecord[] {
   return mergeById(modules, TOPCON_PRESET_MODULES);
+}
+
+function prepareCompetitorList(modules: ModuleRecord[]): ModuleRecord[] {
+  return withTopconPresets(applyCompetitorCatalogDefaults(modules));
+}
+
+function clampLongiModuleList(modules: ModuleRecord[]): ModuleRecord[] {
+  return modules.map((m) => {
+    if (m.library !== "longi") return m;
+    const pmpTempCoef = clampLongiPmpTempCoef(m.pmpTempCoef);
+    return pmpTempCoef === m.pmpTempCoef ? m : { ...m, pmpTempCoef };
+  });
 }
 
 function enrichModuleList(modules: ModuleRecord[]): ModuleRecord[] {
@@ -71,24 +98,66 @@ export function ensureSeedData(): void {
   const hadV3 = !!localStorage.getItem(SEED_KEY_V3);
   const hadV4 = !!localStorage.getItem(SEED_KEY_V4);
   const hadV5 = !!localStorage.getItem(SEED_KEY_V5);
-  const hadV6 = !!localStorage.getItem(SEED_KEY);
+  const hadV6 = !!localStorage.getItem(SEED_KEY_V6);
+  const hadV7 = !!localStorage.getItem(SEED_KEY_V7);
+  const hadV8 = !!localStorage.getItem(SEED_KEY);
 
   const seedLongi = seedData.longiModules as ModuleRecord[];
-  const seedCompetitor = seedData.competitorModules as ModuleRecord[];
+  const seedCompetitor = seedCompetitorModules();
   const seedWeather = seedData.weather as WeatherRecord[];
 
-  if (!hadV6 && !hadV5 && !hadV4 && !hadV3 && !hadV2 && !hadV1) {
+  if (!hadV8 && !hadV7 && !hadV6 && !hadV5 && !hadV4 && !hadV3 && !hadV2 && !hadV1) {
     writeJson(MODULE_KEY("longi"), enrichModuleList(seedLongi));
     writeJson(
       MODULE_KEY("competitor"),
-      enrichModuleList(withTopconPresets(seedCompetitor))
+      enrichModuleList(prepareCompetitorList(seedCompetitor))
     );
     writeJson(WEATHER_KEY, seedWeather);
     localStorage.setItem(SEED_KEY, "1");
     return;
   }
 
-  if (!hadV6 && hadV5) {
+  if (!hadV8 && hadV7) {
+    const longi = clampLongiModuleList(
+      mergeById(readJson(MODULE_KEY("longi"), seedLongi), seedLongi)
+    );
+    const competitorStored = readJson(
+      MODULE_KEY("competitor"),
+      seedCompetitor
+    );
+    const competitor = mergeCompetitorModulesFromSeed(
+      competitorStored,
+      seedCompetitor,
+      TOPCON_PRESET_MODULES
+    );
+    writeJson(MODULE_KEY("longi"), enrichModuleList(longi));
+    writeJson(MODULE_KEY("competitor"), enrichModuleList(competitor));
+    localStorage.setItem(SEED_KEY, "1");
+    return;
+  }
+
+  if (!hadV8 && !hadV7 && hadV6) {
+    const longi = mergeById(
+      readJson(MODULE_KEY("longi"), seedLongi),
+      seedLongi
+    );
+    const competitorStored = readJson(
+      MODULE_KEY("competitor"),
+      seedCompetitor
+    );
+    const competitor = mergeCompetitorModulesFromSeed(
+      competitorStored,
+      seedCompetitor,
+      TOPCON_PRESET_MODULES
+    );
+    writeJson(MODULE_KEY("longi"), enrichModuleList(longi));
+    writeJson(MODULE_KEY("competitor"), enrichModuleList(competitor));
+    localStorage.setItem(SEED_KEY_V7, "1");
+    localStorage.setItem(SEED_KEY, "1");
+    return;
+  }
+
+  if (!hadV8 && !hadV7 && !hadV6 && hadV5) {
     const longi = enrichModuleList(
       readJson(MODULE_KEY("longi"), seedLongi)
     );
@@ -96,22 +165,23 @@ export function ensureSeedData(): void {
       readJson(MODULE_KEY("competitor"), seedCompetitor)
     );
     writeJson(MODULE_KEY("longi"), longi);
-    writeJson(
-      MODULE_KEY("competitor"),
-      withTopconPresets(competitor)
-    );
+    writeJson(MODULE_KEY("competitor"), prepareCompetitorList(competitor));
+    localStorage.setItem(SEED_KEY_V6, "1");
+    localStorage.setItem(SEED_KEY_V7, "1");
     localStorage.setItem(SEED_KEY, "1");
     return;
   }
 
-  if (!hadV6 && !hadV5 && (hadV4 || hadV3 || hadV2 || hadV1)) {
+  if (!hadV8 && !hadV7 && !hadV6 && !hadV5 && (hadV4 || hadV3 || hadV2 || hadV1)) {
     const competitor = readJson(MODULE_KEY("competitor"), seedCompetitor);
     const weather = readJson(WEATHER_KEY, seedWeather);
 
     writeJson(MODULE_KEY("longi"), enrichModuleList(seedLongi));
     writeJson(
       MODULE_KEY("competitor"),
-      enrichModuleList(withTopconPresets(mergeById(competitor, seedCompetitor)))
+      enrichModuleList(
+        prepareCompetitorList(mergeById(competitor, seedCompetitor))
+      )
     );
 
     const nextWeather = weatherNeedsRefresh(weather)
@@ -119,6 +189,8 @@ export function ensureSeedData(): void {
       : mergeById(weather, seedWeather);
     writeJson(WEATHER_KEY, nextWeather);
 
+    localStorage.setItem(SEED_KEY_V6, "1");
+    localStorage.setItem(SEED_KEY_V7, "1");
     localStorage.setItem(SEED_KEY, "1");
     if (hadV4) localStorage.removeItem(SEED_KEY_V4);
     if (hadV3) localStorage.removeItem(SEED_KEY_V3);
@@ -145,9 +217,7 @@ export function syncBuiltinModules(): void {
   );
   writeJson(
     MODULE_KEY("competitor"),
-    enrichModuleList(
-      withTopconPresets(seedData.competitorModules as ModuleRecord[])
-    )
+    enrichModuleList(prepareCompetitorList(seedCompetitorModules()))
   );
   localStorage.setItem(SEED_KEY, "1");
 }
@@ -157,9 +227,7 @@ export function listModules(library: ModuleLibrary): ModuleRecord[] {
   const fallback =
     library === "longi"
       ? enrichModuleList(seedData.longiModules as ModuleRecord[])
-      : enrichModuleList(
-          withTopconPresets(seedData.competitorModules as ModuleRecord[])
-        );
+      : enrichModuleList(prepareCompetitorList(seedCompetitorModules()));
   const modules = readJson(MODULE_KEY(library), fallback);
   const merged =
     library === "competitor" ? withTopconPresets(modules) : modules;

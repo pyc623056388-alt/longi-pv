@@ -11,7 +11,7 @@
       "isc": 15.14,
       "vmp": 44.87,
       "imp": 14.49,
-      "pmpTempCoef": -0.272,
+      "pmpTempCoef": -0.26,
       "library": "longi",
       "source": "pan"
     },
@@ -26,7 +26,7 @@
       "isc": 15.14,
       "vmp": 44.87,
       "imp": 14.49,
-      "pmpTempCoef": -0.272,
+      "pmpTempCoef": -0.26,
       "library": "longi",
       "source": "pan_synthesized"
     },
@@ -71,7 +71,7 @@
       "isc": 15.14,
       "vmp": 44.87,
       "imp": 14.49,
-      "pmpTempCoef": -0.272,
+      "pmpTempCoef": -0.26,
       "library": "longi",
       "source": "pan_synthesized"
     },
@@ -86,7 +86,7 @@
       "isc": 15.14,
       "vmp": 44.87,
       "imp": 14.49,
-      "pmpTempCoef": -0.272,
+      "pmpTempCoef": -0.26,
       "library": "longi",
       "source": "pan_synthesized"
     },
@@ -131,7 +131,7 @@
       "isc": 15.25,
       "vmp": 37.11,
       "imp": 14.55,
-      "pmpTempCoef": -0.264,
+      "pmpTempCoef": -0.26,
       "library": "longi",
       "source": "pan"
     },
@@ -139,6 +139,21 @@
       "id": "mod_longi_longi_solar_lr7_54hvb_475m",
       "manufacturer": "LONGi Solar",
       "model": "LR7-54HVB-475M",
+      "powerWp": 475,
+      "lengthMm": 1800,
+      "widthMm": 1134,
+      "voc": 40.4,
+      "isc": 15.23,
+      "vmp": 33.4,
+      "imp": 14.53,
+      "pmpTempCoef": -0.257,
+      "library": "longi",
+      "source": "pan_synthesized"
+    },
+    {
+      "id": "mod_longi_longi_solar_lr7_54hvd_475m",
+      "manufacturer": "LONGi Solar",
+      "model": "LR7-54HVD-475M",
       "powerWp": 475,
       "lengthMm": 1800,
       "widthMm": 1134,
@@ -228,7 +243,8 @@
       "annualDegradationPct": 0.35,
       "library": "competitor",
       "source": "datasheet",
-      "segment": "large620"
+      "segment": "large620",
+      "catalogHidden": true
     },
     {
       "id": "mod_competitor_ja_solar_ja_515w",
@@ -246,7 +262,8 @@
       "annualDegradationPct": 0.4,
       "library": "competitor",
       "source": "datasheet",
-      "segment": "medium60"
+      "segment": "medium60",
+      "catalogHidden": true
     },
     {
       "id": "mod_competitor_canadian_solar_cs_510w",
@@ -264,7 +281,8 @@
       "annualDegradationPct": 0.4,
       "library": "competitor",
       "source": "datasheet",
-      "segment": "medium60"
+      "segment": "medium60",
+      "catalogHidden": true
     },
     {
       "id": "mod_competitor_canadian_solar_cs_475w",
@@ -282,7 +300,8 @@
       "annualDegradationPct": 0.4,
       "library": "competitor",
       "source": "datasheet",
-      "segment": "residential475"
+      "segment": "residential475",
+      "catalogHidden": true
     },
     {
       "id": "mod_competitor_ja_solar_ja_475w",
@@ -300,7 +319,8 @@
       "annualDegradationPct": 0.4,
       "library": "competitor",
       "source": "datasheet",
-      "segment": "residential475"
+      "segment": "residential475",
+      "catalogHidden": true
     },
     {
       "id": "mod_competitor_jinko_jkm475n",
@@ -318,7 +338,8 @@
       "annualDegradationPct": 0.35,
       "library": "competitor",
       "source": "datasheet",
-      "segment": "residential475"
+      "segment": "residential475",
+      "catalogHidden": true
     },
     {
       "id": "mod_competitor_trina_neostar_475w",
@@ -336,7 +357,8 @@
       "annualDegradationPct": 0.4,
       "library": "competitor",
       "source": "datasheet",
-      "segment": "residential475"
+      "segment": "residential475",
+      "catalogHidden": true
     },
     {
       "id": "mod_competitor_risen_risen_475w",
@@ -354,7 +376,8 @@
       "annualDegradationPct": 0.4,
       "library": "competitor",
       "source": "datasheet",
-      "segment": "residential475"
+      "segment": "residential475",
+      "catalogHidden": true
     },
     {
       "id": "mod_competitor_tcl_tcl_475w",
@@ -372,7 +395,8 @@
       "annualDegradationPct": 0.35,
       "library": "competitor",
       "source": "datasheet",
-      "segment": "residential475"
+      "segment": "residential475",
+      "catalogHidden": true
     },
     {
       "id": "mod_competitor_tongwei_tw_475w",
@@ -390,7 +414,8 @@
       "annualDegradationPct": 0.4,
       "library": "competitor",
       "source": "datasheet",
-      "segment": "residential475"
+      "segment": "residential475",
+      "catalogHidden": true
     }
   ],
   "weather": [

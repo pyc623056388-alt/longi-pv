@@ -12,6 +12,21 @@ const PAN_LONGI = path.join(ROOT, "数据库/longi");
 const CURATION_FILE = path.join(__dirname, "module-curation.json");
 const LONGI_CATALOG_FILE = path.join(__dirname, "longi-product-catalog.json");
 const LONGI_MANUFACTURER = "LONGi Solar";
+/** 隆基 BC 组件 Pmp 温度系数下限（不低于 -0.26） */
+const LONGI_BC_PMP_TEMP_COEF_FLOOR = -0.26;
+
+function clampLongiPmpTempCoef(value) {
+  if (value === undefined || !Number.isFinite(value)) return value;
+  if (value < LONGI_BC_PMP_TEMP_COEF_FLOOR) return LONGI_BC_PMP_TEMP_COEF_FLOOR;
+  return value;
+}
+
+function applyLongiTempCoefFloor(modules) {
+  return modules.map((m) => ({
+    ...m,
+    pmpTempCoef: clampLongiPmpTempCoef(m.pmpTempCoef),
+  }));
+}
 const DATASHEET_REVIEW = path.join(ROOT, "data/builtin/datasheet-extract-review.json");
 const DATASHEET_OVERRIDES = path.join(ROOT, "data/builtin/datasheet-overrides.json");
 const DATASHEET_SOURCES = path.join(__dirname, "datasheet-sources.json");
@@ -421,10 +436,11 @@ function buildLongiFromCatalog(dir, curation) {
     });
   }
 
-  modules.sort((a, b) => b.powerWp - a.powerWp || a.model.localeCompare(b.model));
+  const withHvdParams = applyLongiTempCoefFloor(applyHvhParamsToHvd475(modules));
+  withHvdParams.sort((a, b) => b.powerWp - a.powerWp || a.model.localeCompare(b.model));
 
   return {
-    modules,
+    modules: withHvdParams,
     rejected: scanRejected,
     skipped: [],
     duplicatesResolved: 0,
@@ -447,7 +463,7 @@ function loadDatasheetSourceMeta() {
 
 function datasheetEntryToRecord(e, sourceMeta) {
   const meta = sourceMeta.get(`${e.file}|${e.model}|${e.targetPowerWp}`);
-  const manufacturer = e.manufacturer ?? meta?.manufacturer ?? "竞品";
+  const manufacturer = e.manufacturer ?? meta?.manufacturer ?? "Competitor";
   return {
     id: stableModuleId("competitor", manufacturer, e.model),
     manufacturer,
@@ -465,7 +481,36 @@ function datasheetEntryToRecord(e, sourceMeta) {
     library: "competitor",
     source: "datasheet",
     segment: e.segment ?? meta?.segment,
+    catalogHidden: true,
   };
+}
+
+const HVH_PARAM_FIELDS = [
+  "lengthMm",
+  "widthMm",
+  "voc",
+  "isc",
+  "vmp",
+  "imp",
+  "pmpTempCoef",
+  "firstYearDegradationPct",
+  "annualDegradationPct",
+];
+
+/** LR7-54HVD-475M 暂用同功率 54HVH 电气与尺寸参数 */
+function applyHvhParamsToHvd475(modules) {
+  const hvh = modules.find((m) => m.model === "LR7-54HVH-475M");
+  const hvdIdx = modules.findIndex((m) => m.model === "LR7-54HVD-475M");
+  if (!hvh || hvdIdx < 0) return modules;
+
+  const hvd = { ...modules[hvdIdx] };
+  for (const key of HVH_PARAM_FIELDS) {
+    if (hvh[key] !== undefined) hvd[key] = hvh[key];
+  }
+  hvd.source = "pan_synthesized";
+  const next = [...modules];
+  next[hvdIdx] = hvd;
+  return next;
 }
 
 function mergeApprovedOverrides(modules, sourceMeta) {

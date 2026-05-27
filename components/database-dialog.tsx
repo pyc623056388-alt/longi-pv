@@ -42,6 +42,7 @@ import {
 import { useI18n } from "@/components/locale-provider";
 import { generateId } from "@/lib/data-store";
 import { libraryDefaults } from "@/lib/module-library-defaults";
+import { moduleDisplayName } from "@/lib/i18n/module-labels";
 import {
   formatModuleDimensions,
   moduleRecordNeedsCompletion,
@@ -109,7 +110,7 @@ function ModuleTable({
   onEdit: (m: ModuleRecord) => void;
   onDelete: (id: string) => void;
 }) {
-  const { m: t } = useI18n();
+  const { m: t, locale } = useI18n();
   const sym = CURRENCY_SYMBOLS[currency];
   const q = search.toLowerCase();
   const filtered = modules.filter(
@@ -142,9 +143,7 @@ function ModuleTable({
             >
               <TableCell className="font-medium max-w-[240px]">
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span>
-                    {mod.manufacturer} {mod.model}
-                  </span>
+                  <span>{moduleDisplayName(mod, locale)}</span>
                   {needsCompletion && (
                     <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-800">
                       {t.common.pendingCompletion}

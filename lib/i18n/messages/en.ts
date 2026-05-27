@@ -26,6 +26,9 @@ export const enMessages: Messages = {
     yearUnit: "yr",
     panelUnit: "modules",
     modules: "modules",
+    perModuleUnit: "module",
+    pricePerPanelApprox: (sym: string, amount: string) =>
+      `≈ ${sym}${amount}/module`,
     prevPage: "Previous",
     nextPage: "Next",
     pendingCompletion: "Incomplete",
@@ -177,6 +180,15 @@ export const enMessages: Messages = {
       'Project name is empty; the report file will use "Untitled project"',
     pdfSuccess: "PDF report downloaded",
     pdfFail: (msg: string) => `PDF export failed: ${msg}`,
+    displaySettings: {
+      menuAria: "Results display settings",
+      sectionTable: "Table rows",
+      sectionChart: "Middle chart",
+      middleChartProjectCost: "Total project cost",
+      middleChartAccessory: "BOS cost (excl. modules)",
+      middleChartNetProfit: "Net profit",
+      keepOneRow: "Keep at least one metric visible",
+    },
     charts: {
       yield: {
         title: "Lifetime energy (MWh)",
@@ -192,6 +204,21 @@ export const enMessages: Messages = {
         captionUp: "LONGi total cost above competitor",
         tooltipDown: (pct: string) => `${pct}% lower vs competitor`,
         tooltipUp: (pct: string) => `${pct}% higher vs competitor`,
+      },
+      accessory: {
+        title: (sym: string) => `BOS cost (${sym})`,
+        hint: "Lower is better · excl. modules",
+        captionDown: "LONGi BOS cost below competitor",
+        captionUp: "LONGi BOS cost above competitor",
+        tooltipDown: (pct: string) => `${pct}% lower vs competitor`,
+        tooltipUp: (pct: string) => `${pct}% higher vs competitor`,
+      },
+      netProfit: {
+        title: (sym: string) => `Net profit (${sym})`,
+        hint: "Higher is better · lifetime revenue minus project cost",
+        captionUp: "LONGi net profit above competitor",
+        captionDown: "LONGi net profit below competitor",
+        tooltipDelta: (pct: string) => `vs competitor ${pct}`,
       },
       payback: {
         title: "Plant payback (years)",
@@ -365,6 +392,8 @@ export const enMessages: Messages = {
     highlights: {
       yieldGain: "Yield gain",
       projectCost: "Total project cost",
+      accessoryCost: "BOS cost",
+      netProfit: "Net profit",
       payback: "Plant payback",
     },
     basicParamLabels: {

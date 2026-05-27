@@ -4,7 +4,7 @@ import path from "path";
 import { execSync } from "child_process";
 
 describe("builtin seed data (curated)", () => {
-  it("build-seed.mjs produces 14 longi and 10 competitor modules", () => {
+  it("build-seed.mjs produces 15 longi and 10 competitor modules", () => {
     execSync("node scripts/build-seed.mjs", {
       cwd: path.join(process.cwd()),
       stdio: "pipe",
@@ -14,24 +14,41 @@ describe("builtin seed data (curated)", () => {
     const seed = JSON.parse(fs.readFileSync(seedPath, "utf8"));
     const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
 
-    expect(seed.longiModules).toHaveLength(14);
+    expect(seed.longiModules).toHaveLength(15);
     const powers = seed.longiModules.map((m: { powerWp: number }) => m.powerWp).sort(
       (a: number, b: number) => a - b
     );
     expect(powers).toEqual([
-      475, 475, 475, 475, 475, 540, 540, 540, 650, 650, 650, 650, 650, 650,
+      475, 475, 475, 475, 475, 475, 540, 540, 540, 650, 650, 650, 650, 650, 650,
     ]);
 
     const models = seed.longiModules.map((m: { model: string }) => m.model);
     expect(models).not.toContain("LR7-72HJD-650M");
     expect(models).toContain("LR7-54HVD-T-475M");
+    expect(models).toContain("LR7-54HVD-475M");
     expect(models).toContain("LR8-66HVD-650M");
+
+    const hvd475 = seed.longiModules.find(
+      (m: { model: string }) => m.model === "LR7-54HVD-475M"
+    );
+    const hvh475 = seed.longiModules.find(
+      (m: { model: string }) => m.model === "LR7-54HVH-475M"
+    );
+    expect(hvd475?.voc).toBe(hvh475?.voc);
+    expect(hvd475?.pmpTempCoef).toBe(hvh475?.pmpTempCoef);
+    expect(hvd475?.source).toBe("pan_synthesized");
+    expect(
+      seed.longiModules.every(
+        (m: { pmpTempCoef?: number }) =>
+          m.pmpTempCoef === undefined || m.pmpTempCoef >= -0.26
+      )
+    ).toBe(true);
     expect(seed.longiModules.every((m: { manufacturer: string }) => m.manufacturer === "LONGi Solar")).toBe(
       true
     );
 
     expect(seed.longiModules[0].voc).toBeDefined();
-    expect(manifest.longi.catalogCount).toBe(14);
+    expect(manifest.longi.catalogCount).toBe(15);
     expect(seed.competitorModules.length).toBe(10);
     expect(manifest.longi.filtered).toBe(true);
     expect(manifest.competitor.fromDatasheet).toBe(true);
@@ -45,5 +62,11 @@ describe("builtin seed data (curated)", () => {
       (m: { powerWp: number }) => m.powerWp >= 700
     );
     expect(hasOldUtilityPan).toBe(false);
+
+    expect(
+      seed.competitorModules.every(
+        (m: { catalogHidden?: boolean }) => m.catalogHidden === true
+      )
+    ).toBe(true);
   });
 });

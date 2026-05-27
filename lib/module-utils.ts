@@ -69,11 +69,17 @@ export type PricePerWParts =
   | { unset: true }
   | { unset?: false; perW: string; perPanel?: string };
 
+export type SpecDisplayOptions = {
+  notSet?: string;
+  panelUnit?: string;
+};
+
 /** 单瓦价格拆分展示（perW 主行，perPanel 折合每块副行） */
 export function formatPricePerWParts(
   pricePerW: string | undefined,
   powerWp?: string | number,
-  currencySymbol?: string
+  currencySymbol?: string,
+  panelUnit = "块"
 ): PricePerWParts {
   if (!pricePerW?.trim()) return { unset: true };
   const sym = currencySymbol ?? "";
@@ -83,7 +89,7 @@ export function formatPricePerWParts(
   if (Number.isFinite(pw) && pw > 0 && Number.isFinite(price)) {
     return {
       perW,
-      perPanel: `≈ ${sym}${(price * pw).toFixed(2)}/块`,
+      perPanel: `≈ ${sym}${(price * pw).toFixed(2)}/${panelUnit}`,
     };
   }
   return { perW };
@@ -93,10 +99,17 @@ export function formatPricePerWParts(
 export function formatPricePerWDisplay(
   pricePerW: string | undefined,
   powerWp?: string | number,
-  currencySymbol?: string
+  currencySymbol?: string,
+  options?: SpecDisplayOptions
 ): string {
-  const parts = formatPricePerWParts(pricePerW, powerWp, currencySymbol);
-  if (parts.unset) return "未设置";
+  const notSet = options?.notSet ?? "未设置";
+  const parts = formatPricePerWParts(
+    pricePerW,
+    powerWp,
+    currencySymbol,
+    options?.panelUnit
+  );
+  if (parts.unset) return notSet;
   if (parts.perPanel) {
     return `${parts.perW}（${parts.perPanel}）`;
   }
@@ -106,9 +119,11 @@ export function formatPricePerWDisplay(
 export function formatSpecDisplayValue(
   field: ModuleSpecField,
   value: string | undefined,
-  currencySymbol?: string
+  currencySymbol?: string,
+  options?: SpecDisplayOptions
 ): string {
-  if (!value?.trim()) return "未设置";
+  const notSet = options?.notSet ?? "未设置";
+  if (!value?.trim()) return notSet;
   switch (field) {
     case "power":
       return `${value} W`;
@@ -118,7 +133,7 @@ export function formatSpecDisplayValue(
     case "annualDeg":
       return `${value} %`;
     case "price":
-      return formatPricePerWDisplay(value, undefined, currencySymbol);
+      return formatPricePerWDisplay(value, undefined, currencySymbol, options);
     case "dimensions":
       return value;
     default:
@@ -156,9 +171,7 @@ export function moduleRecordNeedsCompletion(record: ModuleRecord): boolean {
   );
 }
 
-export function moduleDisplayName(record: ModuleRecord): string {
-  return `${record.manufacturer} ${record.model}`.trim();
-}
+export { localizeManufacturer, moduleDisplayName } from "./i18n/module-labels";
 
 /** 将对比页单字段值写回 ModuleRecord */
 export function applySpecFieldToRecord(

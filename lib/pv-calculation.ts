@@ -64,11 +64,15 @@ export interface PvComparisonResult {
   compStaticPaybackYears: number;
   yieldGainPct: number;
   costReductionPct: number;
+  accessoryReductionPct: number;
+  netProfitGainPct: number;
   paybackReductionYears: number;
   chartData: Array<{
     name: string;
     yield: number;
     cost: number;
+    accessory: number;
+    netProfit: number;
     payback: number;
   }>;
   rows: ResultMetricRow[];
@@ -298,6 +302,16 @@ export function calculatePvComparison(input: PvComparisonInput): PvComparisonRes
       ? ((compProjectCost - longiProjectCost) / compProjectCost) * 100
       : 0;
 
+  const accessoryReductionPct =
+    compAccessoryCost > 0
+      ? ((compAccessoryCost - longiAccessoryCost) / compAccessoryCost) * 100
+      : 0;
+
+  const netProfitGainPct =
+    compNetProfit > 0
+      ? ((longiNetProfit - compNetProfit) / compNetProfit) * 100
+      : 0;
+
   const paybackReductionYears = compPaybackYears - longiPaybackYears;
 
   const longiLabel = longi.name || m.common.longiModule;
@@ -418,18 +432,24 @@ export function calculatePvComparison(input: PvComparisonInput): PvComparisonRes
     compStaticPaybackYears: round(compStaticPaybackYears, 3),
     yieldGainPct: round(yieldGainPct, 2),
     costReductionPct: round(costReductionPct, 2),
+    accessoryReductionPct: round(accessoryReductionPct, 2),
+    netProfitGainPct: round(netProfitGainPct, 2),
     paybackReductionYears: round(paybackReductionYears, 2),
     chartData: [
       {
         name: m.chart.longi,
         yield: round(longiYieldMwh, 0),
         cost: round(longiProjectCost, 0),
+        accessory: round(longiAccessoryCost, 0),
+        netProfit: round(longiNetProfit, 0),
         payback: round(longiPaybackYears, 2),
       },
       {
         name: m.chart.competitor,
         yield: round(compYieldMwh, 0),
         cost: round(compProjectCost, 0),
+        accessory: round(compAccessoryCost, 0),
+        netProfit: round(compNetProfit, 0),
         payback: round(compPaybackYears, 2),
       },
     ],

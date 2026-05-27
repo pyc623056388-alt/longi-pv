@@ -5,7 +5,7 @@ const COMP_COLOR = "#cbd5e1";
 
 interface ReportBarChartProps {
   data: PvComparisonResult["chartData"];
-  dataKey: "yield" | "cost" | "payback";
+  dataKey: "yield" | "cost" | "accessory" | "netProfit" | "payback";
   formatValue: (v: number) => string;
   width?: number;
   height?: number;

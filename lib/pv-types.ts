@@ -34,6 +34,8 @@ export interface ModuleRecord {
   library: ModuleLibrary;
   source?: "pan" | "pan_synthesized" | "datasheet" | "xlsx" | "csv" | "manual";
   segment?: ModuleSegment;
+  /** 为 true 时不在组件库 UI / 下拉中展示，数据仍保留 */
+  catalogHidden?: boolean;
 }
 
 export interface WeatherRecord {

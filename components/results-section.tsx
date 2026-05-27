@@ -7,8 +7,11 @@ import {
   Download,
   Loader2,
   RotateCcw,
+  Settings,
   Zap,
   Wallet,
+  Package,
+  TrendingUp,
   Clock,
   type LucideIcon,
 } from "lucide-react";
@@ -34,6 +37,16 @@ import {
   formatPctMagnitude,
 } from "@/components/metric-highlight";
 import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
   Table,
   TableBody,
   TableCell,
@@ -41,6 +54,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import type { ResultMetricId } from "@/lib/i18n/types";
+import {
+  RESULT_METRIC_IDS,
+  applyResultsDisplaySettings,
+  canToggleMetricOff,
+  loadResultsDisplaySettings,
+  saveResultsDisplaySettings,
+  type MiddleChartMode,
+  type ResultsDisplaySettings,
+} from "@/lib/results-display-settings";
 import {
   formatPaybackYears,
   type ModuleSpec,
@@ -61,7 +84,7 @@ interface ResultsSectionProps {
   onReset: () => void;
 }
 
-type ChartKey = "yield" | "cost" | "payback";
+type ChartKey = "yield" | "cost" | "accessory" | "netProfit" | "payback";
 
 interface ChartCardConfig {
   title: string;
@@ -112,10 +135,50 @@ export function ResultsSection({
   const { m, formatNumber } = useI18n();
   const ref = useRef<HTMLDivElement>(null);
   const [exporting, setExporting] = useState(false);
+  const [displaySettings, setDisplaySettings] =
+    useState<ResultsDisplaySettings>(loadResultsDisplaySettings);
+
+  const persistDisplaySettings = useCallback(
+    (next: ResultsDisplaySettings) => {
+      setDisplaySettings(next);
+      saveResultsDisplaySettings(next);
+    },
+    []
+  );
+
+  const handleMetricVisibilityChange = useCallback(
+    (metricId: ResultMetricId, checked: boolean) => {
+      if (!checked && !canToggleMetricOff(displaySettings, metricId)) {
+        toast.warning(m.results.displaySettings.keepOneRow);
+        return;
+      }
+      persistDisplaySettings({
+        ...displaySettings,
+        visibleMetrics: {
+          ...displaySettings.visibleMetrics,
+          [metricId]: checked,
+        },
+      });
+    },
+    [displaySettings, m.results.displaySettings.keepOneRow, persistDisplaySettings]
+  );
+
+  const handleMiddleChartModeChange = useCallback(
+    (mode: MiddleChartMode) => {
+      persistDisplaySettings({
+        ...displaySettings,
+        middleChartMode: mode,
+      });
+    },
+    [displaySettings, persistDisplaySettings]
+  );
 
   const handleExportPdf = useCallback(async () => {
     if (exporting) return;
-    const snapshot = getReportSnapshot();
+    const snapshot = applyResultsDisplaySettings(
+      getReportSnapshot(),
+      displaySettings
+    );
     if (snapshot.usedDefaultProjectName) {
       toast.warning(m.results.emptyProjectNameWarning);
     }
@@ -130,7 +193,7 @@ export function ResultsSection({
     } finally {
       setExporting(false);
     }
-  }, [exporting, getReportSnapshot, m.results]);
+  }, [exporting, getReportSnapshot, displaySettings, m.results]);
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -143,30 +206,87 @@ export function ResultsSection({
 
   const yieldVariant = highlightVariant(results.yieldGainPct, true);
   const costVariant = highlightVariant(results.costReductionPct, true);
+  const accessoryVariant = highlightVariant(
+    results.accessoryReductionPct,
+    true
+  );
+  const netProfitVariant = highlightVariant(results.netProfitGainPct, true);
   const paybackVariant = highlightVariant(results.paybackReductionYears, true);
 
-  const chartCards: ChartCardConfig[] = useMemo(
-    () => [
-      {
-        title: m.results.charts.yield.title,
-        hint: m.results.charts.yield.hint,
-        key: "yield",
-        icon: Zap,
-        formatBar: (v) => `${formatNumber(v)} MWh`,
-        highlight: {
-          value: formatSignedPct(results.yieldGainPct),
-          unit: "%",
-          caption:
-            results.yieldGainPct >= 0
-              ? m.results.charts.yield.captionUp
-              : m.results.charts.yield.captionDown,
-          variant: yieldVariant,
-        },
-        tooltipDelta: m.results.charts.yield.tooltipDelta(
-          formatSignedPct(results.yieldGainPct)
-        ),
+  const middleChartMode = displaySettings.middleChartMode;
+
+  const chartCards: ChartCardConfig[] = useMemo(() => {
+    const yieldCard: ChartCardConfig = {
+      title: m.results.charts.yield.title,
+      hint: m.results.charts.yield.hint,
+      key: "yield",
+      icon: Zap,
+      formatBar: (v) => `${formatNumber(v)} MWh`,
+      highlight: {
+        value: formatSignedPct(results.yieldGainPct),
+        unit: "%",
+        caption:
+          results.yieldGainPct >= 0
+            ? m.results.charts.yield.captionUp
+            : m.results.charts.yield.captionDown,
+        variant: yieldVariant,
       },
-      {
+      tooltipDelta: m.results.charts.yield.tooltipDelta(
+        formatSignedPct(results.yieldGainPct)
+      ),
+    };
+
+    const middleCard: ChartCardConfig = (() => {
+      if (middleChartMode === "accessoryCost") {
+        return {
+          title: m.results.charts.accessory.title(sym),
+          hint: m.results.charts.accessory.hint,
+          key: "accessory",
+          icon: Package,
+          formatBar: (v) =>
+            `${sym}${formatNumber(v, { maximumFractionDigits: 0 })}`,
+          highlight: {
+            value: formatPctMagnitude(results.accessoryReductionPct),
+            unit: "%",
+            caption:
+              results.accessoryReductionPct >= 0
+                ? m.results.charts.accessory.captionDown
+                : m.results.charts.accessory.captionUp,
+            variant: accessoryVariant,
+          },
+          tooltipDelta:
+            results.accessoryReductionPct >= 0
+              ? m.results.charts.accessory.tooltipDown(
+                  formatPctMagnitude(results.accessoryReductionPct)
+                )
+              : m.results.charts.accessory.tooltipUp(
+                  formatPctMagnitude(results.accessoryReductionPct)
+                ),
+        };
+      }
+      if (middleChartMode === "netProfit") {
+        return {
+          title: m.results.charts.netProfit.title(sym),
+          hint: m.results.charts.netProfit.hint,
+          key: "netProfit",
+          icon: TrendingUp,
+          formatBar: (v) =>
+            `${sym}${formatNumber(v, { maximumFractionDigits: 0 })}`,
+          highlight: {
+            value: formatSignedPct(results.netProfitGainPct),
+            unit: "%",
+            caption:
+              results.netProfitGainPct >= 0
+                ? m.results.charts.netProfit.captionUp
+                : m.results.charts.netProfit.captionDown,
+            variant: netProfitVariant,
+          },
+          tooltipDelta: m.results.charts.netProfit.tooltipDelta(
+            formatSignedPct(results.netProfitGainPct)
+          ),
+        };
+      }
+      return {
         title: m.results.charts.cost.title(sym),
         hint: m.results.charts.cost.hint,
         key: "cost",
@@ -190,45 +310,58 @@ export function ResultsSection({
             : m.results.charts.cost.tooltipUp(
                 formatPctMagnitude(results.costReductionPct)
               ),
-      },
-      {
-        title: m.results.charts.payback.title,
-        hint: m.results.charts.payback.hint,
-        key: "payback",
-        icon: Clock,
-        formatBar: (v) =>
-          m.results.charts.payback.formatBar(
-            formatPaybackYears(v, operationYears)
-          ),
-        highlight: {
-          value: Math.abs(results.paybackReductionYears).toFixed(2),
-          unit: m.common.yearUnit,
-          caption:
-            results.paybackReductionYears >= 0
-              ? m.results.charts.payback.captionShorter
-              : m.results.charts.payback.captionLonger,
-          variant: paybackVariant,
-        },
-        tooltipDelta:
+      };
+    })();
+
+    const paybackCard: ChartCardConfig = {
+      title: m.results.charts.payback.title,
+      hint: m.results.charts.payback.hint,
+      key: "payback",
+      icon: Clock,
+      formatBar: (v) =>
+        m.results.charts.payback.formatBar(
+          formatPaybackYears(v, operationYears)
+        ),
+      highlight: {
+        value: Math.abs(results.paybackReductionYears).toFixed(2),
+        unit: m.common.yearUnit,
+        caption:
           results.paybackReductionYears >= 0
-            ? m.results.charts.payback.tooltipShorter(
-                Math.abs(results.paybackReductionYears).toFixed(2)
-              )
-            : m.results.charts.payback.tooltipLonger(
-                Math.abs(results.paybackReductionYears).toFixed(2)
-              ),
+            ? m.results.charts.payback.captionShorter
+            : m.results.charts.payback.captionLonger,
+        variant: paybackVariant,
       },
-    ],
-    [
-      m,
-      sym,
-      results,
-      yieldVariant,
-      costVariant,
-      paybackVariant,
-      operationYears,
-      formatNumber,
-    ]
+      tooltipDelta:
+        results.paybackReductionYears >= 0
+          ? m.results.charts.payback.tooltipShorter(
+              Math.abs(results.paybackReductionYears).toFixed(2)
+            )
+          : m.results.charts.payback.tooltipLonger(
+              Math.abs(results.paybackReductionYears).toFixed(2)
+            ),
+    };
+
+    return [yieldCard, middleCard, paybackCard];
+  }, [
+    m,
+    sym,
+    results,
+    middleChartMode,
+    yieldVariant,
+    costVariant,
+    accessoryVariant,
+    netProfitVariant,
+    paybackVariant,
+    operationYears,
+    formatNumber,
+  ]);
+
+  const visibleRows = useMemo(
+    () =>
+      results.rows.filter(
+        (row) => displaySettings.visibleMetrics[row.metricId]
+      ),
+    [results.rows, displaySettings.visibleMetrics]
   );
 
   return (
@@ -238,14 +371,69 @@ export function ResultsSection({
       className="min-h-screen py-32 bg-gradient-to-b from-white to-slate-50"
     >
       <div className="max-w-6xl mx-auto px-6">
-        <div className="text-center mb-12">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 text-sm font-semibold mb-4">
-            {m.results.stepBadge}
-          </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">
-            {m.results.title}
-          </h2>
-          <p className="text-slate-500">{m.results.subtitle(currency)}</p>
+        <div className="mb-12">
+          <div className="flex items-start justify-between gap-4">
+            <div className="text-center flex-1 min-w-0">
+              <span className="inline-block px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 text-sm font-semibold mb-4">
+                {m.results.stepBadge}
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">
+                {m.results.title}
+              </h2>
+              <p className="text-slate-500">{m.results.subtitle(currency)}</p>
+            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  className="shrink-0 mt-2 p-2.5 rounded-xl border border-slate-200 bg-white text-slate-500 hover:text-slate-700 hover:bg-slate-50 shadow-sm"
+                  aria-label={m.results.displaySettings.menuAria}
+                >
+                  <Settings className="w-5 h-5" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-64">
+                <DropdownMenuLabel>
+                  {m.results.displaySettings.sectionTable}
+                </DropdownMenuLabel>
+                {RESULT_METRIC_IDS.map((id) => (
+                  <DropdownMenuCheckboxItem
+                    key={id}
+                    checked={displaySettings.visibleMetrics[id]}
+                    disabled={
+                      displaySettings.visibleMetrics[id] &&
+                      !canToggleMetricOff(displaySettings, id)
+                    }
+                    onCheckedChange={(checked) =>
+                      handleMetricVisibilityChange(id, checked === true)
+                    }
+                  >
+                    {m.resultMetrics[id]}
+                  </DropdownMenuCheckboxItem>
+                ))}
+                <DropdownMenuSeparator />
+                <DropdownMenuLabel>
+                  {m.results.displaySettings.sectionChart}
+                </DropdownMenuLabel>
+                <DropdownMenuRadioGroup
+                  value={displaySettings.middleChartMode}
+                  onValueChange={(v) =>
+                    handleMiddleChartModeChange(v as MiddleChartMode)
+                  }
+                >
+                  <DropdownMenuRadioItem value="projectCost">
+                    {m.results.displaySettings.middleChartProjectCost}
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="accessoryCost">
+                    {m.results.displaySettings.middleChartAccessory}
+                  </DropdownMenuRadioItem>
+                  <DropdownMenuRadioItem value="netProfit">
+                    {m.results.displaySettings.middleChartNetProfit}
+                  </DropdownMenuRadioItem>
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
 
         <GainStrategyPanel
@@ -349,7 +537,7 @@ export function ResultsSection({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {results.rows.map((row) => (
+              {visibleRows.map((row) => (
                 <TableRow key={row.metricId}>
                   <TableCell className="font-medium">{row.metric}</TableCell>
                   <TableCell>{row.longi}</TableCell>

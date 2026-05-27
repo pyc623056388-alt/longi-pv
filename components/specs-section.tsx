@@ -290,7 +290,11 @@ export function SpecsSection({
   onResetOverride,
   onSaveToLibrary,
 }: SpecsSectionProps) {
-  const { m } = useI18n();
+  const { m, locale } = useI18n();
+  const specDisplayOpts = {
+    notSet: m.common.notSet,
+    panelUnit: m.common.perModuleUnit,
+  };
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -351,7 +355,7 @@ export function SpecsSection({
                 triggerClassName={SPECS_SELECTOR_TRIGGER_CLASS}
                 options={longiModules.map((mod) => ({
                   value: mod.id,
-                  label: moduleDisplayName(mod),
+                  label: moduleDisplayName(mod, locale),
                   keywords: `${mod.model} ${mod.powerWp} ${mod.manufacturer}`,
                 }))}
               />
@@ -368,7 +372,7 @@ export function SpecsSection({
                 triggerClassName={SPECS_SELECTOR_TRIGGER_CLASS}
                 options={competitorModules.map((mod) => ({
                   value: mod.id,
-                  label: moduleDisplayName(mod),
+                  label: moduleDisplayName(mod, locale),
                   keywords: `${mod.model} ${mod.powerWp} ${mod.manufacturer}`,
                 }))}
               />
@@ -401,13 +405,33 @@ export function SpecsSection({
               const longiRaw = rawValueForField(longi, field);
               const compRaw = rawValueForField(competitor, field);
               const isPrice = field === "price";
-              const longiDisplay = formatSpecDisplayValue(field, longiRaw, sym);
-              const compDisplay = formatSpecDisplayValue(field, compRaw, sym);
+              const longiDisplay = formatSpecDisplayValue(
+                field,
+                longiRaw,
+                sym,
+                specDisplayOpts
+              );
+              const compDisplay = formatSpecDisplayValue(
+                field,
+                compRaw,
+                sym,
+                specDisplayOpts
+              );
               const longiPriceParts = isPrice
-                ? formatPricePerWParts(longiRaw, longi.power, sym)
+                ? formatPricePerWParts(
+                    longiRaw,
+                    longi.power,
+                    sym,
+                    m.common.perModuleUnit
+                  )
                 : undefined;
               const compPriceParts = isPrice
-                ? formatPricePerWParts(compRaw, competitor.power, sym)
+                ? formatPricePerWParts(
+                    compRaw,
+                    competitor.power,
+                    sym,
+                    m.common.perModuleUnit
+                  )
                 : undefined;
               const longiIsDefault =
                 !longiRaw.trim() && isSpecFieldUsingDefault(field, longiRaw);

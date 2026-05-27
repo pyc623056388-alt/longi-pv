@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   COMPETITOR_LIBRARY_DEFAULTS,
   LONGI_LIBRARY_DEFAULTS,
+  clampLongiPmpTempCoef,
   enrichModuleRecord,
   libraryDefaultSpecStrings,
 } from "./module-library-defaults";
@@ -32,6 +33,15 @@ describe("enrichModuleRecord", () => {
       pricePerW: 0.31,
     });
     expect(enriched.pricePerW).toBe(0.31);
+  });
+
+  it("clamps BC temp coef more negative than -0.26 to -0.26", () => {
+    expect(clampLongiPmpTempCoef(-0.272)).toBe(-0.26);
+    expect(clampLongiPmpTempCoef(-0.264)).toBe(-0.26);
+    expect(clampLongiPmpTempCoef(-0.257)).toBe(-0.257);
+    expect(enrichModuleRecord({ ...bareLongi, pmpTempCoef: -0.272 }).pmpTempCoef).toBe(
+      -0.26
+    );
   });
 
   it("applies TOPCon competitor defaults", () => {

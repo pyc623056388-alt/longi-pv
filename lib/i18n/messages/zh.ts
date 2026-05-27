@@ -51,6 +51,9 @@ export const zhMessages = {
     yearUnit: "年",
     panelUnit: "片",
     modules: "块",
+    perModuleUnit: "块",
+    pricePerPanelApprox: (sym: string, amount: string) =>
+      `≈ ${sym}${amount}/块`,
     prevPage: "上一页",
     nextPage: "下一页",
     pendingCompletion: "待补全",
@@ -191,6 +194,15 @@ export const zhMessages = {
     emptyProjectNameWarning: "项目名称为空，报告将使用「未命名项目」作为文件名",
     pdfSuccess: "PDF 报告已下载",
     pdfFail: (msg: string) => `PDF 导出失败：${msg}`,
+    displaySettings: {
+      menuAria: "结果展示设置",
+      sectionTable: "列表显示",
+      sectionChart: "中间图表",
+      middleChartProjectCost: "项目总成本",
+      middleChartAccessory: "BOS 成本（除组件外）",
+      middleChartNetProfit: "净收益",
+      keepOneRow: "至少保留一项指标",
+    },
     charts: {
       yield: {
         title: "全寿命预期发电量 (MWh)",
@@ -206,6 +218,21 @@ export const zhMessages = {
         captionUp: "隆基相对竞品项目总成本高于竞品",
         tooltipDown: (pct: string) => `较竞品降低 ${pct}%`,
         tooltipUp: (pct: string) => `较竞品高出 ${pct}%`,
+      },
+      accessory: {
+        title: (sym: string) => `BOS 成本 (${sym})`,
+        hint: "越低越好 · 除组件外全站成本",
+        captionDown: "隆基相对竞品 BOS 成本降低",
+        captionUp: "隆基相对竞品 BOS 成本高于竞品",
+        tooltipDown: (pct: string) => `较竞品降低 ${pct}%`,
+        tooltipUp: (pct: string) => `较竞品高出 ${pct}%`,
+      },
+      netProfit: {
+        title: (sym: string) => `净收益 (${sym})`,
+        hint: "越高越好 · 全寿命售电收入减项目总成本",
+        captionUp: "隆基相对竞品净收益提升",
+        captionDown: "隆基相对竞品净收益低于竞品",
+        tooltipDelta: (pct: string) => `较竞品 ${pct}`,
       },
       payback: {
         title: "全站投资回收期 (年)",
@@ -365,6 +392,8 @@ export const zhMessages = {
     highlights: {
       yieldGain: "发电量增益",
       projectCost: "项目总成本",
+      accessoryCost: "BOS 成本",
+      netProfit: "净收益",
       payback: "全站投资回收期",
     },
     basicParamLabels: {

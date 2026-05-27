@@ -62,6 +62,50 @@ describe("dynamicPaybackYears", () => {
   });
 });
 
+describe("calculatePvComparison accessory chart", () => {
+  it("computes accessoryReductionPct and chartData.accessory", () => {
+    const sameCount = calculatePvComparison({
+      moduleCount: 100,
+      mode: "sameCount",
+      longi: baseSpec,
+      competitor: compSpec,
+      basicParams: DEFAULT_BASIC_PARAMS,
+      gainStrategies: DEFAULT_GAIN_STRATEGIES,
+    });
+    expect(sameCount.longiAccessoryCost).toBe(sameCount.compAccessoryCost);
+    expect(sameCount.accessoryReductionPct).toBe(0);
+    expect(sameCount.chartData[0].accessory).toBe(
+      Math.round(sameCount.longiAccessoryCost)
+    );
+
+    const fixedCapacity = calculatePvComparison({
+      moduleCount: 100,
+      mode: "fixedCapacity",
+      longi: { ...baseSpec, power: "600" },
+      competitor: compSpec,
+      basicParams: DEFAULT_BASIC_PARAMS,
+      gainStrategies: DEFAULT_GAIN_STRATEGIES,
+    });
+    expect(fixedCapacity.longiModuleCount).not.toBe(
+      fixedCapacity.compModuleCount
+    );
+    expect(fixedCapacity.accessoryReductionPct).not.toBe(0);
+  });
+
+  it("computes netProfitGainPct and chartData.netProfit", () => {
+    const r = calculatePvComparison({
+      moduleCount: 100,
+      mode: "sameCount",
+      longi: baseSpec,
+      competitor: compSpec,
+      basicParams: DEFAULT_BASIC_PARAMS,
+      gainStrategies: DEFAULT_GAIN_STRATEGIES,
+    });
+    expect(r.chartData[0].netProfit).toBe(Math.round(r.longiNetProfit));
+    expect(r.netProfitGainPct).not.toBe(0);
+  });
+});
+
 describe("calculatePvComparison payback", () => {
   it("uses full project cost (module + accessory) for payback", () => {
     const lowAccessory = calculatePvComparison({

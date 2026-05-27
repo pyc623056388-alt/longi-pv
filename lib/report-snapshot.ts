@@ -6,7 +6,7 @@ import {
   type ModuleSpec,
   type PvComparisonResult,
 } from "./pv-calculation";
-import { moduleDisplayName } from "./module-utils";
+import { moduleDisplayName } from "./i18n/module-labels";
 import {
   CURRENCY_SYMBOLS,
   type BasicParams,
@@ -93,7 +93,7 @@ export interface ReportSnapshot {
   results: PvComparisonResult;
   highlights: ReportHighlight[];
   chartConfigs: {
-    key: "yield" | "cost" | "payback";
+    key: "yield" | "cost" | "accessory" | "netProfit" | "payback";
     title: string;
     formatValue: (v: number) => string;
   }[];
@@ -128,12 +128,15 @@ function formatGainPct(pct: number): string {
 
 function moduleSideFromSpec(
   spec: ModuleSpec,
+  locale: AppLocale,
   record?: ModuleRecord
 ): ModuleReportSide {
   const manufacturer = record?.manufacturer ?? "—";
   const model = record?.model ?? spec.name ?? "—";
   return {
-    displayName: record ? moduleDisplayName(record) : (spec.name ?? model),
+    displayName: record
+      ? moduleDisplayName(record, locale)
+      : (spec.name ?? model),
     manufacturer,
     model,
     power: spec.power,
@@ -306,8 +309,8 @@ export function buildReportSnapshot(
         value: m.report.basicParamLabels.ppaRefValue(basicParams.currency),
       },
     ],
-    longi: moduleSideFromSpec(longi, longiRecord),
-    competitor: moduleSideFromSpec(competitor, compRecord),
+    longi: moduleSideFromSpec(longi, locale, longiRecord),
+    competitor: moduleSideFromSpec(competitor, locale, compRecord),
     gainStrategies: buildGainStrategyLines(
       locale,
       gainStrategies,

@@ -11,6 +11,11 @@
   },
   "competitor": {
     "reviewFile": "data/builtin/datasheet-extract-review.json",
-    "onlyApproved": true
+    "onlyApproved": true,
+    "visiblePresetIds": [
+      "mod_competitor_topcon_topcon_475w",
+      "mod_competitor_topcon_topcon_510w",
+      "mod_competitor_topcon_topcon_620w"
+    ]
   }
 }

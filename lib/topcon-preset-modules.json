@@ -48,7 +48,7 @@
     "isc": 16.04,
     "vmp": 42.7,
     "imp": 15.34,
-    "pmpTempCoef": -0.26,
+    "pmpTempCoef": -0.29,
     "firstYearDegradationPct": 1,
     "annualDegradationPct": 0.4,
     "pricePerW": 0.23,

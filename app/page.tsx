@@ -73,7 +73,7 @@ const FALLBACK_LONGI = {
 
 const FALLBACK_COMP = {
   id: "fallback-c",
-  manufacturer: "竞品",
+  manufacturer: "Competitor",
   model: "TOPCon",
   powerWp: 580,
   lengthMm: 2278,
@@ -141,6 +141,8 @@ export default function ModuleComparisonPage() {
   const {
     longiModules,
     competitorModules,
+    visibleLongiModules,
+    visibleCompetitorModules,
     weatherList,
     upsertModule,
     removeModule,
@@ -166,12 +168,12 @@ export default function ModuleComparisonPage() {
 
   useEffect(() => {
     if (
-      competitorModules.length &&
-      !competitorModules.some((m) => m.id === selectedCompetitorId)
+      visibleCompetitorModules.length &&
+      !visibleCompetitorModules.some((m) => m.id === selectedCompetitorId)
     ) {
-      setSelectedCompetitorId(competitorModules[0].id);
+      setSelectedCompetitorId(visibleCompetitorModules[0].id);
     }
-  }, [competitorModules, selectedCompetitorId]);
+  }, [visibleCompetitorModules, selectedCompetitorId]);
 
   useEffect(() => {
     if (!sessionHydrated || selectedWeather) return;
@@ -226,7 +228,7 @@ export default function ModuleComparisonPage() {
     selectedCompetitorId &&
     competitorModules.some((m) => m.id === selectedCompetitorId)
       ? selectedCompetitorId
-      : competitorModules[0]?.id ?? "";
+      : visibleCompetitorModules[0]?.id ?? competitorModules[0]?.id ?? "";
 
   const syncModulePairPresetFromSelection = useCallback(
     (longiId: string, compId: string) => {
@@ -648,8 +650,8 @@ export default function ModuleComparisonPage() {
         longiBase={longiBaseSpec}
         competitorBase={competitorBaseSpec}
         overriddenFields={overriddenFields}
-        longiModules={longiModules}
-        competitorModules={competitorModules}
+        longiModules={visibleLongiModules}
+        competitorModules={visibleCompetitorModules}
         selectedLongiId={effectiveLongiId}
         selectedCompetitorId={effectiveCompId}
         onSelectLongi={handleSelectLongi}
@@ -679,8 +681,8 @@ export default function ModuleComparisonPage() {
         open={dbOpen}
         onOpenChange={setDbOpen}
         currency={basicParams.currency}
-        longiModules={longiModules}
-        competitorModules={competitorModules}
+        longiModules={visibleLongiModules}
+        competitorModules={visibleCompetitorModules}
         weatherList={weatherList}
         onUpsertModule={upsertModule}
         onDeleteModule={removeModule}

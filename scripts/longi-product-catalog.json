@@ -18,6 +18,14 @@
       "widthMm": 1134
     },
     {
+      "model": "LR7-54HVD-475M",
+      "cellCount": 54,
+      "powerWp": 475,
+      "family": "hvd",
+      "lengthMm": 1800,
+      "widthMm": 1134
+    },
+    {
       "model": "LR7-54HVH-475M",
       "cellCount": 54,
       "powerWp": 475,

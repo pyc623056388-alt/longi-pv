@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   addModule,
   addWeather,
@@ -14,6 +14,7 @@ import {
   syncBuiltinWeather,
   syncBuiltinModules,
 } from "@/lib/data-store";
+import { filterCatalogVisible } from "@/lib/module-catalog";
 import type { ModuleLibrary, ModuleRecord, WeatherRecord } from "@/lib/pv-types";
 
 export function useDataStore() {
@@ -29,6 +30,15 @@ export function useDataStore() {
     setWeatherList(listWeather());
     setReady(true);
   }, []);
+
+  const visibleLongiModules = useMemo(
+    () => filterCatalogVisible(longiModules),
+    [longiModules]
+  );
+  const visibleCompetitorModules = useMemo(
+    () => filterCatalogVisible(competitorModules),
+    [competitorModules]
+  );
 
   useEffect(() => {
     refresh();
@@ -104,6 +114,8 @@ export function useDataStore() {
     ready,
     longiModules,
     competitorModules,
+    visibleLongiModules,
+    visibleCompetitorModules,
     weatherList,
     refresh,
     upsertModule,
