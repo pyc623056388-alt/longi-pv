@@ -451,6 +451,18 @@ export const zhMessages = {
     longi: "隆基",
     competitor: "竞品",
   },
+
+  login: {
+    title: "访问测算工具",
+    subtitle: "请输入您的授权访问码",
+    codeLabel: "访问码",
+    submit: "进入",
+    submitting: "验证中…",
+    invalidCode: "访问码无效，请检查后重试或联系 LONGi 获取授权",
+    serverError: "服务暂不可用，请稍后重试",
+    configError: "访问控制未配置，请联系管理员",
+    footer: "授权访问 · 请勿对外传播访问码",
+  },
 } as const;
 
 /** 将 zh 文案结构的字面量放宽为 string，供 en 等语言复用同一形状 */

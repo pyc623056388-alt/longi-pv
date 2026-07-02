@@ -450,4 +450,17 @@ export const enMessages: Messages = {
     longi: "LONGi",
     competitor: "Competitor",
   },
+
+  login: {
+    title: "Access Calculator",
+    subtitle: "Enter your authorized access code",
+    codeLabel: "Access Code",
+    submit: "Continue",
+    submitting: "Verifying…",
+    invalidCode:
+      "Invalid access code. Please check and try again, or contact LONGi for access.",
+    serverError: "Service temporarily unavailable. Please try again later.",
+    configError: "Access control is not configured. Please contact your administrator.",
+    footer: "Authorized access only · Do not share this code",
+  },
 };

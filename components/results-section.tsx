@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { toast } from "sonner";
 import {
@@ -59,6 +59,7 @@ import {
   RESULT_METRIC_IDS,
   applyResultsDisplaySettings,
   canToggleMetricOff,
+  DEFAULT_RESULTS_DISPLAY_SETTINGS,
   loadResultsDisplaySettings,
   saveResultsDisplaySettings,
   type MiddleChartMode,
@@ -136,7 +137,11 @@ export function ResultsSection({
   const ref = useRef<HTMLDivElement>(null);
   const [exporting, setExporting] = useState(false);
   const [displaySettings, setDisplaySettings] =
-    useState<ResultsDisplaySettings>(loadResultsDisplaySettings);
+    useState<ResultsDisplaySettings>(DEFAULT_RESULTS_DISPLAY_SETTINGS);
+
+  useEffect(() => {
+    setDisplaySettings(loadResultsDisplaySettings());
+  }, []);
 
   const persistDisplaySettings = useCallback(
     (next: ResultsDisplaySettings) => {

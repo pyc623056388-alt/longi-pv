@@ -165,6 +165,9 @@ git push
 | 文件 | 用途 |
 |------|------|
 | `app/page.tsx` | 四屏滚动页面、测算与图表（v3 主体） |
+| `app/login/page.tsx` | 邀请码登录页（未授权访问时跳转） |
+| `middleware.ts` | 全站访问控制，校验登录 Cookie |
+| `lib/auth.ts` | 邀请码解析与 Session Cookie 签名 |
 | `lib/pv-calculation.ts` | 装机容量 / 发电量 / 成本 / 回本测算 |
 | `app/layout.tsx` | 标题、SEO、Vercel Analytics |
 | `app/globals.css` | 全局样式 |
@@ -192,7 +195,45 @@ npm run build:seed
 
 ---
 
-## 八、常见问题
+## 八、邀请码访问控制（登录门禁）
+
+线上部署需配置环境变量，否则访客只能看到登录页并提示「未配置」。
+
+### 1. 本地开发
+
+复制模板并填入测试值：
+
+```powershell
+copy .env.example .env.local
+```
+
+编辑 `.env.local`：
+
+- `ACCESS_CODES`：逗号分隔的邀请码（见 `.env.example` 中 20 个澳洲码）
+- `AUTH_SECRET`：随机字符串（可用 `openssl rand -base64 32` 生成）
+
+重启 `pnpm dev` 后，访问 http://localhost:3000 会先进入 `/login`。
+
+### 2. Vercel 生产环境
+
+1. Vercel Dashboard → 项目 → **Settings** → **Environment Variables**
+2. 添加 `ACCESS_CODES`（Production / Preview 按需勾选）
+3. 添加 `AUTH_SECRET`（与本地不同，单独生成）
+4. **Redeploy** 一次使变量生效
+
+### 3. 发给客户（示例）
+
+> Access URL: `https://你的域名.vercel.app`  
+> Access Code: `LONGI-AU-NSW-01`  
+> Please do not share this code externally.
+
+同一邀请码可发给多个客户（如按区域共用）；码泄露时在 Vercel 环境变量中删除对应码并重新部署即可作废。
+
+登录成功后 Cookie 有效期 **30 天**，期间无需重复输入。
+
+---
+
+## 九、常见问题
 
 **Q：为什么推荐 GitHub + Vercel，而不是只在 v0 部署？**  
 A：你在 Cursor 改的是本地仓库；连 Git 后每次 `git push` 自动上线，版本可追溯，和 v0 草稿无关。
