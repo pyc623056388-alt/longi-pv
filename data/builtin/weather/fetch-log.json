@@ -1,0 +1,27 @@
+{
+  "fetchedAt": "2026-05-22T04:17:02.411Z",
+  "ok": [
+    "sydney",
+    "melbourne",
+    "brisbane",
+    "perth",
+    "adelaide",
+    "canberra",
+    "darwin",
+    "hobart",
+    "alice_springs",
+    "wellington",
+    "christchurch",
+    "dunedin"
+  ],
+  "failed": [
+    {
+      "slug": "townsville",
+      "error": "fetch failed"
+    },
+    {
+      "slug": "auckland",
+      "error": "fetch failed"
+    }
+  ]
+}

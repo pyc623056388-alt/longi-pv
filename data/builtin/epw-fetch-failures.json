@@ -1,0 +1,56 @@
+[
+  {
+    "station": "奥尔巴尼 Albany",
+    "id": "albany",
+    "url": "https://climate.onebuilding.org/WMO_Region_5_Southwest_Pacific/AUS_Australia/WA_Western_Australia/AUS_WA_Albany.948010_TMYx.2011-2025.zip",
+    "error": "TypeError: fetch failed"
+  },
+  {
+    "station": "奥兰治 Orange",
+    "id": "orange",
+    "url": "https://climate.onebuilding.org/WMO_Region_5_Southwest_Pacific/AUS_Australia/NSW_New_South_Wales/AUS_NSW_Orange.AP.957260_TMYx.2011-2025.zip",
+    "error": "TypeError: fetch failed"
+  },
+  {
+    "station": "班达伯格 Bundaberg",
+    "id": "bundaberg",
+    "url": "https://climate.onebuilding.org/WMO_Region_5_Southwest_Pacific/AUS_Australia/QLD_Queensland/AUS_QLD_Bundaberg.AP.943870_TMYx.2011-2025.zip",
+    "error": "TypeError: fetch failed"
+  },
+  {
+    "station": "但尼丁 Dunedin",
+    "id": "dunedin",
+    "url": "https://climate.onebuilding.org/WMO_Region_5_Southwest_Pacific/NZL_New_Zealand/OTA_Otago/NZL_OTA_Dunedin.Intl.AP.938910_TMYx.2011-2025.zip",
+    "error": "TypeError: fetch failed"
+  },
+  {
+    "station": "皇后镇 Queenstown",
+    "id": "queenstown",
+    "url": "https://climate.onebuilding.org/WMO_Region_5_Southwest_Pacific/NZL_New_Zealand/OTA_Otago/NZL_OTA_Queenstown.AP.938310_TMYx.2011-2025.zip",
+    "error": "TypeError: fetch failed"
+  },
+  {
+    "station": "凯瑟琳 Katherine",
+    "id": "katherine",
+    "url": "https://climate.onebuilding.org/WMO_Region_5_Southwest_Pacific/AUS_Australia/NT_Northern_Territory/AUS_NT_Katherine-RAAF.Tindal.941310_TMYx.2011-2025.zip",
+    "error": "TypeError: fetch failed"
+  },
+  {
+    "station": "朗塞斯顿 Launceston",
+    "id": "launceston",
+    "url": "https://climate.onebuilding.org/WMO_Region_5_Southwest_Pacific/AUS_Australia/TAS_Tasmania/AUS_TAS_Launceston.AP.959660_TMYx.2011-2025.zip",
+    "error": "TypeError: fetch failed"
+  },
+  {
+    "station": "内皮尔 Napier",
+    "id": "napier",
+    "url": "https://climate.onebuilding.org/WMO_Region_5_Southwest_Pacific/NZL_New_Zealand/HKB_Hawkes_Bay/NZL_HKB_Napier-Hawkes.Bay.AP.933730_TMYx.2011-2025.zip",
+    "error": "TypeError: fetch failed"
+  },
+  {
+    "station": "陶朗加 Tauranga",
+    "id": "tauranga",
+    "url": "https://climate.onebuilding.org/WMO_Region_5_Southwest_Pacific/NZL_New_Zealand/BOP_Bay_of_Plenty/NZL_BOP_Tauranga.AP.931860_TMYx.2011-2025.zip",
+    "error": "TypeError: fetch failed"
+  }
+]

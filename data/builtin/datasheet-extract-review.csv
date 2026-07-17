@@ -1,0 +1,11 @@
+file,manufacturer,model,segment,targetPowerWp,voc,isc,vmp,imp,confidence,status
+Risen 475 Datasheet.pdf,Risen,Risen-475W,residential475,475,36.42,16.52,30.78,15.46,1,approved
+TCL_T5Pro-S_HSM-NT48-JH_450-475_IT_2026-04.pdf,TCL,TCL-475W,residential475,475,54.89,10.95,46.4,10.24,1,approved
+TW 465w Datasheet - Transparent Black.pdf,Tongwei,TW-475W,residential475,475,38.8,15.6,32.5,14.62,1,approved
+JKM450-475N-48QL6-DB-F2C2-OC.pdf,Jinko,JKM475N,residential475,475,36.44,15.85,31.13,15.26,1,approved
+Neostar-3P54-Mono-Glass-475-500W.pdf,Trina,Neostar-475W,residential475,475,39.1,15.55,32.8,14.48,1,approved
+JA 460-485.pdf,JA Solar,JA-475W,residential475,475,39.5,15.42,33.2,14.31,1,approved
+canadiansolar465-525.pdf,Canadian Solar,CS-475W,residential475,475,38.6,15.67,32.4,14.67,1,approved
+canadiansolar465-525.pdf,Canadian Solar,CS-510W,medium60,510,40,16.1,33.8,15.1,1,approved
+JA 460-485.pdf,JA Solar,JA-515W,medium60,515,40.2,16.05,34,15.15,1,approved
+JKM630-670N-66QL6-BDV-F1C2-OC.pdf,Jinko,JKM630N,large620,630,50.44,16.04,42.7,15.34,1,approved

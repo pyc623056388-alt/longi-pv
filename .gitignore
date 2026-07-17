@@ -6,7 +6,8 @@ __v0_jsx-dev-runtime.ts
 .v0-trash/
 .vercel/
 
-# Environment variables
+# Environment variables (keep .env.example tracked)
+.env
 .env*.local
 
 # Common ignores
@@ -17,3 +18,6 @@ tsconfig.tsbuildinfo
 
 # Local seed build artifacts (runtime uses lib/seed-data.json)
 data/builtin/weather/_tmp/
+
+# Large marketing assets — copy separately when migrating machines
+X10 产品图片 X10 Product Graphics/
