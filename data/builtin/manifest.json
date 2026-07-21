@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-21T09:04:18.666Z",
+  "generatedAt": "2026-05-27T13:14:04.191Z",
   "dataSource": {
     "longiPan": "数据库/longi",
     "competitor": "data/builtin/datasheet-extract-review.json"
@@ -13,7 +13,7 @@
         "model": "LR7-54HVB-475M",
         "powerWp": 475,
         "family": "hvh",
-        "file": "数据库/longi/Longi General/LR7-54HVH General/LONGi_LR7-54HVH-485M.PAN",
+        "file": "数据库\\longi\\Longi General\\LR7-54HVH General\\LONGi_LR7-54HVH-485M.PAN",
         "synthesized": true,
         "templateModel": "LR7-54HVH-485M"
       },
@@ -21,7 +21,7 @@
         "model": "LR7-54HVD-T-475M",
         "powerWp": 475,
         "family": "hvd",
-        "file": "数据库/longi/Longi General/LR7-54HVD General/LONGi_LR7-54HVD-475M.PAN",
+        "file": "数据库\\longi\\Longi General\\LR7-54HVD General\\LONGi_LR7-54HVD-475M.PAN",
         "synthesized": true,
         "templateModel": "LR7-54HVD-475M"
       },
@@ -29,14 +29,14 @@
         "model": "LR7-54HVD-475M",
         "powerWp": 475,
         "family": "hvd",
-        "file": "数据库/longi/Longi General/LR7-54HVD General/LONGi_LR7-54HVD-475M.PAN",
+        "file": "数据库\\longi\\Longi General\\LR7-54HVD General\\LONGi_LR7-54HVD-475M.PAN",
         "synthesized": false
       },
       {
         "model": "LR7-54HVH-475M",
         "powerWp": 475,
         "family": "hvh",
-        "file": "数据库/longi/Longi General/LR7-54HVH General/LONGi_LR7-54HVH-485M.PAN",
+        "file": "数据库\\longi\\Longi General\\LR7-54HVH General\\LONGi_LR7-54HVH-485M.PAN",
         "synthesized": true,
         "templateModel": "LR7-54HVH-485M"
       },
@@ -44,7 +44,7 @@
         "model": "LR8-48HVH-475M",
         "powerWp": 475,
         "family": "hvh",
-        "file": "数据库/longi/Longi General/LR7-54HVH General/LONGi_LR7-54HVH-485M.PAN",
+        "file": "数据库\\longi\\Longi General\\LR7-54HVH General\\LONGi_LR7-54HVH-485M.PAN",
         "synthesized": true,
         "templateModel": "LR7-54HVH-485M"
       },
@@ -52,7 +52,7 @@
         "model": "LR8-48HVHF-475M",
         "powerWp": 475,
         "family": "hvh",
-        "file": "数据库/longi/Longi General/LR7-54HVH General/LONGi_LR7-54HVH-485M.PAN",
+        "file": "数据库\\longi\\Longi General\\LR7-54HVH General\\LONGi_LR7-54HVH-485M.PAN",
         "synthesized": true,
         "templateModel": "LR7-54HVH-485M"
       },
@@ -60,7 +60,7 @@
         "model": "LR7-60HVD-540M",
         "powerWp": 540,
         "family": "hvd",
-        "file": "数据库/longi/Longi General/LR7-54HVD General/LONGi_LR7-54HVD-475M.PAN",
+        "file": "数据库\\longi\\Longi General\\LR7-54HVD General\\LONGi_LR7-54HVD-475M.PAN",
         "synthesized": true,
         "templateModel": "LR7-54HVD-475M"
       },
@@ -68,7 +68,7 @@
         "model": "LR7-60HVH-540M",
         "powerWp": 540,
         "family": "hvh",
-        "file": "数据库/longi/Longi General/LR7-54HVH General/LONGi_LR7-54HVH-485M.PAN",
+        "file": "数据库\\longi\\Longi General\\LR7-54HVH General\\LONGi_LR7-54HVH-485M.PAN",
         "synthesized": true,
         "templateModel": "LR7-54HVH-485M"
       },
@@ -76,21 +76,21 @@
         "model": "LR7-60HVHL-540M",
         "powerWp": 540,
         "family": "hvhl",
-        "file": "数据库/longi/Longi General/LR7-60HVHL General/LONGi_LR7-60HVHL-540M.PAN",
+        "file": "数据库\\longi\\Longi General\\LR7-60HVHL General\\LONGi_LR7-60HVHL-540M.PAN",
         "synthesized": false
       },
       {
         "model": "LR7-72HVD-650M",
         "powerWp": 650,
         "family": "hvd",
-        "file": "数据库/longi/Longi General/LR7-72HVD General/LONGi_LR7-72HVD-650M.PAN",
+        "file": "数据库\\longi\\Longi General\\LR7-72HVD General\\LONGi_LR7-72HVD-650M.PAN",
         "synthesized": false
       },
       {
         "model": "LR7-72HVDF-650M",
         "powerWp": 650,
         "family": "hvd",
-        "file": "数据库/longi/Longi General/LR7-72HVD General/LONGi_LR7-72HVD-650M.PAN",
+        "file": "数据库\\longi\\Longi General\\LR7-72HVD General\\LONGi_LR7-72HVD-650M.PAN",
         "synthesized": true,
         "templateModel": "LR7-72HVD-650M"
       },
@@ -98,14 +98,14 @@
         "model": "LR7-72HVH-650M",
         "powerWp": 650,
         "family": "hvh",
-        "file": "数据库/longi/Longi General/LR7-72HVH General/LONGi_LR7-72HVH-650M.PAN",
+        "file": "数据库\\longi\\Longi General\\LR7-72HVH General\\LONGi_LR7-72HVH-650M.PAN",
         "synthesized": false
       },
       {
         "model": "LR7-72HVHF-650M",
         "powerWp": 650,
         "family": "hvh",
-        "file": "数据库/longi/Longi General/LR7-72HVH General/LONGi_LR7-72HVH-650M.PAN",
+        "file": "数据库\\longi\\Longi General\\LR7-72HVH General\\LONGi_LR7-72HVH-650M.PAN",
         "synthesized": true,
         "templateModel": "LR7-72HVH-650M"
       },
@@ -113,7 +113,7 @@
         "model": "LR8-66HVD-650M",
         "powerWp": 650,
         "family": "hvd",
-        "file": "数据库/longi/Longi General/LR7-72HVD General/LONGi_LR7-72HVD-650M.PAN",
+        "file": "数据库\\longi\\Longi General\\LR7-72HVD General\\LONGi_LR7-72HVD-650M.PAN",
         "synthesized": true,
         "templateModel": "LR7-72HVD-650M"
       },
@@ -121,7 +121,7 @@
         "model": "LR8-66HVDF-650M",
         "powerWp": 650,
         "family": "hvd",
-        "file": "数据库/longi/Longi General/LR7-72HVD General/LONGi_LR7-72HVD-650M.PAN",
+        "file": "数据库\\longi\\Longi General\\LR7-72HVD General\\LONGi_LR7-72HVD-650M.PAN",
         "synthesized": true,
         "templateModel": "LR7-72HVD-650M"
       }
