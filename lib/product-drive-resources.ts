@@ -63,12 +63,6 @@ export const PRODUCT_DRIVE_RESOURCES: Record<string, ProductDriveResources> =
         "fileId": "1Nbp7FGzf6QEmuV73m3QQAfex6jAnFfj-"
       },
       {
-        "label": "Anti-Glare · AntiGlare_Pro_EcoLife_LR7-54HVB_Datasheet.pdf",
-        "category": "Anti-Glare",
-        "url": "https://drive.google.com/file/d/1Wjdu4Mty7Aeb1rQRysnhqtfql1CI1FxA/view",
-        "fileId": "1Wjdu4Mty7Aeb1rQRysnhqtfql1CI1FxA"
-      },
-      {
         "label": "DML · DML_TUV_Single_Cert.pdf",
         "category": "DML",
         "url": "https://drive.google.com/file/d/1oGsv_o_eBRo0zlL4cwDwghqOI8Py3Vd3/view",
@@ -144,18 +138,6 @@ export const PRODUCT_DRIVE_RESOURCES: Record<string, ProductDriveResources> =
         "category": "Ammonia",
         "url": "https://drive.google.com/file/d/158idNiARD9vBaZy_-mcDTbv8nziAuarO/view",
         "fileId": "158idNiARD9vBaZy_-mcDTbv8nziAuarO"
-      },
-      {
-        "label": "Anti-Glare · AntiGlare_2.0_LR7-54HVH_Datasheet.pdf",
-        "category": "Anti-Glare",
-        "url": "https://drive.google.com/file/d/1c_r0HWxEh1mUDCsTpm0R0IaTKiK68mK7/view",
-        "fileId": "1c_r0HWxEh1mUDCsTpm0R0IaTKiK68mK7"
-      },
-      {
-        "label": "Anti-Glare · AntiGlare_Guardian_LR7-54HVH_Datasheet.pdf",
-        "category": "Anti-Glare",
-        "url": "https://drive.google.com/file/d/1kJPGYc3I9J-cXA1l8elMR4uQSXeQqDkC/view",
-        "fileId": "1kJPGYc3I9J-cXA1l8elMR4uQSXeQqDkC"
       },
       {
         "label": "DML · DML_TUV_Single_Cert.pdf",
@@ -496,12 +478,6 @@ export const PRODUCT_DRIVE_RESOURCES: Record<string, ProductDriveResources> =
         "category": "Ammonia",
         "url": "https://drive.google.com/file/d/1GpJflmRxsTzYlfNQh6b_LkV4tkFArD6d/view",
         "fileId": "1GpJflmRxsTzYlfNQh6b_LkV4tkFArD6d"
-      },
-      {
-        "label": "Anti-Glare · AntiGlare_Guardian_LR7-72HVD_Datasheet.pdf",
-        "category": "Anti-Glare",
-        "url": "https://drive.google.com/file/d/11oXW4vnciT7XqiRBSv9_7UIN7SIX61fk/view",
-        "fileId": "11oXW4vnciT7XqiRBSv9_7UIN7SIX61fk"
       },
       {
         "label": "DML · DML_TUV_Double_Cert.pdf",
