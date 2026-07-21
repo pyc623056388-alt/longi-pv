@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -12,8 +12,14 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { ProductResourcesPanel } from "@/components/recommend/product-resources-panel";
+import { SearchableSelect } from "@/components/ui/searchable-select";
 import { useI18n } from "@/components/locale-provider";
 import type { ProductRecommendMatch } from "@/lib/product-recommend-engine";
+import {
+  PRODUCT_MATRIX,
+  getProductSeriesById,
+  type ProductSeries,
+} from "@/lib/product-matrix-catalog";
 import {
   driveThumbnailUrl,
   getProductPhotos,
@@ -43,6 +49,17 @@ function photoViewLabel(
   return rm.photoOther;
 }
 
+function browseMatch(series: ProductSeries): ProductRecommendMatch {
+  return {
+    series,
+    score: 0,
+    matchedNeeds: [],
+    missingNeeds: [],
+    reasonsZh: [],
+    reasonsEn: [],
+  };
+}
+
 interface RecommendResultProps {
   primary: ProductRecommendMatch;
   alternatives: ProductRecommendMatch[];
@@ -61,19 +78,50 @@ export function RecommendResult({
   const { m, locale } = useI18n();
   const rm = m.recommend;
 
-  const allOptions = [primary, ...alternatives];
+  const rankedMatches = useMemo(
+    () => [primary, ...alternatives],
+    [primary, alternatives]
+  );
+  const matchedIds = useMemo(
+    () => new Set(rankedMatches.map((x) => x.series.id)),
+    [rankedMatches]
+  );
+
+  const series = getProductSeriesById(selectedSeriesId) ?? primary.series;
   const current =
-    allOptions.find((x) => x.series.id === selectedSeriesId) ?? primary;
-  const series = current.series;
+    rankedMatches.find((x) => x.series.id === series.id) ??
+    browseMatch(series);
+  const isManualBrowse = !matchedIds.has(series.id);
+
   const photos = getProductPhotos(series.id);
   const hasPhotos = photos.length > 0;
-  const switchOptions = allOptions.filter(
+  const switchOptions = rankedMatches.filter(
     (item) => item.series.id !== series.id
   );
   const reasons =
     locale === "zh" ? current.reasonsZh : current.reasonsEn;
   const highlights =
     locale === "zh" ? series.highlightsZh : series.highlightsEn;
+
+  const seriesOptions = useMemo(
+    () =>
+      PRODUCT_MATRIX.map((s) => ({
+        value: s.id,
+        label: `${s.representativeModel} · ${
+          locale === "zh" ? s.nameZh : s.nameEn
+        }`,
+        keywords: [
+          s.id,
+          s.modelFamily,
+          s.representativeModel,
+          s.nameZh,
+          s.nameEn,
+          String(s.powerMinWp),
+          String(s.powerMaxWp),
+        ].join(" "),
+      })),
+    [locale]
+  );
 
   return (
     <motion.section
@@ -130,14 +178,38 @@ export function RecommendResult({
               <div className="flex min-h-0 flex-col lg:h-full">
                 <div className="shrink-0 space-y-2.5 border-b border-slate-100 p-3.5 sm:p-4">
                   <div className="flex flex-wrap items-start justify-between gap-2">
-                    <div className="min-w-0">
-                      <p className="text-xs font-medium text-[#E40011]">
-                        {locale === "zh" ? series.nameZh : series.nameEn}
-                      </p>
-                      <h3 className="truncate text-xl font-extrabold tracking-tight text-slate-900 sm:text-2xl">
-                        {series.representativeModel}
-                      </h3>
-                      <p className="mt-0.5 text-xs text-slate-500">
+                    <div className="min-w-0 flex-1">
+                      <div className="mb-1 flex flex-wrap items-center gap-2">
+                        <p className="text-xs font-medium text-[#E40011]">
+                          {locale === "zh" ? series.nameZh : series.nameEn}
+                        </p>
+                        <span
+                          className={cn(
+                            "rounded-md px-1.5 py-0.5 text-[10px] font-semibold",
+                            isManualBrowse
+                              ? "bg-slate-100 text-slate-600"
+                              : "bg-emerald-50 text-emerald-700"
+                          )}
+                        >
+                          {isManualBrowse
+                            ? rm.result.manualBrowse
+                            : rm.result.recommendedMatch}
+                        </span>
+                      </div>
+                      <SearchableSelect
+                        value={series.id}
+                        onValueChange={onSelectSeries}
+                        options={seriesOptions}
+                        placeholder={rm.result.pickSeries}
+                        searchPlaceholder={rm.result.pickSeriesSearch}
+                        emptyText={rm.result.pickSeriesEmpty}
+                        triggerClassName={cn(
+                          "h-auto min-h-10 w-full max-w-xl justify-between rounded-xl border-slate-200 bg-white px-3 py-2 text-left shadow-none",
+                          "hover:border-slate-300 hover:bg-slate-50",
+                          "[&_span]:line-clamp-2 [&_span]:text-base [&_span]:font-extrabold [&_span]:tracking-tight [&_span]:text-slate-900 sm:[&_span]:text-xl"
+                        )}
+                      />
+                      <p className="mt-1.5 text-xs text-slate-500">
                         {series.powerMinWp}–{series.powerMaxWp} W ·{" "}
                         {series.dimensionMm} mm
                       </p>
@@ -195,7 +267,7 @@ export function RecommendResult({
                     />
                   </dl>
 
-                  {reasons.length > 0 && (
+                  {!isManualBrowse && reasons.length > 0 && (
                     <ul className="flex flex-wrap gap-x-3 gap-y-1">
                       {reasons.slice(0, 4).map((r) => (
                         <li

@@ -152,6 +152,11 @@ export const enMessages: Messages = {
       singleGlass: "Single glass",
       openCompare: "Compare gains with this model",
       alternative: "Alternative",
+      pickSeries: "Browse product series",
+      pickSeriesSearch: "Search model or series…",
+      pickSeriesEmpty: "No matching series",
+      manualBrowse: "Manual browse",
+      recommendedMatch: "Matched filters",
     },
     resources: {
       title: "Product files (Google Drive)",

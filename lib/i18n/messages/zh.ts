@@ -176,6 +176,11 @@ export const zhMessages = {
       singleGlass: "单玻",
       openCompare: "用此型号去做增益对比",
       alternative: "备选系列",
+      pickSeries: "切换产品系列",
+      pickSeriesSearch: "搜索型号或系列…",
+      pickSeriesEmpty: "未找到匹配系列",
+      manualBrowse: "手动浏览",
+      recommendedMatch: "条件匹配",
     },
     resources: {
       title: "产品资料（Google Drive）",
