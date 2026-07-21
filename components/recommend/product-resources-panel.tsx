@@ -145,7 +145,11 @@ export function ProductResourcesPanel({ seriesId }: { seriesId: string }) {
       <ResourceGroup
         title={rm.certificates}
         icon={<ScrollText className="h-3.5 w-3.5" />}
-        links={resources.certificates}
+        links={resources.certificates.filter(
+          (c) =>
+            c.category !== "Anti-Glare" &&
+            !/anti[\s-]?glare/i.test(c.label)
+        )}
         emptyText={rm.certsEmpty}
       />
     </div>
