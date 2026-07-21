@@ -73,6 +73,8 @@ export const zhMessages = {
     title: "找到适合客户的隆基版型",
     subtitle:
       "根据应用场景、屋顶承重、发电类型与功能需求，从 Hi-MO X10 产品矩阵自动推荐组件，并给出关键规格数据。与增益对比工具并行使用：这里负责选型，那边负责测算。",
+    formHint: "左侧填写需求，右侧实时给出推荐型号与资料",
+    formTitle: "筛选条件",
     sections: {
       scenario: "应用场景",
       roofLoad: "屋顶承重",

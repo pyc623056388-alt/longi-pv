@@ -48,6 +48,8 @@ export const enMessages: Messages = {
     title: "Find the right LONGi version",
     subtitle:
       "Recommend a Hi-MO X10 series from scenario, roof load, generation type, and feature needs—with key specs. Use this for selection; use the compare tool for ROI.",
+    formHint: "Fill needs on the left; recommendations update on the right",
+    formTitle: "Filters",
     sections: {
       scenario: "Application",
       roofLoad: "Roof load",
