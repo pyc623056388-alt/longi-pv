@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { CurrencySwitcher } from "@/components/currency-switcher";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { SiteToolNav } from "@/components/site-tool-nav";
 import { useI18n } from "@/components/locale-provider";
 import type { AppLocale } from "@/lib/i18n";
 import type { CurrencyCode } from "@/lib/pv-types";
@@ -95,7 +96,7 @@ export function HeroCover({
         />
       </div>
 
-      <div className="absolute top-6 left-6 z-20">
+      <div className="absolute top-6 left-6 z-20 flex flex-wrap items-center gap-3">
         <Image
           src="/longi-logo.svg"
           alt="LONGi"
@@ -104,6 +105,7 @@ export function HeroCover({
           priority
           className="h-8 w-auto md:h-10"
         />
+        <SiteToolNav />
       </div>
 
       <div className="absolute top-6 right-6 z-20 flex items-center gap-2">

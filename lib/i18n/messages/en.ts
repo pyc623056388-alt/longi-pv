@@ -35,6 +35,98 @@ export const enMessages: Messages = {
     actions: "Actions",
   },
 
+  nav: {
+    aria: "Tool switcher",
+    compare: "Gain compare",
+    compareHint: "LONGi vs competitor lifecycle ROI",
+    recommend: "Product finder",
+    recommendHint: "Recommend a variant from needs",
+  },
+
+  recommend: {
+    eyebrow: "Product finder",
+    title: "Find the right LONGi version",
+    subtitle:
+      "Recommend a Hi-MO X10 series from scenario, roof load, generation type, and feature needs—with key specs. Use this for selection; use the compare tool for ROI.",
+    sections: {
+      scenario: "Application",
+      roofLoad: "Roof load",
+      generation: "Generation type",
+      power: "Power band",
+      needs: "Feature needs",
+    },
+    scenario: {
+      residential: "Residential DG",
+      commercial: "C&I rooftop",
+      flexible: "Any / flexible",
+    },
+    roofLoad: {
+      normal: "Normal load",
+      limited: "Limited load (lightweight)",
+    },
+    generation: {
+      any: "Any",
+      monofacial: "Monofacial",
+      bifacial: "Bifacial",
+      transparent: "Transparent bifacial",
+    },
+    power: {
+      auto: "Auto from scenario",
+      residential: "Residential ~475W",
+      medium: "Mid-size ~540W",
+      large: "Large ~650W",
+    },
+    needs: {
+      antiHotspot: {
+        label: "Anti-hotspot / fire prevention",
+        hint: "Lower localized overheating risk",
+      },
+      antiDust: {
+        label: "Anti-dust",
+        hint: "Prefers HVHF anti-dust frames",
+      },
+      antiGlare: {
+        label: "Anti-glare",
+        hint: "Airports, roads, glare-sensitive sites",
+      },
+      antiShading: {
+        label: "Anti-shading",
+        hint: "Less power loss under partial shade",
+      },
+      lightweight: {
+        label: "Lightweight",
+        hint: "HVHL for low load-bearing roofs",
+      },
+      saltMist: {
+        label: "Salt mist / coastal",
+        hint: "Salt-mist certified environments",
+      },
+      ammonia: {
+        label: "Ammonia / farming",
+        hint: "Livestock and farm sites",
+      },
+      hail: {
+        label: "Hail",
+        hint: "Hail-certified use cases",
+      },
+    },
+    result: {
+      badge: "Recommendation",
+      title: "Suggested module & key data",
+      empty: "No good match—relax filters and try again",
+      efficiency: "Peak efficiency",
+      weight: "Weight",
+      tempCoef: "Temp. coefficient",
+      degradation: "Year-1 / annual deg.",
+      warranty: "Product / power warranty",
+      glass: "Glass",
+      dualGlass: "Dual glass",
+      singleGlass: "Single glass",
+      openCompare: "Compare gains with this model",
+      alternative: "Alternative",
+    },
+  },
+
   hero: {
     titleLine1: "LONGi Smart PV",
     titleLine2: "Lifecycle Gain Calculator",

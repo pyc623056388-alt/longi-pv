@@ -60,6 +60,98 @@ export const zhMessages = {
     actions: "操作",
   },
 
+  nav: {
+    aria: "工具切换",
+    compare: "增益对比",
+    compareHint: "隆基 vs 竞品全生命周期测算",
+    recommend: "产品选型",
+    recommendHint: "按场景与需求推荐版型",
+  },
+
+  recommend: {
+    eyebrow: "产品选型站",
+    title: "找到适合客户的隆基版型",
+    subtitle:
+      "根据应用场景、屋顶承重、发电类型与功能需求，从 Hi-MO X10 产品矩阵自动推荐组件，并给出关键规格数据。与增益对比工具并行使用：这里负责选型，那边负责测算。",
+    sections: {
+      scenario: "应用场景",
+      roofLoad: "屋顶承重",
+      generation: "发电类型",
+      power: "功率档位",
+      needs: "功能需求",
+    },
+    scenario: {
+      residential: "户用分布式",
+      commercial: "工商业屋顶",
+      flexible: "不限 / 灵活",
+    },
+    roofLoad: {
+      normal: "常规承重",
+      limited: "承重受限（轻质）",
+    },
+    generation: {
+      any: "不限",
+      monofacial: "单面",
+      bifacial: "双面",
+      transparent: "透明双面",
+    },
+    power: {
+      auto: "按场景自动",
+      residential: "户用约 475W",
+      medium: "中版型约 540W",
+      large: "大版型约 650W",
+    },
+    needs: {
+      antiHotspot: {
+        label: "抗热斑 / 防起火",
+        hint: "降低局部过热风险",
+      },
+      antiDust: {
+        label: "防积灰",
+        hint: "优先匹配 HVHF 等防积灰边框",
+      },
+      antiGlare: {
+        label: "防眩光",
+        hint: "机场、道路等眩光敏感场景",
+      },
+      antiShading: {
+        label: "抗阴影遮挡",
+        hint: "局部遮挡下减少功率损失",
+      },
+      lightweight: {
+        label: "轻质版型",
+        hint: "HVHL，适合低载荷屋顶",
+      },
+      saltMist: {
+        label: "盐雾 / 沿海",
+        hint: "盐雾认证环境",
+      },
+      ammonia: {
+        label: "氨气 / 农牧",
+        hint: "畜牧、农场等氨气环境",
+      },
+      hail: {
+        label: "冰雹工况",
+        hint: "冰雹认证相关场景",
+      },
+    },
+    result: {
+      badge: "推荐结果",
+      title: "建议组件与关键数据",
+      empty: "当前条件暂无合适系列，请放宽筛选后重试",
+      efficiency: "最高效率",
+      weight: "重量",
+      tempCoef: "温度系数",
+      degradation: "首年 / 年衰减",
+      warranty: "产品 / 功率质保",
+      glass: "玻璃",
+      dualGlass: "双玻",
+      singleGlass: "单玻",
+      openCompare: "用此型号去做增益对比",
+      alternative: "备选系列",
+    },
+  },
+
   hero: {
     titleLine1: "隆基智能光伏",
     titleLine2: "全生命周期增益测算",
