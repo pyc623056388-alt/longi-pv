@@ -22,10 +22,9 @@ import {
 import type { ProductGeneration } from "@/lib/product-matrix-catalog";
 import { cn } from "@/lib/utils";
 
-/** Step1 可勾选功能（不含与场景重复的抗热斑/抗遮挡；承重由轻质需求表达） */
+/** Step1 可勾选功能（暂不含抗眩光：证书引用待核实；承重由轻质需求表达） */
 const FEATURE_NEEDS: RecommendFeatureNeed[] = [
   "antiDust",
-  "antiGlare",
   "lightweight",
   "saltMist",
   "ammonia",
