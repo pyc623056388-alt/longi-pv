@@ -92,9 +92,26 @@ export function RecommendWizard({
     <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-100 text-slate-900">
       <header className="relative overflow-hidden border-b border-white/10 bg-[radial-gradient(ellipse_at_top,_rgba(228,0,17,0.28),_transparent_55%),linear-gradient(180deg,#0b1220_0%,#111827_100%)]">
         <div className="mx-auto flex max-w-7xl flex-col gap-8 px-6 pb-14 pt-6 sm:pb-16">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <SiteToolNav />
-            <LanguageSwitcher locale={locale} onLocaleChange={onLocaleChange} />
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center justify-between gap-3">
+              <Image
+                src="/longi-logo.svg"
+                alt="LONGi"
+                width={86}
+                height={40}
+                priority
+                className="h-8 w-auto shrink-0"
+              />
+              <div className="sm:hidden">
+                <LanguageSwitcher locale={locale} onLocaleChange={onLocaleChange} />
+              </div>
+            </div>
+            <div className="flex flex-wrap items-center justify-between gap-3 sm:justify-end">
+              <SiteToolNav />
+              <div className="hidden sm:block">
+                <LanguageSwitcher locale={locale} onLocaleChange={onLocaleChange} />
+              </div>
+            </div>
           </div>
 
           <motion.div
