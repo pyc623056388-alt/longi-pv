@@ -22,14 +22,14 @@ export interface ProductRecommendInput {
 
 export const DEFAULT_PRODUCT_RECOMMEND_INPUT: ProductRecommendInput = {
   scenario: "residential",
+  /** Step1 已去掉承重选项；轻质需求用 needs.lightweight，默认常规承重 */
   roofLoad: "normal",
   generation: "any",
+  /** Step1 已去掉功率档；由场景自动映射 segment */
   powerPref: "auto",
   needs: {
-    antiHotspot: true,
     antiDust: false,
     antiGlare: false,
-    antiShading: true,
     lightweight: false,
     saltMist: false,
     ammonia: false,

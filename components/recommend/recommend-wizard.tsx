@@ -9,7 +9,6 @@ import type { AppLocale } from "@/lib/i18n";
 import {
   DEFAULT_PRODUCT_RECOMMEND_INPUT,
   recommendProductSeries,
-  weakAlternativeMatches,
   type ProductRecommendInput,
 } from "@/lib/product-recommend-engine";
 
@@ -30,10 +29,7 @@ export function RecommendWizard({
 
   const ranked = useMemo(() => recommendProductSeries(input), [input]);
   const primary = ranked[0];
-  const alternatives = useMemo(
-    () => weakAlternativeMatches(input, undefined, 3),
-    [input]
-  );
+  const alternatives = ranked.slice(1, 4);
 
   const handleApply = () => {
     if (!primary) return;

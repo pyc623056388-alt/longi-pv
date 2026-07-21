@@ -47,7 +47,7 @@ export const enMessages: Messages = {
     eyebrow: "Product finder",
     title: "Find the right LONGi version",
     subtitle:
-      "Recommend a Hi-MO X10 series from scenario, roof load, generation type, and feature needs—with key specs. Use this for selection; use the compare tool for ROI.",
+      "Recommend a Hi-MO X10 series from scenario, generation type, and feature needs—with key specs. Use this for selection; use the compare tool for ROI.",
     scrollHint: "Scroll down to start",
     formHint: "Conflicting options that yield no modules are disabled",
     formTitle: "Filters",

@@ -34,12 +34,15 @@ export function RecommendResult({
   const { m, locale } = useI18n();
   const rm = m.recommend;
 
+  const allOptions = [primary, ...alternatives];
   const current =
-    [primary, ...alternatives].find((x) => x.series.id === selectedSeriesId) ??
-    primary;
+    allOptions.find((x) => x.series.id === selectedSeriesId) ?? primary;
   const series = current.series;
   const photos = getFrontRearPhotos(series.id);
   const hasPhotos = photos.length > 0;
+  const otherOptions = allOptions.filter(
+    (item) => item.series.id !== series.id
+  );
 
   return (
     <motion.section
@@ -99,7 +102,6 @@ export function RecommendResult({
                         className="group relative block overflow-hidden rounded-2xl bg-slate-900"
                       >
                         <div className="relative aspect-[4/5] w-full">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={driveThumbnailUrl(photo.fileId, 900)}
                             alt={photo.label}
@@ -132,22 +134,32 @@ export function RecommendResult({
                   </div>
 
                   <ul className="flex flex-wrap gap-2">
-                    {(locale === "zh" ? series.highlightsZh : series.highlightsEn).map(
-                      (h) => (
-                        <li
-                          key={h}
-                          className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700"
-                        >
-                          {h}
-                        </li>
-                      )
-                    )}
+                    {(locale === "zh"
+                      ? series.highlightsZh
+                      : series.highlightsEn
+                    ).map((h) => (
+                      <li
+                        key={h}
+                        className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700"
+                      >
+                        {h}
+                      </li>
+                    ))}
                   </ul>
 
                   <dl className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                    <SpecItem label={rm.result.efficiency} value={`${series.efficiencyMaxPct}%`} />
-                    <SpecItem label={rm.result.weight} value={`${series.weightKg} kg`} />
-                    <SpecItem label={rm.result.tempCoef} value={`${series.pmpTempCoef}%/°C`} />
+                    <SpecItem
+                      label={rm.result.efficiency}
+                      value={`${series.efficiencyMaxPct}%`}
+                    />
+                    <SpecItem
+                      label={rm.result.weight}
+                      value={`${series.weightKg} kg`}
+                    />
+                    <SpecItem
+                      label={rm.result.tempCoef}
+                      value={`${series.pmpTempCoef}%/°C`}
+                    />
                     <SpecItem
                       label={rm.result.degradation}
                       value={`${series.firstYearDegradationPct}% / ${series.annualDegradationPct}%`}
@@ -166,20 +178,21 @@ export function RecommendResult({
                     />
                   </dl>
 
-                  {(locale === "zh" ? current.reasonsZh : current.reasonsEn).length >
-                    0 && (
+                  {(locale === "zh" ? current.reasonsZh : current.reasonsEn)
+                    .length > 0 && (
                     <ul className="space-y-1">
-                      {(locale === "zh" ? current.reasonsZh : current.reasonsEn).map(
-                        (r) => (
-                          <li
-                            key={r}
-                            className="flex items-start gap-2 text-sm text-slate-600"
-                          >
-                            <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
-                            <span>{r}</span>
-                          </li>
-                        )
-                      )}
+                      {(locale === "zh"
+                        ? current.reasonsZh
+                        : current.reasonsEn
+                      ).map((r) => (
+                        <li
+                          key={r}
+                          className="flex items-start gap-2 text-sm text-slate-600"
+                        >
+                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                          <span>{r}</span>
+                        </li>
+                      ))}
                     </ul>
                   )}
 
@@ -205,21 +218,18 @@ export function RecommendResult({
             <h3 className="text-lg font-bold text-slate-900">
               {rm.weakAlternatives}
             </h3>
-            <p className="mt-1 text-sm text-slate-500">{rm.weakAlternativesHint}</p>
+            <p className="mt-1 text-sm text-slate-500">
+              {rm.weakAlternativesHint}
+            </p>
             <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {alternatives.map((item) => {
-                const active = item.series.id === selectedSeriesId;
-                return (
+              {[primary, ...alternatives]
+                .filter((item) => item.series.id !== series.id)
+                .map((item) => (
                   <button
                     key={item.series.id}
                     type="button"
                     onClick={() => onSelectSeries(item.series.id)}
-                    className={cn(
-                      "rounded-2xl border p-4 text-left transition",
-                      active
-                        ? "border-[#E40011] bg-[#E40011]/[0.04] shadow-md ring-1 ring-[#E40011]/30"
-                        : "border-slate-200 bg-white shadow-sm hover:border-slate-300 hover:shadow-md"
-                    )}
+                    className="rounded-2xl border border-slate-200 bg-white p-4 text-left shadow-sm transition hover:border-slate-300 hover:shadow-md"
                   >
                     <p className="text-[11px] font-semibold tracking-wide text-slate-400 uppercase">
                       {rm.result.alternative}
@@ -229,11 +239,12 @@ export function RecommendResult({
                     </p>
                     <p className="mt-1 text-xs text-slate-500">
                       {item.series.powerMinWp}–{item.series.powerMaxWp} W ·{" "}
-                      {locale === "zh" ? item.series.nameZh : item.series.nameEn}
+                      {locale === "zh"
+                        ? item.series.nameZh
+                        : item.series.nameEn}
                     </p>
                   </button>
-                );
-              })}
+                ))}
             </div>
           </div>
         )}
