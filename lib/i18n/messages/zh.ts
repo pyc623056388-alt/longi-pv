@@ -88,6 +88,9 @@ export const zhMessages = {
     weakAlternativesHint: "点击可切换查看该系列",
     photoFront: "正面",
     photoRear: "背面",
+    photoSide: "侧面",
+    photoBevel: "斜视",
+    photoOther: "产品图",
     sections: {
       scenario: "应用场景",
       roofLoad: "屋顶承重",

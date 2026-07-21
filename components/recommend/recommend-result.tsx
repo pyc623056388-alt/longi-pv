@@ -16,12 +16,31 @@ import { useI18n } from "@/components/locale-provider";
 import type { ProductRecommendMatch } from "@/lib/product-recommend-engine";
 import {
   driveThumbnailUrl,
-  getFrontRearPhotos,
+  getProductPhotos,
+  type DriveResourceLink,
 } from "@/lib/product-drive-resources";
 import { cn } from "@/lib/utils";
 
 function compareHrefForModel(model: string): string {
   return `/?longiModel=${encodeURIComponent(model)}`;
+}
+
+function photoViewLabel(
+  label: string,
+  rm: {
+    photoFront: string;
+    photoRear: string;
+    photoSide: string;
+    photoBevel: string;
+    photoOther: string;
+  }
+): string {
+  const l = label.toLowerCase();
+  if (l.includes("front")) return rm.photoFront;
+  if (l.includes("rear")) return rm.photoRear;
+  if (l.includes("side")) return rm.photoSide;
+  if (l.includes("bevel")) return rm.photoBevel;
+  return rm.photoOther;
 }
 
 interface RecommendResultProps {
@@ -46,7 +65,7 @@ export function RecommendResult({
   const current =
     allOptions.find((x) => x.series.id === selectedSeriesId) ?? primary;
   const series = current.series;
-  const photos = getFrontRearPhotos(series.id);
+  const photos = getProductPhotos(series.id);
   const hasPhotos = photos.length > 0;
   const switchOptions = allOptions.filter(
     (item) => item.series.id !== series.id
@@ -95,7 +114,7 @@ export function RecommendResult({
           >
             <div
               className={cn(
-                "grid min-h-0 flex-1 gap-0",
+                "grid min-h-0 flex-1 items-stretch gap-0",
                 hasPhotos
                   ? "lg:grid-cols-[minmax(220px,38%)_minmax(0,1fr)]"
                   : "grid-cols-1"
@@ -104,8 +123,7 @@ export function RecommendResult({
               {hasPhotos && (
                 <PhotoCarousel
                   photos={photos}
-                  frontLabel={rm.photoFront}
-                  rearLabel={rm.photoRear}
+                  labelFor={(label) => photoViewLabel(label, rm)}
                 />
               )}
 
@@ -224,12 +242,10 @@ export function RecommendResult({
 
 function PhotoCarousel({
   photos,
-  frontLabel,
-  rearLabel,
+  labelFor,
 }: {
-  photos: ReturnType<typeof getFrontRearPhotos>;
-  frontLabel: string;
-  rearLabel: string;
+  photos: DriveResourceLink[];
+  labelFor: (label: string) => string;
 }) {
   const [index, setIndex] = useState(0);
 
@@ -241,14 +257,14 @@ function PhotoCarousel({
   const photo = photos[safeIndex];
   if (!photo) return null;
 
-  const label = /front/i.test(photo.label) ? frontLabel : rearLabel;
+  const label = labelFor(photo.label);
   const canPrev = photos.length > 1;
   const go = (dir: -1 | 1) => {
     setIndex((i) => (i + dir + photos.length) % photos.length);
   };
 
   return (
-    <div className="relative flex min-h-[220px] flex-col bg-[#F1F5F9] lg:min-h-0">
+    <div className="relative flex h-full min-h-[220px] flex-col bg-[#F1F5F9] lg:min-h-0">
       <div className="relative flex min-h-0 flex-1 items-center justify-center p-3 sm:p-4">
         <a
           href={photo.url}
@@ -291,10 +307,9 @@ function PhotoCarousel({
       </div>
 
       {photos.length > 1 && (
-        <div className="flex items-center justify-center gap-2 pb-3">
+        <div className="flex flex-wrap items-center justify-center gap-1.5 px-2 pb-3">
           {photos.map((p, i) => {
-            const tip = /front/i.test(p.label) ? frontLabel : rearLabel;
-            const active = i === safeIndex;
+            const tip = labelFor(p.label);
             return (
               <button
                 key={p.fileId}
@@ -302,32 +317,16 @@ function PhotoCarousel({
                 aria-label={tip}
                 onClick={() => setIndex(i)}
                 className={cn(
-                  "h-1.5 rounded-full transition",
-                  active ? "w-5 bg-[#E40011]" : "w-1.5 bg-slate-300 hover:bg-slate-400"
+                  "rounded-md px-2 py-0.5 text-[10px] font-semibold transition",
+                  i === safeIndex
+                    ? "bg-white text-slate-900 ring-1 ring-slate-300"
+                    : "text-slate-500 hover:bg-white/70 hover:text-slate-700"
                 )}
-              />
+              >
+                {tip}
+              </button>
             );
           })}
-          <div className="ml-1 flex gap-1">
-            {photos.map((p, i) => {
-              const tip = /front/i.test(p.label) ? frontLabel : rearLabel;
-              return (
-                <button
-                  key={`${p.fileId}-thumb`}
-                  type="button"
-                  onClick={() => setIndex(i)}
-                  className={cn(
-                    "rounded-md px-2 py-0.5 text-[10px] font-semibold transition",
-                    i === safeIndex
-                      ? "bg-white text-slate-900 ring-1 ring-slate-300"
-                      : "text-slate-500 hover:bg-white/70 hover:text-slate-700"
-                  )}
-                >
-                  {tip}
-                </button>
-              );
-            })}
-          </div>
         </div>
       )}
     </div>

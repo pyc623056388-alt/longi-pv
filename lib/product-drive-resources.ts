@@ -519,10 +519,23 @@ export function getProductDriveResources(
   return PRODUCT_DRIVE_RESOURCES[seriesId];
 }
 
-/** 仅返回正面/背面照片；没有则空数组（结果页不占位） */
-export function getFrontRearPhotos(seriesId: string): DriveResourceLink[] {
+/** 结果页左侧轮播用全部产品视角照片 */
+export function getProductPhotos(seriesId: string): DriveResourceLink[] {
   const photos = getProductDriveResources(seriesId)?.photos ?? [];
-  return photos.filter((p) => {
+  const rank = (label: string) => {
+    const l = label.toLowerCase();
+    if (l.includes("front")) return 0;
+    if (l.includes("rear")) return 1;
+    if (l.includes("side")) return 2;
+    if (l.includes("bevel")) return 3;
+    return 4;
+  };
+  return [...photos].sort((a, b) => rank(a.label) - rank(b.label));
+}
+
+/** @deprecated 使用 getProductPhotos；保留兼容旧调用 */
+export function getFrontRearPhotos(seriesId: string): DriveResourceLink[] {
+  return getProductPhotos(seriesId).filter((p) => {
     const label = p.label.toLowerCase();
     return label.includes("front") || label.includes("rear");
   });

@@ -4,7 +4,6 @@ import type { ReactNode } from "react";
 import {
   ExternalLink,
   FileText,
-  ImageIcon,
   ScrollText,
   ShieldCheck,
   Wrench,
@@ -34,7 +33,7 @@ function ResourceAnchor({
       target="_blank"
       rel="noopener noreferrer"
       className={cn(
-        "inline-flex h-9 max-w-full items-center gap-1.5 truncate rounded-lg border border-slate-200 bg-white px-2.5 text-[11px] font-medium text-slate-700 transition",
+        "inline-flex h-9 w-full items-center gap-1.5 truncate rounded-lg border border-slate-200 bg-white px-2.5 text-[11px] font-medium text-slate-700 transition",
         "hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900",
         className
       )}
@@ -66,13 +65,9 @@ function shortCertLabel(link: DriveResourceLink): string {
   return beforeDot || link.label;
 }
 
-function photoLabel(link: DriveResourceLink): string {
-  return link.label.replace(/\.(jpe?g|png|webp)$/i, "").trim() || link.label;
-}
-
 interface ProductResourcesPanelProps {
   seriesId: string;
-  /** 结果页：分组分区 + 证书区拉伸填满底部 */
+  /** 结果页：Core Docs + Certificates 分区，证书区拉伸填底 */
   compact?: boolean;
 }
 
@@ -118,7 +113,6 @@ export function ProductResourcesPanel({
     },
   ];
 
-  const photos = resources.photos;
   const certificates = resources.certificates.filter(
     (c) =>
       c.category !== "Anti-Glare" && !/anti[\s-]?glare/i.test(c.label)
@@ -144,7 +138,7 @@ export function ProductResourcesPanel({
                 <ResourceAnchor
                   key={item.key}
                   href={item.link.url}
-                  className="h-9 font-semibold text-slate-900"
+                  className="justify-center font-semibold text-slate-900 sm:justify-start"
                 >
                   {item.icon}
                   <span className="truncate">{item.title}</span>
@@ -152,7 +146,7 @@ export function ProductResourcesPanel({
               ) : (
                 <div
                   key={item.key}
-                  className="flex h-9 items-center rounded-lg border border-dashed border-slate-200 px-2 text-[10px] text-slate-300"
+                  className="flex h-9 items-center justify-center rounded-lg border border-dashed border-slate-200 px-2 text-[10px] text-slate-300"
                 >
                   {item.title}
                 </div>
@@ -161,40 +155,18 @@ export function ProductResourcesPanel({
           </div>
         </div>
 
-        <div className="mb-2.5 shrink-0">
-          <SectionLabel icon={<ImageIcon className="h-3.5 w-3.5" />}>
-            {rm.photos}
-          </SectionLabel>
-          {photos.length ? (
-            <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-4">
-              {photos.map((link) => (
-                <ResourceAnchor
-                  key={link.fileId + link.label}
-                  href={link.url}
-                  title={link.label}
-                >
-                  <ImageIcon className="h-3 w-3 shrink-0 text-slate-400" />
-                  <span className="truncate">{photoLabel(link)}</span>
-                </ResourceAnchor>
-              ))}
-            </div>
-          ) : (
-            <p className="text-[11px] text-slate-400">{rm.photosEmpty}</p>
-          )}
-        </div>
-
         <div className="flex min-h-0 flex-1 flex-col rounded-lg border border-slate-100 bg-[#F8FAFC] p-2 sm:p-2.5">
           <SectionLabel icon={<ScrollText className="h-3.5 w-3.5" />}>
             {rm.certificates}
           </SectionLabel>
           {certificates.length ? (
-            <div className="grid flex-1 grid-cols-2 content-start gap-1.5 sm:grid-cols-3">
+            <div className="grid flex-1 auto-rows-min grid-cols-2 content-start gap-1.5 sm:grid-cols-3">
               {certificates.map((link) => (
                 <ResourceAnchor
                   key={link.fileId + link.label}
                   href={link.url}
                   title={link.label}
-                  className="h-10 border-slate-200/90 bg-white shadow-[0_1px_0_rgba(15,23,42,0.03)]"
+                  className="h-10 justify-start border-slate-200/90 bg-white shadow-[0_1px_0_rgba(15,23,42,0.03)]"
                 >
                   <ScrollText className="h-3.5 w-3.5 shrink-0 text-[#E40011]/75" />
                   <span className="truncate font-semibold text-slate-800">
@@ -222,7 +194,7 @@ export function ProductResourcesPanel({
         <SectionLabel icon={<FileText className="h-3.5 w-3.5" />}>
           {rm.coreDocs}
         </SectionLabel>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+        <div className="grid grid-cols-3 gap-2">
           {primary.map((item) =>
             item.link ? (
               <ResourceAnchor
@@ -231,32 +203,11 @@ export function ProductResourcesPanel({
                 className="border-slate-900/10 bg-white font-semibold text-slate-900"
               >
                 {item.icon}
-                {item.title}
+                <span className="truncate">{item.title}</span>
               </ResourceAnchor>
             ) : null
           )}
         </div>
-      </div>
-
-      <div>
-        <SectionLabel icon={<ImageIcon className="h-3.5 w-3.5" />}>
-          {rm.photos}
-        </SectionLabel>
-        {photos.length ? (
-          <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3">
-            {photos.map((link) => (
-              <ResourceAnchor
-                key={link.fileId + link.label}
-                href={link.url}
-                title={link.label}
-              >
-                <span className="truncate">{photoLabel(link)}</span>
-              </ResourceAnchor>
-            ))}
-          </div>
-        ) : (
-          <p className="text-xs text-slate-400">{rm.photosEmpty}</p>
-        )}
       </div>
 
       <div className="rounded-xl border border-slate-100 bg-[#F8FAFC] p-3">

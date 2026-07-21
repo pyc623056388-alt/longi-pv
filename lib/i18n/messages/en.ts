@@ -64,6 +64,9 @@ export const enMessages: Messages = {
     weakAlternativesHint: "Click to inspect that series",
     photoFront: "Front",
     photoRear: "Rear",
+    photoSide: "Side",
+    photoBevel: "Bevel",
+    photoOther: "Photo",
     sections: {
       scenario: "Application",
       roofLoad: "Roof load",

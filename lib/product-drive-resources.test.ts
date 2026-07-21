@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   getFrontRearPhotos,
   getProductDriveResources,
+  getProductPhotos,
 } from "./product-drive-resources";
 
 describe("product-drive-resources", () => {
@@ -22,15 +23,26 @@ describe("product-drive-resources", () => {
     expect(getProductDriveResources("LR7-72HVD")?.warranty).toBeTruthy();
   });
 
-  it("returns only front/rear photos when present", () => {
+  it("returns all product view photos sorted front→rear→side→bevel", () => {
+    const hvb = getProductPhotos("LR7-54HVB");
+    expect(hvb.map((p) => p.label)).toEqual([
+      "Front view",
+      "Rear view",
+      "Side view",
+      "Bevel view",
+    ]);
+
+    const noPhoto = getProductPhotos("LR7-54HVHF");
+    expect(noPhoto).toEqual([]);
+
+    const hvd72 = getProductPhotos("LR7-72HVD");
+    expect(hvd72.length).toBeGreaterThan(0);
+    expect(hvd72[0]?.label.toLowerCase()).toMatch(/front|rear|side|bevel/);
+  });
+
+  it("getFrontRearPhotos still returns only front/rear", () => {
     const hvb = getFrontRearPhotos("LR7-54HVB");
     expect(hvb.length).toBe(2);
     expect(hvb.every((p) => /front|rear/i.test(p.label))).toBe(true);
-
-    const noPhoto = getFrontRearPhotos("LR7-54HVHF");
-    expect(noPhoto).toEqual([]);
-
-    const hvd72 = getFrontRearPhotos("LR7-72HVD");
-    expect(hvd72.every((p) => /front|rear/i.test(p.label))).toBe(true);
   });
 });
