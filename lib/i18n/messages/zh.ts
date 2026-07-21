@@ -177,6 +177,7 @@ export const zhMessages = {
     resources: {
       title: "产品资料（Google Drive）",
       subtitle: "点击即可打开对应 Datasheet、质保、安装手册与证书，文件不占用站点体积",
+      coreDocs: "核心文档",
       datasheet: "Datasheet",
       warranty: "质保文件",
       installationManual: "安装手册",

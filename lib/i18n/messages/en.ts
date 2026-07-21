@@ -154,6 +154,7 @@ export const enMessages: Messages = {
       title: "Product files (Google Drive)",
       subtitle:
         "Open datasheet, warranty, installation manual, and certificates—files stay on Drive",
+      coreDocs: "Core documents",
       datasheet: "Datasheet",
       warranty: "Warranty",
       installationManual: "Installation manual",

@@ -109,8 +109,8 @@ export function RecommendResult({
                 />
               )}
 
-              <div className="flex min-h-0 flex-col">
-                <div className="space-y-2.5 border-b border-slate-100 p-3.5 sm:p-4">
+              <div className="flex min-h-0 flex-col lg:h-full">
+                <div className="shrink-0 space-y-2.5 border-b border-slate-100 p-3.5 sm:p-4">
                   <div className="flex flex-wrap items-start justify-between gap-2">
                     <div className="min-w-0">
                       <p className="text-xs font-medium text-[#E40011]">
@@ -192,7 +192,7 @@ export function RecommendResult({
                   )}
                 </div>
 
-                <div className="min-h-0 flex-1 p-3 sm:p-3.5">
+                <div className="flex min-h-0 flex-1 flex-col p-3 sm:p-3.5">
                   <ProductResourcesPanel seriesId={series.id} compact />
                 </div>
               </div>
