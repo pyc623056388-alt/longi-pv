@@ -542,3 +542,18 @@ export function getProductDriveResources(
 ): ProductDriveResources | undefined {
   return PRODUCT_DRIVE_RESOURCES[seriesId];
 }
+
+/** 仅返回正面/背面照片；没有则空数组（结果页不占位） */
+export function getFrontRearPhotos(seriesId: string): DriveResourceLink[] {
+  const photos = getProductDriveResources(seriesId)?.photos ?? [];
+  return photos.filter((p) => {
+    const label = p.label.toLowerCase();
+    return label.includes("front") || label.includes("rear");
+  });
+}
+
+/** Drive 预览缩略图（需文件对「知道链接的人」可见） */
+export function driveThumbnailUrl(fileId: string, size = 800): string {
+  return `https://drive.google.com/thumbnail?id=${fileId}&sz=w${size}`;
+}
+

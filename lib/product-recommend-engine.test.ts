@@ -1,8 +1,11 @@
 import { describe, expect, it } from "vitest";
 import {
   DEFAULT_PRODUCT_RECOMMEND_INPUT,
+  countMatches,
+  isOptionFeasible,
   recommendProductSeries,
   topProductRecommendation,
+  weakAlternativeMatches,
 } from "./product-recommend-engine";
 
 describe("product-recommend-engine", () => {
@@ -52,5 +55,33 @@ describe("product-recommend-engine", () => {
       },
     });
     expect(list[0]?.series.id).toBe("LR7-72HVD");
+  });
+
+  it("returns zero matches for transparent + lightweight", () => {
+    const input = {
+      ...DEFAULT_PRODUCT_RECOMMEND_INPUT,
+      generation: "transparent" as const,
+      roofLoad: "limited" as const,
+      needs: {
+        ...DEFAULT_PRODUCT_RECOMMEND_INPUT.needs,
+        lightweight: true,
+      },
+    };
+    expect(countMatches(input)).toBe(0);
+    expect(
+      isOptionFeasible(DEFAULT_PRODUCT_RECOMMEND_INPUT, {
+        generation: "transparent",
+        roofLoad: "limited",
+        needs: { lightweight: true },
+      })
+    ).toBe(false);
+  });
+
+  it("exposes weak alternatives after the top pick", () => {
+    const input = DEFAULT_PRODUCT_RECOMMEND_INPUT;
+    const top = topProductRecommendation(input);
+    const alts = weakAlternativeMatches(input);
+    expect(top).toBeTruthy();
+    expect(alts.every((a) => a.series.id !== top!.series.id)).toBe(true);
   });
 });

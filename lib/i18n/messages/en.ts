@@ -48,8 +48,22 @@ export const enMessages: Messages = {
     title: "Find the right LONGi version",
     subtitle:
       "Recommend a Hi-MO X10 series from scenario, roof load, generation type, and feature needs—with key specs. Use this for selection; use the compare tool for ROI.",
-    formHint: "Fill needs on the left; recommendations update on the right",
+    scrollHint: "Scroll down to start",
+    formHint: "Conflicting options that yield no modules are disabled",
     formTitle: "Filters",
+    stepBadge: "Step 1",
+    stepTitle: "Choose customer needs",
+    stepSubtitle:
+      "Set scenario and feature requirements; we recommend matching LONGi variants",
+    matchCount: (n: number) => `Estimated matches: ${n} series`,
+    matchNone: "No series match this combination",
+    optionDisabled: "Conflicts with current filters; no matching module",
+    apply: "Apply & view recommendation",
+    backToFilters: "Edit filters",
+    weakAlternatives: "Weak alternatives",
+    weakAlternativesHint: "Click to inspect that series",
+    photoFront: "Front",
+    photoRear: "Rear",
     sections: {
       scenario: "Application",
       roofLoad: "Roof load",
@@ -62,9 +76,18 @@ export const enMessages: Messages = {
       commercial: "C&I rooftop",
       flexible: "Any / flexible",
     },
+    scenarioDesc: {
+      residential: "Homes and small distributed projects",
+      commercial: "C&I rooftops and larger systems",
+      flexible: "No scenario limit; wider catalog",
+    },
     roofLoad: {
       normal: "Normal load",
       limited: "Limited load (lightweight)",
+    },
+    roofLoadDesc: {
+      normal: "Standard roof load; full catalog",
+      limited: "Only lightweight HVHL-class options",
     },
     generation: {
       any: "Any",
@@ -130,7 +153,7 @@ export const enMessages: Messages = {
     resources: {
       title: "Product files (Google Drive)",
       subtitle:
-        "Open datasheet, warranty, installation manual, photos, and certificates—files stay on Drive to keep the site light",
+        "Open datasheet, warranty, installation manual, and certificates—files stay on Drive",
       datasheet: "Datasheet",
       warranty: "Warranty",
       installationManual: "Installation manual",

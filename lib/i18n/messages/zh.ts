@@ -73,8 +73,21 @@ export const zhMessages = {
     title: "找到适合客户的隆基版型",
     subtitle:
       "根据应用场景、屋顶承重、发电类型与功能需求，从 Hi-MO X10 产品矩阵自动推荐组件，并给出关键规格数据。与增益对比工具并行使用：这里负责选型，那边负责测算。",
-    formHint: "左侧填写需求，右侧实时给出推荐型号与资料",
+    scrollHint: "向下滚动开始选型",
+    formHint: "选择条件时会自动限制无货组合",
     formTitle: "筛选条件",
+    stepBadge: "第一步",
+    stepTitle: "选择客户需求",
+    stepSubtitle: "配置应用场景与功能条件，系统将推荐匹配的隆基版型",
+    matchCount: (n: number) => `预计匹配：${n} 个系列`,
+    matchNone: "当前组合无匹配系列",
+    optionDisabled: "与已选条件冲突，暂无对应组件",
+    apply: "应用并查看推荐",
+    backToFilters: "返回修改条件",
+    weakAlternatives: "弱替代方案",
+    weakAlternativesHint: "点击可切换查看该系列",
+    photoFront: "正面",
+    photoRear: "背面",
     sections: {
       scenario: "应用场景",
       roofLoad: "屋顶承重",
@@ -87,9 +100,18 @@ export const zhMessages = {
       commercial: "工商业屋顶",
       flexible: "不限 / 灵活",
     },
+    scenarioDesc: {
+      residential: "户用屋顶与小型分布式项目",
+      commercial: "工商业屋顶与较大装机",
+      flexible: "不限定场景，扩大可选范围",
+    },
     roofLoad: {
       normal: "常规承重",
       limited: "承重受限（轻质）",
+    },
+    roofLoadDesc: {
+      normal: "常规屋顶载荷，可选标准版型",
+      limited: "仅匹配轻质 HVHL 等低载荷方案",
     },
     generation: {
       any: "不限",
@@ -154,7 +176,7 @@ export const zhMessages = {
     },
     resources: {
       title: "产品资料（Google Drive）",
-      subtitle: "点击即可打开对应 Datasheet、质保、安装手册、照片与证书，文件不占用站点体积",
+      subtitle: "点击即可打开对应 Datasheet、质保、安装手册与证书，文件不占用站点体积",
       datasheet: "Datasheet",
       warranty: "质保文件",
       installationManual: "安装手册",
