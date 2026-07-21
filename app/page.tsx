@@ -33,10 +33,6 @@ import {
   type ModulePairPresetId,
   type QuickModulePairPresetId,
 } from "@/lib/module-pair-presets";
-import type {
-  ModuleNeedPreferences,
-  ModulePowerBand,
-} from "@/lib/module-recommend";
 import {
   buildSessionSnapshot,
   clearSession,
@@ -303,38 +299,6 @@ export default function ModuleComparisonPage() {
       syncModulePairPresetFromSelection(effectiveLongiId, id);
     },
     [effectiveLongiId, syncModulePairPresetFromSelection]
-  );
-
-  const handleApplyRecommendedVersion = useCallback(
-    ({
-      module,
-      powerWp,
-    }: {
-      module: ModuleRecord;
-      powerWp: ModulePowerBand;
-      preferences: ModuleNeedPreferences;
-    }) => {
-      const presetId = (
-        { 475: "bc475", 540: "bc540", 650: "bc650" } as const
-      )[powerWp];
-      const msgs = getMessages(locale).specs;
-      const { competitorId, warnings } = applyModulePairPreset(
-        presetId,
-        longiModules,
-        competitorModules,
-        {
-          hvhFallback: msgs.presetHvhFallback,
-          missingPair: msgs.presetMissingPair,
-        }
-      );
-      // Keep the recommended LONGi model; only sync competitor + preset badge
-      setSelectedLongiId(module.id);
-      if (competitorId) setSelectedCompetitorId(competitorId);
-      setModulePairPreset(presetId);
-      for (const w of warnings) toast.warning(w);
-      toast.success(msgs.versionFinder.appliedToast(module.model));
-    },
-    [longiModules, competitorModules, locale]
   );
 
   const longiRecord = longiModules.find((m) => m.id === effectiveLongiId);
@@ -720,7 +684,6 @@ export default function ModuleComparisonPage() {
         onApplyOverride={applyFieldOverride}
         onResetOverride={resetFieldOverride}
         onSaveToLibrary={saveFieldToLibrary}
-        onApplyRecommendedVersion={handleApplyRecommendedVersion}
       />
       <ResultsSection
         results={results}
