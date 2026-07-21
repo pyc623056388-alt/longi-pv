@@ -150,6 +150,18 @@ export const zhMessages = {
       openCompare: "用此型号去做增益对比",
       alternative: "备选系列",
     },
+    resources: {
+      title: "产品资料（Google Drive）",
+      subtitle: "点击即可打开对应 Datasheet、质保、安装手册、照片与证书，文件不占用站点体积",
+      datasheet: "Datasheet",
+      warranty: "质保文件",
+      installationManual: "安装手册",
+      photos: "产品照片",
+      certificates: "认证证书",
+      photosEmpty: "该系列暂无已挂载照片",
+      certsEmpty: "该系列暂无已挂载证书",
+      unavailable: "暂未关联 Drive 资料",
+    },
   },
 
   hero: {

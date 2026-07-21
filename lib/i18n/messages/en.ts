@@ -125,6 +125,19 @@ export const enMessages: Messages = {
       openCompare: "Compare gains with this model",
       alternative: "Alternative",
     },
+    resources: {
+      title: "Product files (Google Drive)",
+      subtitle:
+        "Open datasheet, warranty, installation manual, photos, and certificates—files stay on Drive to keep the site light",
+      datasheet: "Datasheet",
+      warranty: "Warranty",
+      installationManual: "Installation manual",
+      photos: "Product photos",
+      certificates: "Certificates",
+      photosEmpty: "No photos linked for this series yet",
+      certsEmpty: "No certificates linked for this series yet",
+      unavailable: "No Drive files linked yet",
+    },
   },
 
   hero: {

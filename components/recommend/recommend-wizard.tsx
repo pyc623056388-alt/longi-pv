@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/select";
 import { SiteToolNav } from "@/components/site-tool-nav";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { ProductResourcesPanel } from "@/components/recommend/product-resources-panel";
 import { useI18n } from "@/components/locale-provider";
 import type { AppLocale } from "@/lib/i18n";
 import {
@@ -350,6 +351,8 @@ export function RecommendWizard({
                         <ArrowRight className="h-4 w-4" />
                       </Link>
                     </div>
+
+                    <ProductResourcesPanel seriesId={top.series.id} />
                   </div>
                 </div>
               ) : (
