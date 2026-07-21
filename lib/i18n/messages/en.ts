@@ -155,6 +155,45 @@ export const enMessages: Messages = {
     fieldHints: {
       dimensions: "L×W mm, e.g. 2278×1134",
     },
+    versionFinder: {
+      title: "Find your version",
+      subtitle:
+        "Select customer needs (anti-dust, anti-hotspot, etc.) to auto-match a LONGi variant",
+      powerBand: "Power band",
+      powerBandOptions: {
+        475: "Residential 475W",
+        540: "Mid-size 540W",
+        650: "Large 650W",
+      },
+      needsLegend: "Customer needs",
+      needs: {
+        antiHotspot: {
+          label: "Anti-hotspot / fire prevention",
+          hint: "Reduces localized overheating risk",
+        },
+        antiDust: {
+          label: "Anti-dust",
+          hint: "Prefers HVHF / HVDF anti-dust frame variants",
+        },
+        antiGlare: {
+          label: "Anti-glare",
+          hint: "Prefers non-F HVH / HVD anti-glare variants",
+        },
+        antiShading: {
+          label: "Anti-shading",
+          hint: "Limits power loss under partial shading",
+        },
+        lightweight: {
+          label: "Lightweight",
+          hint: "Prefers HVHL for load-limited roofs",
+        },
+      },
+      previewLabel: "Recommended model",
+      previewEmpty: "No model in this power band",
+      partialMatch: "No exact match; showing the closest variant",
+      apply: "Apply recommended version",
+      appliedToast: (model: string) => `Selected ${model}`,
+    },
   },
 
   specParams: {

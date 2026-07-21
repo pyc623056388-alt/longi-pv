@@ -177,6 +177,45 @@ export const zhMessages = {
     fieldHints: {
       dimensions: "长×宽 mm，如 2278×1134",
     },
+    versionFinder: {
+      title: "按需求选型",
+      subtitle:
+        "勾选客户关注的功能（如防积灰、抗热斑），自动匹配对应隆基版型",
+      powerBand: "功率档位",
+      powerBandOptions: {
+        475: "户用 475W",
+        540: "中版型 540W",
+        650: "大版型 650W",
+      },
+      needsLegend: "客户需求",
+      needs: {
+        antiHotspot: {
+          label: "抗热斑 / 防起火",
+          hint: "降低局部过热风险，减少热斑隐患",
+        },
+        antiDust: {
+          label: "防积灰",
+          hint: "优先匹配 HVHF / HVDF 防积灰边框版型",
+        },
+        antiGlare: {
+          label: "防眩光",
+          hint: "优先匹配非 F 的 HVH / HVD 防眩光版型",
+        },
+        antiShading: {
+          label: "抗阴影遮挡",
+          hint: "局部遮挡下减少功率损失",
+        },
+        lightweight: {
+          label: "轻质版型",
+          hint: "优先匹配 HVHL，适合承重受限屋顶",
+        },
+      },
+      previewLabel: "推荐版型",
+      previewEmpty: "当前功率档暂无匹配型号",
+      partialMatch: "库中无完全匹配型号，已给出最接近版型",
+      apply: "应用推荐版型",
+      appliedToast: (model: string) => `已选用 ${model}`,
+    },
   },
 
   specParams,

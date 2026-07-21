@@ -17,7 +17,9 @@ import type { ModulePairPresetId } from "@/lib/module-pair-presets";
 import { MODULE_PAIR_PRESET_IDS } from "@/lib/module-pair-presets";
 import { useI18n } from "@/components/locale-provider";
 import { SpecParamEditSheet } from "@/components/spec-param-edit-sheet";
+import { ModuleVersionFinder } from "@/components/module-version-finder";
 import type { ModuleSpec } from "@/lib/pv-calculation";
+import type { ModuleNeedPreferences, ModulePowerBand } from "@/lib/module-recommend";
 import {
   formatPricePerWParts,
   formatSpecDisplayValue,
@@ -88,6 +90,11 @@ interface SpecsSectionProps {
     field: ModuleSpecField,
     values: { longi: string; competitor: string }
   ) => void;
+  onApplyRecommendedVersion?: (info: {
+    module: ModuleRecord;
+    powerWp: ModulePowerBand;
+    preferences: ModuleNeedPreferences;
+  }) => void;
 }
 
 function rawValueForField(spec: ModuleSpec, field: ModuleSpecField): string {
@@ -289,6 +296,7 @@ export function SpecsSection({
   onApplyOverride,
   onResetOverride,
   onSaveToLibrary,
+  onApplyRecommendedVersion,
 }: SpecsSectionProps) {
   const { m, locale } = useI18n();
   const specDisplayOpts = {
@@ -378,6 +386,15 @@ export function SpecsSection({
               />
             </SpecsSelectorCard>
           </div>
+        </div>
+
+        <div className="mb-10 lg:mb-14">
+          <ModuleVersionFinder
+            longiModules={longiModules}
+            selectedLongiId={selectedLongiId}
+            onSelectLongi={onSelectLongi}
+            onApplied={onApplyRecommendedVersion}
+          />
         </div>
 
         <div className="grid grid-cols-1 items-start gap-x-10 gap-y-6 lg:grid-cols-5 lg:gap-y-8 lg:pt-2">
