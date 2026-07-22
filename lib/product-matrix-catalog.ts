@@ -66,7 +66,11 @@ const BC_BASE: Pick<
   ammonia: true,
 };
 
-/** Drive 产品矩阵整理后的可售系列 */
+/**
+ * Drive 产品矩阵整理后的可售系列。
+ * 质保年限以 AU《Limited Warranty for LONGi Hi-MOX10 Solar Modules
+ * (Distributed Generation Market)》型号表为准；机械/电性能以对应 AU Datasheet 为准。
+ */
 export const PRODUCT_MATRIX: ProductSeries[] = [
   {
     id: "LR7-54HVB",
@@ -82,12 +86,12 @@ export const PRODUCT_MATRIX: ProductSeries[] = [
     glass: "single",
     cellOrientation: "108 (6×18)",
     dimensionMm: "1800×1134×30",
-    weightKg: 21.5,
+    weightKg: 21.6,
     efficiencyMaxPct: 24.3,
     firstYearDegradationPct: 1,
     annualDegradationPct: 0.35,
     pmpTempCoef: -0.26,
-    productWarrantyYears: 25,
+    productWarrantyYears: 30,
     performanceWarrantyYears: 30,
     features: {
       ...BC_BASE,
@@ -115,7 +119,7 @@ export const PRODUCT_MATRIX: ProductSeries[] = [
     glass: "single",
     cellOrientation: "108 (6×18)",
     dimensionMm: "1800×1134×30",
-    weightKg: 21.5,
+    weightKg: 21.6,
     efficiencyMaxPct: 24.5,
     firstYearDegradationPct: 1,
     annualDegradationPct: 0.35,
@@ -148,7 +152,7 @@ export const PRODUCT_MATRIX: ProductSeries[] = [
     glass: "single",
     cellOrientation: "108 (6×18)",
     dimensionMm: "1800×1134×30",
-    weightKg: 21.5,
+    weightKg: 21.6,
     efficiencyMaxPct: 24.5,
     firstYearDegradationPct: 1,
     annualDegradationPct: 0.35,
@@ -437,9 +441,9 @@ export const PRODUCT_MATRIX: ProductSeries[] = [
     generation: "bifacial",
     glass: "dual",
     cellOrientation: "132 (6×22)",
-    dimensionMm: "2182×1134×30",
-    weightKg: 31.5,
-    efficiencyMaxPct: 24.6,
+    dimensionMm: "2382×1134×30",
+    weightKg: 32.5,
+    efficiencyMaxPct: 24.8,
     firstYearDegradationPct: 1,
     annualDegradationPct: 0.35,
     pmpTempCoef: -0.26,
@@ -452,8 +456,8 @@ export const PRODUCT_MATRIX: ProductSeries[] = [
       lightweight: false,
       hail: true,
     },
-    highlightsZh: ["LR8-66 双面", "较短边长", "HPBC 2.0"],
-    highlightsEn: ["LR8-66 bifacial", "Shorter length", "HPBC 2.0"],
+    highlightsZh: ["LR8-66 双面", "HPBC 2.0", "工商业屋顶"],
+    highlightsEn: ["LR8-66 bifacial", "HPBC 2.0", "C&I rooftops"],
     datasheetFile: "AU_Datasheet_X10_LR8-66HVD_640-670.pdf",
   },
   {
@@ -469,9 +473,9 @@ export const PRODUCT_MATRIX: ProductSeries[] = [
     generation: "bifacial",
     glass: "dual",
     cellOrientation: "132 (6×22)",
-    dimensionMm: "2182×1134×30",
-    weightKg: 31.5,
-    efficiencyMaxPct: 24.6,
+    dimensionMm: "2382×1134×30",
+    weightKg: 33.5,
+    efficiencyMaxPct: 24.62,
     firstYearDegradationPct: 1,
     annualDegradationPct: 0.35,
     pmpTempCoef: -0.26,
@@ -493,7 +497,7 @@ export const PRODUCT_MATRIX: ProductSeries[] = [
     modelFamily: "LR8-66HYD",
     nameZh: "Hi-MO X10 大版型 · LR8-66 HYD",
     nameEn: "Hi-MO X10 Large · LR8-66 HYD",
-    powerMinWp: 630,
+    powerMinWp: 640,
     powerMaxWp: 670,
     representativePowerWp: 650,
     representativeModel: "LR8-66HYD-650M",
@@ -501,13 +505,13 @@ export const PRODUCT_MATRIX: ProductSeries[] = [
     generation: "bifacial",
     glass: "dual",
     cellOrientation: "132 (6×22)",
-    dimensionMm: "2182×1134×30",
-    weightKg: 31.5,
-    efficiencyMaxPct: 24.6,
+    dimensionMm: "2382×1134×30",
+    weightKg: 32.7,
+    efficiencyMaxPct: 24.8,
     firstYearDegradationPct: 1,
     annualDegradationPct: 0.35,
     pmpTempCoef: -0.26,
-    productWarrantyYears: 15,
+    productWarrantyYears: 12,
     performanceWarrantyYears: 30,
     features: {
       ...BC_BASE,
