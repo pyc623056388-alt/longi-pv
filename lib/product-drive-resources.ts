@@ -510,40 +510,481 @@ export const PRODUCT_DRIVE_RESOURCES: Record<string, ProductDriveResources> =
         "fileId": "1yxGmOeyrUS1jWUk4SV8f8-S4oQ3ZzFOQ"
       }
     ]
+  },
+  "LR7-72HVH": {
+  "photos": [
+    {
+      "label": "Front view",
+      "url": "https://drive.google.com/file/d/1PLpXElDoJtJXs0eQsClajsxICYlR5eix/view",
+      "fileId": "1PLpXElDoJtJXs0eQsClajsxICYlR5eix"
+    },
+    {
+      "label": "Rear view",
+      "url": "https://drive.google.com/file/d/1dKtTUVQ0JrSk0RqH60u_7qdZswTLGEU8/view",
+      "fileId": "1dKtTUVQ0JrSk0RqH60u_7qdZswTLGEU8"
+    },
+    {
+      "label": "Side view",
+      "url": "https://drive.google.com/file/d/1UHiRVgqtPrmX4bUb4MxavrBxwnDFbtAc/view",
+      "fileId": "1UHiRVgqtPrmX4bUb4MxavrBxwnDFbtAc"
+    },
+    {
+      "label": "Bevel view",
+      "url": "https://drive.google.com/file/d/1TUER25PZBCHuMQTpW5SEPBQhJtfhJ0oU/view",
+      "fileId": "1TUER25PZBCHuMQTpW5SEPBQhJtfhJ0oU"
+    }
+  ],
+  "certificates": [
+    {
+      "label": "Ammonia · Ammonia_IEC62716_Single_Cert.pdf",
+      "url": "https://drive.google.com/file/d/191UOxPY4Lon6Xv21z46fbYkxWvC1ENZQ/view",
+      "fileId": "191UOxPY4Lon6Xv21z46fbYkxWvC1ENZQ",
+      "category": "Ammonia"
+    },
+    {
+      "label": "DML · DML_TUV_Single_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1y8eMHpRl4l4HI_YcEyZdaaSQZTJ0QUys/view",
+      "fileId": "1y8eMHpRl4l4HI_YcEyZdaaSQZTJ0QUys",
+      "category": "DML"
+    },
+    {
+      "label": "Dust & Sand · DustSand_TUV_Single_Cert.pdf",
+      "url": "https://drive.google.com/file/d/16MjaWGmqbQhUHA0j2MRMh28jrmMHyBjS/view",
+      "fileId": "16MjaWGmqbQhUHA0j2MRMh28jrmMHyBjS",
+      "category": "Dust & Sand"
+    },
+    {
+      "label": "IEC 61215/61730 · IEC_61215+61730_2023_Single_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1vg-DC3af6fHw45a9e6TGR_RuPai0iVzE/view",
+      "fileId": "1vg-DC3af6fHw45a9e6TGR_RuPai0iVzE",
+      "category": "IEC 61215/61730"
+    },
+    {
+      "label": "Salt Mist · SaltMist_IEC61701_L1+L6_Single_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1RckInoT2cNi4dT0opYMYMgogVI6_-Pqw/view",
+      "fileId": "1RckInoT2cNi4dT0opYMYMgogVI6_-Pqw",
+      "category": "Salt Mist"
+    }
+  ],
+  "datasheet": {
+    "label": "AU_Datasheet_X10_LR7-72HVH_645-670.pdf",
+    "url": "https://drive.google.com/file/d/1dclGKCrD2YoeHoK2Vi3M5HUV4A9nJfkh/view",
+    "fileId": "1dclGKCrD2YoeHoK2Vi3M5HUV4A9nJfkh"
+  },
+  "installationManual": {
+    "label": "AU Installation Manual for LONGi Solar PV Modules（DGBG Only）V3.1 202511 (2).pdf",
+    "url": "https://drive.google.com/file/d/16t7ANkxnmolm9pV76GoJsSsMFHDAEX46/view",
+    "fileId": "16t7ANkxnmolm9pV76GoJsSsMFHDAEX46"
+  },
+  "warranty": {
+    "label": "AU Limited Warranty for LONGi Hi-MOX10 Solar Modules (Distributed Generation Market).pdf",
+    "url": "https://drive.google.com/file/d/1y1hFs-Fwq2KKPNufkAVPDMWlh9WTVlax/view",
+    "fileId": "1y1hFs-Fwq2KKPNufkAVPDMWlh9WTVlax"
   }
-};
-
-/**
- * 无独立 Drive 文件夹的系列：复用相近系列的质保/证书（不含照片与 Datasheet，避免错图错表）
- */
-const RESOURCE_DOC_FALLBACK: Record<string, string> = {
-  "LR7-54HVD": "LR7-60HVD",
-  "LR7-72HVH": "LR7-60HVH",
-  "LR7-72HVHF": "LR7-54HVHF",
-  "LR7-72HVDF": "LR7-72HVD",
-  "LR8-48HVH": "LR7-54HVH",
-  "LR8-48HVHF": "LR7-54HVHF",
-  "LR8-66HVD": "LR7-72HVD",
-  "LR8-66HVDF": "LR7-72HVD",
+},
+  "LR7-72HVHF": {
+  "photos": [
+    {
+      "label": "Front view",
+      "url": "https://drive.google.com/file/d/1iyZXtCg8DDpJuj1C98mRQI7YUgY_9GIG/view",
+      "fileId": "1iyZXtCg8DDpJuj1C98mRQI7YUgY_9GIG"
+    },
+    {
+      "label": "Rear view",
+      "url": "https://drive.google.com/file/d/1y_T5dxpBUECsU6DNEbFb6BgM6WrB9gug/view",
+      "fileId": "1y_T5dxpBUECsU6DNEbFb6BgM6WrB9gug"
+    },
+    {
+      "label": "Side view",
+      "url": "https://drive.google.com/file/d/14bMuC1svlZYtbIpEv7HP-mv35f-wLykI/view",
+      "fileId": "14bMuC1svlZYtbIpEv7HP-mv35f-wLykI"
+    },
+    {
+      "label": "Bevel view",
+      "url": "https://drive.google.com/file/d/1XsJNW7EdWtIzyWtr3H-QA5QY-nIE6uTE/view",
+      "fileId": "1XsJNW7EdWtIzyWtr3H-QA5QY-nIE6uTE"
+    }
+  ],
+  "certificates": [
+    {
+      "label": "Ammonia · Ammonia_IEC62716_Single_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1SP8QbdP90Mz62lS78gL5_TBeeEbk5q9o/view",
+      "fileId": "1SP8QbdP90Mz62lS78gL5_TBeeEbk5q9o",
+      "category": "Ammonia"
+    },
+    {
+      "label": "DML · DML_TUV_Single_Cert.pdf",
+      "url": "https://drive.google.com/file/d/19xk1tXhFFsA2A9FXsiOGDiIwGC_IOGaC/view",
+      "fileId": "19xk1tXhFFsA2A9FXsiOGDiIwGC_IOGaC",
+      "category": "DML"
+    },
+    {
+      "label": "Dust & Sand · DustSand_TUV_Single_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1FSLjH_sK1Mglv8n9XPfNzC5D8QIcyeED/view",
+      "fileId": "1FSLjH_sK1Mglv8n9XPfNzC5D8QIcyeED",
+      "category": "Dust & Sand"
+    },
+    {
+      "label": "Hail · Hail_35+45mm_IEC61215_LR7-72HVHF_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1WD_d5dsVT6wVX0-8oN-PPcBW6lafZa66/view",
+      "fileId": "1WD_d5dsVT6wVX0-8oN-PPcBW6lafZa66",
+      "category": "Hail"
+    },
+    {
+      "label": "IEC 61215/61730 · IEC_61215+61730_2023_Single_Cert.pdf",
+      "url": "https://drive.google.com/file/d/15MM2hN6ag-_d5LZy5lG-Kkbt98PGY-NV/view",
+      "fileId": "15MM2hN6ag-_d5LZy5lG-Kkbt98PGY-NV",
+      "category": "IEC 61215/61730"
+    },
+    {
+      "label": "Salt Mist · SaltMist_IEC61701_L1+L6_Single_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1dFGd9trv72t60RmVYIPput51mAtI80kQ/view",
+      "fileId": "1dFGd9trv72t60RmVYIPput51mAtI80kQ",
+      "category": "Salt Mist"
+    }
+  ],
+  "datasheet": {
+    "label": "AU_Datasheet_X10_LR7-72HVHF_640-670.pdf",
+    "url": "https://drive.google.com/file/d/1NCnF5_NqyBddvGj9usbes9isyVtsIxoh/view",
+    "fileId": "1NCnF5_NqyBddvGj9usbes9isyVtsIxoh"
+  },
+  "installationManual": {
+    "label": "AU Installation Manual for LONGi Solar PV Modules（DGBG Only）V3.1 202511 (2).pdf",
+    "url": "https://drive.google.com/file/d/1mpzNcFB5_SDP9x_Jz_MOXiqVNy-p6yFo/view",
+    "fileId": "1mpzNcFB5_SDP9x_Jz_MOXiqVNy-p6yFo"
+  },
+  "warranty": {
+    "label": "AU Limited Warranty for LONGi Hi-MOX10 Solar Modules (Distributed Generation Market).pdf",
+    "url": "https://drive.google.com/file/d/1ElaTxv_gOXNrJ2pG1VD347rWYK9NnTnL/view",
+    "fileId": "1ElaTxv_gOXNrJ2pG1VD347rWYK9NnTnL"
+  }
+},
+  "LR7-72HVDF": {
+  "photos": [
+    {
+      "label": "Front view",
+      "url": "https://drive.google.com/file/d/18LEMH9lKP4s53H03RxvmvWhRMVEHeDjf/view",
+      "fileId": "18LEMH9lKP4s53H03RxvmvWhRMVEHeDjf"
+    },
+    {
+      "label": "Rear view",
+      "url": "https://drive.google.com/file/d/1oJzo3cv4CS41O8zEZNY_NsO0TCwANgfn/view",
+      "fileId": "1oJzo3cv4CS41O8zEZNY_NsO0TCwANgfn"
+    },
+    {
+      "label": "Side view",
+      "url": "https://drive.google.com/file/d/1PuDSlb0t79ONb72m4nEMt9YgTfwuz36P/view",
+      "fileId": "1PuDSlb0t79ONb72m4nEMt9YgTfwuz36P"
+    },
+    {
+      "label": "Bevel view",
+      "url": "https://drive.google.com/file/d/17UhFFqhFNNakmlWnRdb-nxW-OlvOOfpi/view",
+      "fileId": "17UhFFqhFNNakmlWnRdb-nxW-OlvOOfpi"
+    }
+  ],
+  "certificates": [
+    {
+      "label": "Ammonia · Ammonia_IEC62716_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1AuUtJSLY-yRYLA7DUZN4C8idOt72tiJ9/view",
+      "fileId": "1AuUtJSLY-yRYLA7DUZN4C8idOt72tiJ9",
+      "category": "Ammonia"
+    },
+    {
+      "label": "DML · DML_TUV_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1u0NOkYe1d8qAS3UqPjeTd4zcgij4_XUD/view",
+      "fileId": "1u0NOkYe1d8qAS3UqPjeTd4zcgij4_XUD",
+      "category": "DML"
+    },
+    {
+      "label": "Dust & Sand · DustSand_TUV_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1ORrLvI4q6Qe3x5fqT-LF14lWtgWgbfwC/view",
+      "fileId": "1ORrLvI4q6Qe3x5fqT-LF14lWtgWgbfwC",
+      "category": "Dust & Sand"
+    },
+    {
+      "label": "Hail · Hail_35+45mm_IEC61215_LR7-54HVB+54HVD+72HVDF_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1SdiUvvVqvoiB6h8v9AfCIqVyA11I5H19/view",
+      "fileId": "1SdiUvvVqvoiB6h8v9AfCIqVyA11I5H19",
+      "category": "Hail"
+    },
+    {
+      "label": "IEC 61215/61730 · IEC_61215+61730_2023_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1LaXJQr6S4JRSo0dl01Vsu1f7M10sF0xP/view",
+      "fileId": "1LaXJQr6S4JRSo0dl01Vsu1f7M10sF0xP",
+      "category": "IEC 61215/61730"
+    },
+    {
+      "label": "Salt Mist · SaltMist_IEC61701_L1_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1BtMjNfr9Phf9JyzhRUgBpxDK3Lq8g6YC/view",
+      "fileId": "1BtMjNfr9Phf9JyzhRUgBpxDK3Lq8g6YC",
+      "category": "Salt Mist"
+    },
+    {
+      "label": "Salt Mist · SaltMist_IEC61701_L6_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1Ln-jlVEUpmq5-94135mSp8kebGxgaJ8D/view",
+      "fileId": "1Ln-jlVEUpmq5-94135mSp8kebGxgaJ8D",
+      "category": "Salt Mist"
+    }
+  ],
+  "datasheet": {
+    "label": "AU_Datasheet_X10_LR7-72HVDF_640-665.pdf",
+    "url": "https://drive.google.com/file/d/1PrUuz21oJQPxl0vRVtbltwglHnwhE_r0/view",
+    "fileId": "1PrUuz21oJQPxl0vRVtbltwglHnwhE_r0"
+  },
+  "installationManual": {
+    "label": "AU Installation Manual for LONGi Solar PV Modules（DGBG Only）V3.1 202511 (2).pdf",
+    "url": "https://drive.google.com/file/d/1fvFzTxNoOtmg-rqH9Sykc4x_wseVFXhC/view",
+    "fileId": "1fvFzTxNoOtmg-rqH9Sykc4x_wseVFXhC"
+  },
+  "warranty": {
+    "label": "AU Limited Warranty for LONGi Hi-MOX10 Solar Modules (Distributed Generation Market).pdf",
+    "url": "https://drive.google.com/file/d/1LX2gyJleRLPOh-c3QY2jdXXa-Yo0szei/view",
+    "fileId": "1LX2gyJleRLPOh-c3QY2jdXXa-Yo0szei"
+  }
+},
+  "LR8-66HVD": {
+  "photos": [
+    {
+      "label": "Front view",
+      "url": "https://drive.google.com/file/d/13vJUhR9UHmufrguaVflB6kb2zsf6xifS/view",
+      "fileId": "13vJUhR9UHmufrguaVflB6kb2zsf6xifS"
+    },
+    {
+      "label": "Rear view",
+      "url": "https://drive.google.com/file/d/1Ba34z-jNe-f5cU8_4hCkJteX-cfiw4nQ/view",
+      "fileId": "1Ba34z-jNe-f5cU8_4hCkJteX-cfiw4nQ"
+    },
+    {
+      "label": "Side view",
+      "url": "https://drive.google.com/file/d/1cZ72NZBPQYuMJITa-d8D8gAGBYXq_fp_/view",
+      "fileId": "1cZ72NZBPQYuMJITa-d8D8gAGBYXq_fp_"
+    },
+    {
+      "label": "Bevel view",
+      "url": "https://drive.google.com/file/d/1MSeMXyFa63FGu-hkGKgIFyUN11htJhVF/view",
+      "fileId": "1MSeMXyFa63FGu-hkGKgIFyUN11htJhVF"
+    }
+  ],
+  "certificates": [
+    {
+      "label": "Ammonia · Ammonia_IEC62716_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1tDycn1JGFPdqBrZwTXKHz9HXw608JYVx/view",
+      "fileId": "1tDycn1JGFPdqBrZwTXKHz9HXw608JYVx",
+      "category": "Ammonia"
+    },
+    {
+      "label": "DML · DML_TUV_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1geMQer4g-FHobFbYjBrHycuKfNRYLO8Z/view",
+      "fileId": "1geMQer4g-FHobFbYjBrHycuKfNRYLO8Z",
+      "category": "DML"
+    },
+    {
+      "label": "Dust & Sand · DustSand_TUV_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1Dfa7C7x5T2cKxLpQfScfwkisVhH26BVt/view",
+      "fileId": "1Dfa7C7x5T2cKxLpQfScfwkisVhH26BVt",
+      "category": "Dust & Sand"
+    },
+    {
+      "label": "IEC 61215/61730 · IEC_61215+61730_2023_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1bNBZEydWb3StAwXrdZbV9fzh6bfdK7_8/view",
+      "fileId": "1bNBZEydWb3StAwXrdZbV9fzh6bfdK7_8",
+      "category": "IEC 61215/61730"
+    },
+    {
+      "label": "Salt Mist · SaltMist_IEC61701_L1_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1uuZ5yXVzyBm4ArvW3qfaAzaOCSuOT2_Y/view",
+      "fileId": "1uuZ5yXVzyBm4ArvW3qfaAzaOCSuOT2_Y",
+      "category": "Salt Mist"
+    },
+    {
+      "label": "Salt Mist · SaltMist_IEC61701_L6_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1SLBnebZIoeBQ4wrSroXCrXPJi5VJePC4/view",
+      "fileId": "1SLBnebZIoeBQ4wrSroXCrXPJi5VJePC4",
+      "category": "Salt Mist"
+    }
+  ],
+  "datasheet": {
+    "label": "AU_Datasheet_X10_LR8-66HVD_640-670.pdf",
+    "url": "https://drive.google.com/file/d/1l-3_9h1MAac5z99o-gM_34dDKG-Qjfh0/view",
+    "fileId": "1l-3_9h1MAac5z99o-gM_34dDKG-Qjfh0"
+  },
+  "installationManual": {
+    "label": "AU Installation Manual for LONGi Solar PV Modules（DGBG Only）V3.1 202511 (2).pdf",
+    "url": "https://drive.google.com/file/d/1UW3j_q2gR0CRrq0Dknmj_GwG5YUf11Tg/view",
+    "fileId": "1UW3j_q2gR0CRrq0Dknmj_GwG5YUf11Tg"
+  },
+  "warranty": {
+    "label": "AU Limited Warranty for LONGi Hi-MOX10 Solar Modules (Distributed Generation Market).pdf",
+    "url": "https://drive.google.com/file/d/122ME5GRVzAed7OcxHqzt0gunjKg8HbNq/view",
+    "fileId": "122ME5GRVzAed7OcxHqzt0gunjKg8HbNq"
+  }
+},
+  "LR8-66HVDF": {
+  "photos": [],
+  "certificates": [
+    {
+      "label": "Ammonia · Ammonia_IEC62716_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1IdXBhAAfb_KAEF4adqtNfGKgHJuztX_p/view",
+      "fileId": "1IdXBhAAfb_KAEF4adqtNfGKgHJuztX_p",
+      "category": "Ammonia"
+    },
+    {
+      "label": "DML · DML_TUV_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1ysZkZWY6x2DK1dIkuH40lrEYBmgiCHjc/view",
+      "fileId": "1ysZkZWY6x2DK1dIkuH40lrEYBmgiCHjc",
+      "category": "DML"
+    },
+    {
+      "label": "Dust & Sand · DustSand_TUV_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1FMA2efBvjNgld2CKkbZY5WUJ9OGrs_go/view",
+      "fileId": "1FMA2efBvjNgld2CKkbZY5WUJ9OGrs_go",
+      "category": "Dust & Sand"
+    },
+    {
+      "label": "IEC 61215/61730 · IEC_61215+61730_2023_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1j5el8EEI4kU9XLP7rYVErmz3yGtVWvnE/view",
+      "fileId": "1j5el8EEI4kU9XLP7rYVErmz3yGtVWvnE",
+      "category": "IEC 61215/61730"
+    },
+    {
+      "label": "Salt Mist · SaltMist_IEC61701_L1_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1Ov3kuEqsGJRDyHaPP1zMJSu31d4C8F-M/view",
+      "fileId": "1Ov3kuEqsGJRDyHaPP1zMJSu31d4C8F-M",
+      "category": "Salt Mist"
+    },
+    {
+      "label": "Salt Mist · SaltMist_IEC61701_L6_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1mKYjsSio6WLpy92IQHA1ECZyf-3PtFrF/view",
+      "fileId": "1mKYjsSio6WLpy92IQHA1ECZyf-3PtFrF",
+      "category": "Salt Mist"
+    }
+  ],
+  "datasheet": {
+    "label": "AU_Datasheet_X10_LR8-66HVDF_640-665.pdf",
+    "url": "https://drive.google.com/file/d/1GPG0EU_O4BUZ6afD9uls4IshprY7yByx/view",
+    "fileId": "1GPG0EU_O4BUZ6afD9uls4IshprY7yByx"
+  },
+  "installationManual": {
+    "label": "AU Installation Manual for LONGi Solar PV Modules（DGBG Only）V3.1 202511 (2).pdf",
+    "url": "https://drive.google.com/file/d/1Edh52KZ9ssU7gtUFupmkYSgDoUNDFbCm/view",
+    "fileId": "1Edh52KZ9ssU7gtUFupmkYSgDoUNDFbCm"
+  },
+  "warranty": {
+    "label": "AU Limited Warranty for LONGi Hi-MOX10 Solar Modules (Distributed Generation Market).pdf",
+    "url": "https://drive.google.com/file/d/1geTQ7NWCw3lQgl1pndN4UXjKLuZKMNfZ/view",
+    "fileId": "1geTQ7NWCw3lQgl1pndN4UXjKLuZKMNfZ"
+  }
+},
+  "LR8-66HYD": {
+  "photos": [],
+  "certificates": [
+    {
+      "label": "Ammonia · Ammonia_IEC62716_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1jIzb50_E5WIr5f4SFyjh3aEPX_x_e10v/view",
+      "fileId": "1jIzb50_E5WIr5f4SFyjh3aEPX_x_e10v",
+      "category": "Ammonia"
+    },
+    {
+      "label": "Degradation · Degradation_UV30+UV30+UV60_LR8-66HYD_Report.pdf",
+      "url": "https://drive.google.com/file/d/1JcNtKZdCRB5173sJVX3Gw9gHojuKs5XF/view",
+      "fileId": "1JcNtKZdCRB5173sJVX3Gw9gHojuKs5XF",
+      "category": "Degradation"
+    },
+    {
+      "label": "DML · DML_TUV_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1ows-oyWcUKn6LejUxp8Y4Eyaxbbg5d6Y/view",
+      "fileId": "1ows-oyWcUKn6LejUxp8Y4Eyaxbbg5d6Y",
+      "category": "DML"
+    },
+    {
+      "label": "Dust & Sand · DustSand_TUV_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1dAT_sLfh3RS2RCtg3yUhSfFMiM9tqnk3/view",
+      "fileId": "1dAT_sLfh3RS2RCtg3yUhSfFMiM9tqnk3",
+      "category": "Dust & Sand"
+    },
+    {
+      "label": "Fire · Fire_ClassA_LR8-66HYD_Report.pdf",
+      "url": "https://drive.google.com/file/d/1Es1hOLjffXv7WxcU99SxtRhQNbhorQU6/view",
+      "fileId": "1Es1hOLjffXv7WxcU99SxtRhQNbhorQU6",
+      "category": "Fire"
+    },
+    {
+      "label": "Hail · Hail_45mm_Glass2.8+2_LR8-66HYD_Report.pdf",
+      "url": "https://drive.google.com/file/d/1Ule_06tt_RwzJ3zC7J-_8tyNqCgtUWZ0/view",
+      "fileId": "1Ule_06tt_RwzJ3zC7J-_8tyNqCgtUWZ0",
+      "category": "Hail"
+    },
+    {
+      "label": "Hail · Hail_55mm_Angle30_Glass2.8+2_LR8-66HYD_Report.pdf",
+      "url": "https://drive.google.com/file/d/149HFt3wB6ezimrB0LrezoQg6O0H0c18C/view",
+      "fileId": "149HFt3wB6ezimrB0LrezoQg6O0H0c18C",
+      "category": "Hail"
+    },
+    {
+      "label": "Hail · Hail_55mm_Angle30_Glass3.2+2_LR8-66HYD_Report.pdf",
+      "url": "https://drive.google.com/file/d/1mU9f7bbWT5ey_LfO1y6O2M4Strl4DcmJ/view",
+      "fileId": "1mU9f7bbWT5ey_LfO1y6O2M4Strl4DcmJ",
+      "category": "Hail"
+    },
+    {
+      "label": "Hail · Hail_65mm_Angle60_Glass2.8+2_LR8-66HYD_Report.pdf",
+      "url": "https://drive.google.com/file/d/1BtKUXYAP_LMo7osLHZxmWZf6j5KijWbL/view",
+      "fileId": "1BtKUXYAP_LMo7osLHZxmWZf6j5KijWbL",
+      "category": "Hail"
+    },
+    {
+      "label": "Hail · Hail_HW4_VKF_Glass3.2+2_LR8-66HYD_Report.pdf",
+      "url": "https://drive.google.com/file/d/1lwY0Jp_vOU1byTf18z2dP90his645lMy/view",
+      "fileId": "1lwY0Jp_vOU1byTf18z2dP90his645lMy",
+      "category": "Hail"
+    },
+    {
+      "label": "IEC 61215/61730 · IEC_61215+61730_2023_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/16jF2ZaR_6JAoy1mr2KjCau0A-eDp5Mf2/view",
+      "fileId": "16jF2ZaR_6JAoy1mr2KjCau0A-eDp5Mf2",
+      "category": "IEC 61215/61730"
+    },
+    {
+      "label": "Salt Mist · SaltMist_IEC61701_L1_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1VIkTxsDjnmDJZ7hi9Cr0Fk0x6IFmYWfw/view",
+      "fileId": "1VIkTxsDjnmDJZ7hi9Cr0Fk0x6IFmYWfw",
+      "category": "Salt Mist"
+    },
+    {
+      "label": "Salt Mist · SaltMist_IEC61701_L6_Double_Cert.pdf",
+      "url": "https://drive.google.com/file/d/1IgK6jl2Ek7ii4AImX8oww9nIBNfxBAyx/view",
+      "fileId": "1IgK6jl2Ek7ii4AImX8oww9nIBNfxBAyx",
+      "category": "Salt Mist"
+    },
+    {
+      "label": "Salt Mist · SaltMist_IEC61701_L8_LR8-66HYD_TRF.pdf",
+      "url": "https://drive.google.com/file/d/12X_d6UjCf9Yab4TXNPukK4oTf88J-M4B/view",
+      "fileId": "12X_d6UjCf9Yab4TXNPukK4oTf88J-M4B",
+      "category": "Salt Mist"
+    }
+  ],
+  "datasheet": {
+    "label": "Datasheet_LR8-66HYD_Glass2.0+2_635-670_V5.0_EN.pdf",
+    "url": "https://drive.google.com/file/d/1DTqraoKLC2cspc9fBrBUluLxYIZvke0H/view",
+    "fileId": "1DTqraoKLC2cspc9fBrBUluLxYIZvke0H"
+  },
+  "installationManual": {
+    "label": "Installation Manual for LONGi Solar PV Modules V20-Ice shield-Draft -EN (1).pdf",
+    "url": "https://drive.google.com/file/d/1cU8d0t_yx0rrYodrToPYgbhj4qGM2nSa/view",
+    "fileId": "1cU8d0t_yx0rrYodrToPYgbhj4qGM2nSa"
+  },
+  "warranty": {
+    "label": "Limited Warranty for LONGi PV Modules (HE Bifacial Series of Dual Glass).pdf",
+    "url": "https://drive.google.com/file/d/1rVLYgi7572KHhjn2TJv9eqekHZwIV0TD/view",
+    "fileId": "1rVLYgi7572KHhjn2TJv9eqekHZwIV0TD"
+  }
+}
 };
 
 export function getProductDriveResources(
   seriesId: string
 ): ProductDriveResources | undefined {
-  const direct = PRODUCT_DRIVE_RESOURCES[seriesId];
-  if (direct) return direct;
-
-  const fallbackId = RESOURCE_DOC_FALLBACK[seriesId];
-  if (!fallbackId) return undefined;
-  const base = PRODUCT_DRIVE_RESOURCES[fallbackId];
-  if (!base) return undefined;
-
-  return {
-    warranty: base.warranty,
-    installationManual: base.installationManual,
-    certificates: base.certificates,
-    photos: [],
-  };
+  return PRODUCT_DRIVE_RESOURCES[seriesId];
 }
 
 /** 结果页左侧轮播用全部产品视角照片 */

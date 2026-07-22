@@ -10,17 +10,26 @@ import {
 } from "./product-sku-catalog";
 
 describe("product-sku-catalog power bands", () => {
-  it("lists complete model families including 72HVH / LR8", () => {
+  it("lists only Product-Segments models from Drive 01 matrix", () => {
     const ids = listDriveProductModels().map((m) => m.id);
-    expect(ids).toContain("LR7-54HVB");
-    expect(ids).toContain("LR7-72HVD");
-    expect(ids).toContain("LR7-72HVH");
-    expect(ids).toContain("LR7-72HVHF");
-    expect(ids).toContain("LR7-72HVDF");
-    expect(ids).toContain("LR7-54HVD");
-    expect(ids).toContain("LR8-48HVH");
-    expect(ids).toContain("LR8-66HVD");
-    expect(ids.length).toBeGreaterThanOrEqual(15);
+    expect(ids).toEqual([
+      "LR7-54HVB",
+      "LR7-54HVH",
+      "LR7-54HVHF",
+      "LR7-54HVDT",
+      "LR7-60HVH",
+      "LR7-60HVD",
+      "LR7-60HVHL",
+      "LR7-72HVD",
+      "LR7-72HVDF",
+      "LR7-72HVH",
+      "LR7-72HVHF",
+      "LR8-66HVD",
+      "LR8-66HVDF",
+      "LR8-66HYD",
+    ]);
+    expect(ids).not.toContain("LR7-54HVD");
+    expect(ids).not.toContain("LR8-48HVH");
   });
 
   it("uses 475 or 480 for default, 540 mid, 650 large", () => {

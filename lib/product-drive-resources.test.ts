@@ -23,6 +23,14 @@ describe("product-drive-resources", () => {
     expect(getProductDriveResources("LR7-72HVD")?.warranty).toBeTruthy();
   });
 
+  it("links Drive folders for 72HVH and LR8-66HVD", () => {
+    expect(getProductDriveResources("LR7-72HVH")?.datasheet?.fileId).toBeTruthy();
+    expect(getProductDriveResources("LR7-72HVH")?.photos.length).toBe(4);
+    expect(getProductDriveResources("LR8-66HVD")?.datasheet?.fileId).toBeTruthy();
+    expect(getProductDriveResources("LR8-66HYD")?.datasheet?.fileId).toBeTruthy();
+    expect(getProductDriveResources("LR7-54HVD")).toBeUndefined();
+  });
+
   it("returns all product view photos sorted front→rear→side→bevel", () => {
     const hvb = getProductPhotos("LR7-54HVB");
     expect(hvb.map((p) => p.label)).toEqual([
