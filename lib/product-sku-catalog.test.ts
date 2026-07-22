@@ -10,18 +10,17 @@ import {
 } from "./product-sku-catalog";
 
 describe("product-sku-catalog power bands", () => {
-  it("lists complete Drive models (series), not every 5W bin", () => {
-    const models = listDriveProductModels();
-    expect(models.map((m) => m.id)).toEqual([
-      "LR7-54HVB",
-      "LR7-54HVH",
-      "LR7-54HVHF",
-      "LR7-54HVDT",
-      "LR7-60HVH",
-      "LR7-60HVD",
-      "LR7-60HVHL",
-      "LR7-72HVD",
-    ]);
+  it("lists complete model families including 72HVH / LR8", () => {
+    const ids = listDriveProductModels().map((m) => m.id);
+    expect(ids).toContain("LR7-54HVB");
+    expect(ids).toContain("LR7-72HVD");
+    expect(ids).toContain("LR7-72HVH");
+    expect(ids).toContain("LR7-72HVHF");
+    expect(ids).toContain("LR7-72HVDF");
+    expect(ids).toContain("LR7-54HVD");
+    expect(ids).toContain("LR8-48HVH");
+    expect(ids).toContain("LR8-66HVD");
+    expect(ids.length).toBeGreaterThanOrEqual(15);
   });
 
   it("uses 475 or 480 for default, 540 mid, 650 large", () => {

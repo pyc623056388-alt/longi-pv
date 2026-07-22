@@ -513,10 +513,37 @@ export const PRODUCT_DRIVE_RESOURCES: Record<string, ProductDriveResources> =
   }
 };
 
+/**
+ * 无独立 Drive 文件夹的系列：复用相近系列的质保/证书（不含照片与 Datasheet，避免错图错表）
+ */
+const RESOURCE_DOC_FALLBACK: Record<string, string> = {
+  "LR7-54HVD": "LR7-60HVD",
+  "LR7-72HVH": "LR7-60HVH",
+  "LR7-72HVHF": "LR7-54HVHF",
+  "LR7-72HVDF": "LR7-72HVD",
+  "LR8-48HVH": "LR7-54HVH",
+  "LR8-48HVHF": "LR7-54HVHF",
+  "LR8-66HVD": "LR7-72HVD",
+  "LR8-66HVDF": "LR7-72HVD",
+};
+
 export function getProductDriveResources(
   seriesId: string
 ): ProductDriveResources | undefined {
-  return PRODUCT_DRIVE_RESOURCES[seriesId];
+  const direct = PRODUCT_DRIVE_RESOURCES[seriesId];
+  if (direct) return direct;
+
+  const fallbackId = RESOURCE_DOC_FALLBACK[seriesId];
+  if (!fallbackId) return undefined;
+  const base = PRODUCT_DRIVE_RESOURCES[fallbackId];
+  if (!base) return undefined;
+
+  return {
+    warranty: base.warranty,
+    installationManual: base.installationManual,
+    certificates: base.certificates,
+    photos: [],
+  };
 }
 
 /** 结果页左侧轮播用全部产品视角照片 */
