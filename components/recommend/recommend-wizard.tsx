@@ -11,6 +11,10 @@ import {
   recommendProductSeries,
   type ProductRecommendInput,
 } from "@/lib/product-recommend-engine";
+import {
+  defaultPowerBandForSeries,
+  type ResultPowerBand,
+} from "@/lib/product-sku-catalog";
 
 type Phase = "select" | "result";
 
@@ -25,7 +29,8 @@ export function RecommendWizard({
     DEFAULT_PRODUCT_RECOMMEND_INPUT
   );
   const [phase, setPhase] = useState<Phase>("select");
-  const [selectedModel, setSelectedModel] = useState("");
+  const [selectedSeriesId, setSelectedSeriesId] = useState("");
+  const [powerBand, setPowerBand] = useState<ResultPowerBand>("default");
 
   const ranked = useMemo(() => recommendProductSeries(input), [input]);
   const primary = ranked[0];
@@ -33,7 +38,8 @@ export function RecommendWizard({
 
   const handleApply = () => {
     if (!primary) return;
-    setSelectedModel(primary.series.representativeModel);
+    setSelectedSeriesId(primary.series.id);
+    setPowerBand(defaultPowerBandForSeries(primary.series));
     setPhase("result");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -65,10 +71,10 @@ export function RecommendWizard({
             key="result"
             primary={primary}
             alternatives={alternatives}
-            selectedModel={
-              selectedModel || primary.series.representativeModel
-            }
-            onSelectModel={setSelectedModel}
+            selectedSeriesId={selectedSeriesId || primary.series.id}
+            powerBand={powerBand}
+            onSelectSeries={setSelectedSeriesId}
+            onSelectPowerBand={setPowerBand}
             onBack={handleBack}
           />
         ) : null}

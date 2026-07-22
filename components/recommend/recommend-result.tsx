@@ -16,9 +16,12 @@ import { SearchableSelect } from "@/components/ui/searchable-select";
 import { useI18n } from "@/components/locale-provider";
 import type { ProductRecommendMatch } from "@/lib/product-recommend-engine";
 import {
-  defaultSkuForSeries,
-  getProductSkuByModel,
-  listDriveProductSkus,
+  RESULT_POWER_BANDS,
+  defaultPowerBandForSeries,
+  isPowerBandAvailable,
+  listDriveProductModels,
+  skuFromSeriesAndBand,
+  type ResultPowerBand,
 } from "@/lib/product-sku-catalog";
 import {
   driveThumbnailUrl,
@@ -52,16 +55,20 @@ function photoViewLabel(
 interface RecommendResultProps {
   primary: ProductRecommendMatch;
   alternatives: ProductRecommendMatch[];
-  selectedModel: string;
-  onSelectModel: (model: string) => void;
+  selectedSeriesId: string;
+  powerBand: ResultPowerBand;
+  onSelectSeries: (seriesId: string) => void;
+  onSelectPowerBand: (band: ResultPowerBand) => void;
   onBack: () => void;
 }
 
 export function RecommendResult({
   primary,
   alternatives,
-  selectedModel,
-  onSelectModel,
+  selectedSeriesId,
+  powerBand,
+  onSelectSeries,
+  onSelectPowerBand,
   onBack,
 }: RecommendResultProps) {
   const { m, locale } = useI18n();
@@ -77,8 +84,11 @@ export function RecommendResult({
   );
 
   const sku =
-    getProductSkuByModel(selectedModel) ??
-    defaultSkuForSeries(primary.series.id)!;
+    skuFromSeriesAndBand(selectedSeriesId, powerBand) ??
+    skuFromSeriesAndBand(
+      primary.series.id,
+      defaultPowerBandForSeries(primary.series)
+    )!;
   const series = sku.series;
   const currentMatch = rankedMatches.find((x) => x.series.id === series.id);
   const isManualBrowse = !matchedIds.has(series.id);
@@ -96,24 +106,40 @@ export function RecommendResult({
   const highlights =
     locale === "zh" ? series.highlightsZh : series.highlightsEn;
 
-  const skuOptions = useMemo(
+  const modelOptions = useMemo(
     () =>
-      listDriveProductSkus().map((s) => ({
-        value: s.model,
-        label: `${s.model} · ${
-          locale === "zh" ? s.series.nameZh : s.series.nameEn
+      listDriveProductModels().map((s) => ({
+        value: s.id,
+        label: `${s.modelFamily} · ${
+          locale === "zh" ? s.nameZh : s.nameEn
         }`,
         keywords: [
-          s.model,
-          s.seriesId,
-          s.series.modelFamily,
-          s.series.nameZh,
-          s.series.nameEn,
-          String(s.powerWp),
+          s.id,
+          s.modelFamily,
+          s.representativeModel,
+          s.nameZh,
+          s.nameEn,
+          String(s.powerMinWp),
+          String(s.powerMaxWp),
         ].join(" "),
       })),
     [locale]
   );
+
+  const handleSeriesChange = (seriesId: string) => {
+    onSelectSeries(seriesId);
+    const next = listDriveProductModels().find((s) => s.id === seriesId);
+    if (!next) return;
+    if (!isPowerBandAvailable(next, powerBand)) {
+      onSelectPowerBand(defaultPowerBandForSeries(next));
+    }
+  };
+
+  const powerBandLabels: Record<ResultPowerBand, string> = {
+    default: rm.result.powerBandDefault,
+    medium: rm.result.powerBandMedium,
+    large: rm.result.powerBandLarge,
+  };
 
   return (
     <motion.section
@@ -145,7 +171,7 @@ export function RecommendResult({
 
         <AnimatePresence mode="wait">
           <motion.div
-            key={sku.model}
+            key={`${series.id}-${sku.powerWp}`}
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
@@ -170,8 +196,8 @@ export function RecommendResult({
               <div className="flex min-h-0 flex-col lg:h-full">
                 <div className="shrink-0 space-y-2.5 border-b border-slate-100 p-3.5 sm:p-4">
                   <div className="flex flex-wrap items-start justify-between gap-2">
-                    <div className="min-w-0 flex-1">
-                      <div className="mb-1 flex flex-wrap items-center gap-2">
+                    <div className="min-w-0 flex-1 space-y-2">
+                      <div className="flex flex-wrap items-center gap-2">
                         <p className="text-xs font-medium text-[#E40011]">
                           {locale === "zh" ? series.nameZh : series.nameEn}
                         </p>
@@ -188,22 +214,72 @@ export function RecommendResult({
                             : rm.result.recommendedMatch}
                         </span>
                       </div>
-                      <SearchableSelect
-                        value={sku.model}
-                        onValueChange={onSelectModel}
-                        options={skuOptions}
-                        placeholder={rm.result.pickSeries}
-                        searchPlaceholder={rm.result.pickSeriesSearch}
-                        emptyText={rm.result.pickSeriesEmpty}
-                        triggerClassName={cn(
-                          "h-auto min-h-10 w-full max-w-xl justify-between rounded-xl border-slate-200 bg-white px-3 py-2 text-left shadow-none",
-                          "hover:border-slate-300 hover:bg-slate-50",
-                          "[&_span]:line-clamp-2 [&_span]:text-base [&_span]:font-extrabold [&_span]:tracking-tight [&_span]:text-slate-900 sm:[&_span]:text-xl"
-                        )}
-                      />
-                      <p className="mt-1.5 text-xs text-slate-500">
-                        {sku.powerWp} W · {series.powerMinWp}–{series.powerMaxWp}{" "}
-                        W · {series.dimensionMm} mm
+
+                      <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
+                        <div className="min-w-0 space-y-1">
+                          <p className="text-[10px] font-semibold tracking-wide text-slate-400 uppercase">
+                            {rm.result.pickSeries}
+                          </p>
+                          <SearchableSelect
+                            value={series.id}
+                            onValueChange={handleSeriesChange}
+                            options={modelOptions}
+                            placeholder={rm.result.pickSeries}
+                            searchPlaceholder={rm.result.pickSeriesSearch}
+                            emptyText={rm.result.pickSeriesEmpty}
+                            triggerClassName={cn(
+                              "h-auto min-h-10 w-full justify-between rounded-xl border-slate-200 bg-white px-3 py-2 text-left shadow-none",
+                              "hover:border-slate-300 hover:bg-slate-50",
+                              "[&_span]:line-clamp-2 [&_span]:text-base [&_span]:font-extrabold [&_span]:tracking-tight [&_span]:text-slate-900 sm:[&_span]:text-xl"
+                            )}
+                          />
+                        </div>
+
+                        <div className="space-y-1">
+                          <p className="text-[10px] font-semibold tracking-wide text-slate-400 uppercase">
+                            {rm.result.powerBand}
+                          </p>
+                          <div className="flex flex-wrap gap-1.5">
+                            {RESULT_POWER_BANDS.map((band) => {
+                              const available = isPowerBandAvailable(
+                                series,
+                                band
+                              );
+                              const active = powerBand === band;
+                              return (
+                                <button
+                                  key={band}
+                                  type="button"
+                                  disabled={!available}
+                                  title={
+                                    available
+                                      ? undefined
+                                      : rm.result.powerBandUnavailable
+                                  }
+                                  onClick={() => onSelectPowerBand(band)}
+                                  className={cn(
+                                    "inline-flex h-9 min-w-[4.5rem] items-center justify-center rounded-lg border px-2.5 text-xs font-semibold transition",
+                                    active
+                                      ? "border-[#E40011] bg-[#E40011]/10 text-[#E40011]"
+                                      : "border-slate-200 bg-white text-slate-700 hover:border-slate-300",
+                                    !available &&
+                                      "cursor-not-allowed opacity-35 hover:border-slate-200"
+                                  )}
+                                >
+                                  {powerBandLabels[band]}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+
+                      <p className="text-xs text-slate-500">
+                        <span className="font-semibold text-slate-800">
+                          {sku.model}
+                        </span>
+                        {" · "}
+                        {sku.powerWp} W · {series.dimensionMm} mm
                       </p>
                     </div>
                     <Link
@@ -291,12 +367,10 @@ export function RecommendResult({
               <button
                 key={item.series.id}
                 type="button"
-                onClick={() =>
-                  onSelectModel(item.series.representativeModel)
-                }
+                onClick={() => handleSeriesChange(item.series.id)}
                 className="inline-flex h-7 items-center rounded-lg border border-slate-200 bg-white px-2.5 text-[11px] font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
               >
-                {item.series.representativeModel}
+                {item.series.modelFamily}
               </button>
             ))}
           </div>
