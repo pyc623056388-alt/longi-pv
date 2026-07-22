@@ -25,7 +25,7 @@ export function RecommendWizard({
     DEFAULT_PRODUCT_RECOMMEND_INPUT
   );
   const [phase, setPhase] = useState<Phase>("select");
-  const [selectedSeriesId, setSelectedSeriesId] = useState("");
+  const [selectedModel, setSelectedModel] = useState("");
 
   const ranked = useMemo(() => recommendProductSeries(input), [input]);
   const primary = ranked[0];
@@ -33,7 +33,7 @@ export function RecommendWizard({
 
   const handleApply = () => {
     if (!primary) return;
-    setSelectedSeriesId(primary.series.id);
+    setSelectedModel(primary.series.representativeModel);
     setPhase("result");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -65,8 +65,10 @@ export function RecommendWizard({
             key="result"
             primary={primary}
             alternatives={alternatives}
-            selectedSeriesId={selectedSeriesId || primary.series.id}
-            onSelectSeries={setSelectedSeriesId}
+            selectedModel={
+              selectedModel || primary.series.representativeModel
+            }
+            onSelectModel={setSelectedModel}
             onBack={handleBack}
           />
         ) : null}

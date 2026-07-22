@@ -84,7 +84,7 @@ export function SearchableSelect({
       >
         <Command key={open ? "open" : "closed"} shouldFilter>
           <CommandInput placeholder={searchPlaceholder} />
-          <CommandList>
+          <CommandList className="max-h-[min(360px,50vh)]">
             <CommandEmpty>{emptyText}</CommandEmpty>
             <CommandGroup>
               {options.map((option) => (

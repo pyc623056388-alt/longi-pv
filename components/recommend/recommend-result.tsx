@@ -16,10 +16,10 @@ import { SearchableSelect } from "@/components/ui/searchable-select";
 import { useI18n } from "@/components/locale-provider";
 import type { ProductRecommendMatch } from "@/lib/product-recommend-engine";
 import {
-  PRODUCT_MATRIX,
-  getProductSeriesById,
-  type ProductSeries,
-} from "@/lib/product-matrix-catalog";
+  defaultSkuForSeries,
+  getProductSkuByModel,
+  listDriveProductSkus,
+} from "@/lib/product-sku-catalog";
 import {
   driveThumbnailUrl,
   getProductPhotos,
@@ -49,30 +49,19 @@ function photoViewLabel(
   return rm.photoOther;
 }
 
-function browseMatch(series: ProductSeries): ProductRecommendMatch {
-  return {
-    series,
-    score: 0,
-    matchedNeeds: [],
-    missingNeeds: [],
-    reasonsZh: [],
-    reasonsEn: [],
-  };
-}
-
 interface RecommendResultProps {
   primary: ProductRecommendMatch;
   alternatives: ProductRecommendMatch[];
-  selectedSeriesId: string;
-  onSelectSeries: (seriesId: string) => void;
+  selectedModel: string;
+  onSelectModel: (model: string) => void;
   onBack: () => void;
 }
 
 export function RecommendResult({
   primary,
   alternatives,
-  selectedSeriesId,
-  onSelectSeries,
+  selectedModel,
+  onSelectModel,
   onBack,
 }: RecommendResultProps) {
   const { m, locale } = useI18n();
@@ -87,10 +76,11 @@ export function RecommendResult({
     [rankedMatches]
   );
 
-  const series = getProductSeriesById(selectedSeriesId) ?? primary.series;
-  const current =
-    rankedMatches.find((x) => x.series.id === series.id) ??
-    browseMatch(series);
+  const sku =
+    getProductSkuByModel(selectedModel) ??
+    defaultSkuForSeries(primary.series.id)!;
+  const series = sku.series;
+  const currentMatch = rankedMatches.find((x) => x.series.id === series.id);
   const isManualBrowse = !matchedIds.has(series.id);
 
   const photos = getProductPhotos(series.id);
@@ -98,26 +88,28 @@ export function RecommendResult({
   const switchOptions = rankedMatches.filter(
     (item) => item.series.id !== series.id
   );
-  const reasons =
-    locale === "zh" ? current.reasonsZh : current.reasonsEn;
+  const reasons = currentMatch
+    ? locale === "zh"
+      ? currentMatch.reasonsZh
+      : currentMatch.reasonsEn
+    : [];
   const highlights =
     locale === "zh" ? series.highlightsZh : series.highlightsEn;
 
-  const seriesOptions = useMemo(
+  const skuOptions = useMemo(
     () =>
-      PRODUCT_MATRIX.map((s) => ({
-        value: s.id,
-        label: `${s.representativeModel} · ${
-          locale === "zh" ? s.nameZh : s.nameEn
+      listDriveProductSkus().map((s) => ({
+        value: s.model,
+        label: `${s.model} · ${
+          locale === "zh" ? s.series.nameZh : s.series.nameEn
         }`,
         keywords: [
-          s.id,
-          s.modelFamily,
-          s.representativeModel,
-          s.nameZh,
-          s.nameEn,
-          String(s.powerMinWp),
-          String(s.powerMaxWp),
+          s.model,
+          s.seriesId,
+          s.series.modelFamily,
+          s.series.nameZh,
+          s.series.nameEn,
+          String(s.powerWp),
         ].join(" "),
       })),
     [locale]
@@ -153,7 +145,7 @@ export function RecommendResult({
 
         <AnimatePresence mode="wait">
           <motion.div
-            key={series.id}
+            key={sku.model}
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
@@ -197,9 +189,9 @@ export function RecommendResult({
                         </span>
                       </div>
                       <SearchableSelect
-                        value={series.id}
-                        onValueChange={onSelectSeries}
-                        options={seriesOptions}
+                        value={sku.model}
+                        onValueChange={onSelectModel}
+                        options={skuOptions}
                         placeholder={rm.result.pickSeries}
                         searchPlaceholder={rm.result.pickSeriesSearch}
                         emptyText={rm.result.pickSeriesEmpty}
@@ -210,12 +202,12 @@ export function RecommendResult({
                         )}
                       />
                       <p className="mt-1.5 text-xs text-slate-500">
-                        {series.powerMinWp}–{series.powerMaxWp} W ·{" "}
-                        {series.dimensionMm} mm
+                        {sku.powerWp} W · {series.powerMinWp}–{series.powerMaxWp}{" "}
+                        W · {series.dimensionMm} mm
                       </p>
                     </div>
                     <Link
-                      href={compareHrefForModel(series.representativeModel)}
+                      href={compareHrefForModel(sku.model)}
                       className="inline-flex h-8 shrink-0 items-center justify-center gap-1.5 rounded-lg bg-[#E40011] px-3 text-xs font-semibold text-white transition hover:bg-[#C4000F]"
                     >
                       {rm.result.openCompare}
@@ -299,7 +291,9 @@ export function RecommendResult({
               <button
                 key={item.series.id}
                 type="button"
-                onClick={() => onSelectSeries(item.series.id)}
+                onClick={() =>
+                  onSelectModel(item.series.representativeModel)
+                }
                 className="inline-flex h-7 items-center rounded-lg border border-slate-200 bg-white px-2.5 text-[11px] font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
               >
                 {item.series.representativeModel}
