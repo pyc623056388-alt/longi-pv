@@ -10,34 +10,27 @@ function isPublicPath(pathname: string): boolean {
   return false;
 }
 
-const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?.trim();
-const secretKey = process.env.CLERK_SECRET_KEY?.trim();
-
-// clerkMiddleware dynamic secretKey requires an encryption key.
-if (secretKey && !process.env.CLERK_ENCRYPTION_KEY?.trim()) {
-  process.env.CLERK_ENCRYPTION_KEY = secretKey;
+// Strip accidental whitespace from Vercel Dashboard pastes (do not pass
+// secretKey as clerkMiddleware options — that requires a separate encryption key).
+if (process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY =
+    process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.trim();
+}
+if (process.env.CLERK_SECRET_KEY) {
+  process.env.CLERK_SECRET_KEY = process.env.CLERK_SECRET_KEY.trim();
 }
 
-export default clerkMiddleware(
-  async (auth, request: NextRequest) => {
-    const { pathname } = request.nextUrl;
+export default clerkMiddleware(async (auth, request: NextRequest) => {
+  const { pathname } = request.nextUrl;
 
-    if (isPublicPath(pathname)) {
-      return NextResponse.next();
-    }
-
-    await auth.protect({
-      unauthenticatedUrl: new URL("/sign-in", request.url).toString(),
-    });
-  },
-  {
-    publishableKey,
-    secretKey,
+  if (isPublicPath(pathname)) {
+    return NextResponse.next();
   }
-);
+
+  await auth.protect();
+});
 
 export const config = {
-  // Exclude /api/health from Clerk entirely (diagnose Vercel env without auth crash).
   matcher: [
     "/((?!_next|api/health|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
     "/__clerk/(.*)",
