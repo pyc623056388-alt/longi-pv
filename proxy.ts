@@ -10,6 +10,15 @@ function isPublicPath(pathname: string): boolean {
   return false;
 }
 
+// Vercel Dashboard pastes sometimes include leading tabs/newlines — strip them.
+if (process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
+  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY =
+    process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.trim();
+}
+if (process.env.CLERK_SECRET_KEY) {
+  process.env.CLERK_SECRET_KEY = process.env.CLERK_SECRET_KEY.trim();
+}
+
 export default clerkMiddleware(async (auth, request: NextRequest) => {
   const { pathname } = request.nextUrl;
 
