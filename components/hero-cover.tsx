@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { CurrencySwitcher } from "@/components/currency-switcher";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { SiteToolNav } from "@/components/site-tool-nav";
 import { useI18n } from "@/components/locale-provider";
 import type { AppLocale } from "@/lib/i18n";
 import type { CurrencyCode } from "@/lib/pv-types";
@@ -95,39 +96,43 @@ export function HeroCover({
         />
       </div>
 
-      <div className="absolute top-6 left-6 z-20">
-        <Image
-          src="/longi-logo.svg"
-          alt="LONGi"
-          width={86}
-          height={40}
-          priority
-          className="h-8 w-auto md:h-10"
-        />
+      <div className="absolute inset-x-0 top-0 z-20 px-4 pt-4 sm:px-6">
+        <div className="flex items-center justify-between gap-3">
+          <Image
+            src="/longi-logo.svg"
+            alt="LONGi"
+            width={86}
+            height={40}
+            priority
+            className="h-8 w-auto shrink-0 md:h-10"
+          />
+          <div className="flex min-w-0 items-center justify-end gap-1.5 sm:gap-2">
+            <CurrencySwitcher
+              currency={currency}
+              onCurrencyChange={onCurrencyChange}
+              variant="hero"
+            />
+            <LanguageSwitcher
+              locale={locale}
+              onLocaleChange={onLocaleChange}
+              variant="hero"
+            />
+            <Button
+              variant="outline"
+              className="bg-white/10 border-white/20 text-white hover:bg-white/20 hover:text-white shrink-0 px-2.5 sm:px-3"
+              onClick={onOpenDatabase}
+            >
+              <Database className="w-4 h-4 sm:mr-2" />
+              <span className="hidden sm:inline">{m.common.database}</span>
+            </Button>
+          </div>
+        </div>
+        <div className="mt-3 flex justify-center sm:mt-4 sm:justify-start">
+          <SiteToolNav />
+        </div>
       </div>
 
-      <div className="absolute top-6 right-6 z-20 flex items-center gap-2">
-        <CurrencySwitcher
-          currency={currency}
-          onCurrencyChange={onCurrencyChange}
-          variant="hero"
-        />
-        <LanguageSwitcher
-          locale={locale}
-          onLocaleChange={onLocaleChange}
-          variant="hero"
-        />
-        <Button
-          variant="outline"
-          className="bg-white/10 border-white/20 text-white hover:bg-white/20 hover:text-white"
-          onClick={onOpenDatabase}
-        >
-          <Database className="w-4 h-4 mr-2" />
-          {m.common.database}
-        </Button>
-      </div>
-
-      <div className="relative z-10 w-full max-w-[min(96rem,94vw)] mx-auto px-4 sm:px-6 lg:px-8 text-center pt-16">
+      <div className="relative z-10 w-full max-w-[min(96rem,94vw)] mx-auto px-4 sm:px-6 lg:px-8 text-center pt-28 sm:pt-24">
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}

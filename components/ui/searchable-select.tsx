@@ -31,6 +31,8 @@ export interface SearchableSelectProps {
   placeholder?: string;
   searchPlaceholder?: string;
   emptyText?: string;
+  /** 触发器展示文案（可短于 option.label，避免手机截断） */
+  triggerLabel?: string;
   triggerClassName?: string;
   disabled?: boolean;
 }
@@ -42,14 +44,15 @@ export function SearchableSelect({
   placeholder = "请选择…",
   searchPlaceholder = "输入关键词搜索…",
   emptyText = "未找到匹配项",
+  triggerLabel,
   triggerClassName,
   disabled = false,
 }: SearchableSelectProps) {
   const [open, setOpen] = React.useState(false);
 
   const selected = options.find((o) => o.value === value);
-  const displayLabel = selected?.label ?? placeholder;
-  const isPlaceholder = !selected;
+  const displayLabel = triggerLabel ?? selected?.label ?? placeholder;
+  const isPlaceholder = !selected && !triggerLabel;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -84,7 +87,7 @@ export function SearchableSelect({
       >
         <Command key={open ? "open" : "closed"} shouldFilter>
           <CommandInput placeholder={searchPlaceholder} />
-          <CommandList>
+          <CommandList className="max-h-[min(360px,50vh)]">
             <CommandEmpty>{emptyText}</CommandEmpty>
             <CommandGroup>
               {options.map((option) => (

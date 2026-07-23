@@ -176,6 +176,26 @@ export default function ModuleComparisonPage() {
   }, [visibleCompetitorModules, selectedCompetitorId]);
 
   useEffect(() => {
+    if (!sessionHydrated || !longiModules.length) return;
+    try {
+      const model = new URLSearchParams(window.location.search).get("longiModel");
+      if (!model) return;
+      const upper = model.toUpperCase();
+      const exact = longiModules.find((m) => m.model.toUpperCase() === upper);
+      const family = upper.replace(/-\d+M$/i, "");
+      const byFamily = longiModules.find((m) =>
+        m.model.toUpperCase().includes(family)
+      );
+      const pick = exact ?? byFamily;
+      if (!pick) return;
+      setSelectedLongiId(pick.id);
+      setModulePairPreset("custom");
+    } catch {
+      /* ignore */
+    }
+  }, [sessionHydrated, longiModules]);
+
+  useEffect(() => {
     if (!sessionHydrated || selectedWeather) return;
     const defaultId = getDefaultWeatherId();
     if (defaultId && weatherList.some((w) => w.id === defaultId)) {
