@@ -635,14 +635,22 @@ export const zhMessages = {
 
   login: {
     title: "访问测算工具",
-    subtitle: "请输入您的授权访问码",
+    subtitle: "请使用邮箱注册或登录",
+    signInTitle: "登录",
+    signInSubtitle: "使用邮箱与密码进入 LONGi 内部工具",
+    signUpTitle: "注册账号",
+    signUpSubtitle: "经销商团队请使用工作邮箱注册",
+    noAccount: "还没有账号？",
+    goSignUp: "去注册",
+    haveAccount: "已有账号？",
+    goSignIn: "去登录",
     codeLabel: "访问码",
     submit: "进入",
     submitting: "验证中…",
     invalidCode: "访问码无效，请检查后重试或联系 LONGi 获取授权",
     serverError: "服务暂不可用，请稍后重试",
     configError: "访问控制未配置，请联系管理员",
-    footer: "授权访问 · 请勿对外传播访问码",
+    footer: "内部专用 · 请勿对外传播账号",
   },
 } as const;
 
