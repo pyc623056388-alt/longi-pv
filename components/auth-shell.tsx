@@ -87,15 +87,7 @@ export function AuthShell({ children }: { children: React.ReactNode }) {
               </Link>
             </>
           ) : (
-            <>
-              {m.noAccount}{" "}
-              <Link
-                href="/sign-up"
-                className="font-semibold text-[#ff8080] hover:text-white"
-              >
-                {m.goSignUp}
-              </Link>
-            </>
+            <span>{m.inviteOnlyHint}</span>
           )}
         </p>
       </div>

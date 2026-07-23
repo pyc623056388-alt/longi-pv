@@ -635,13 +635,14 @@ export const zhMessages = {
 
   login: {
     title: "访问测算工具",
-    subtitle: "请使用邮箱注册或登录",
+    subtitle: "请使用受邀邮箱登录",
     signInTitle: "登录",
-    signInSubtitle: "使用邮箱与密码进入 LONGi 内部工具",
-    signUpTitle: "注册账号",
-    signUpSubtitle: "经销商团队请使用工作邮箱注册",
+    signInSubtitle: "使用管理员邀请的邮箱账号进入 LONGi 内部工具",
+    signUpTitle: "接受邀请",
+    signUpSubtitle: "请通过邀请邮件中的链接完成注册",
     noAccount: "还没有账号？",
     goSignUp: "去注册",
+    inviteOnlyHint: "本工具仅限受邀经销商。请联系管理员发送邀请邮件。",
     haveAccount: "已有账号？",
     goSignIn: "去登录",
     codeLabel: "访问码",

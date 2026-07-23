@@ -636,13 +636,15 @@ export const enMessages: Messages = {
 
   login: {
     title: "Access Calculator",
-    subtitle: "Sign in or register with your email",
+    subtitle: "Sign in with an invited email account",
     signInTitle: "Sign in",
-    signInSubtitle: "Use your email and password to access LONGi internal tools",
-    signUpTitle: "Create account",
-    signUpSubtitle: "Distributor teams: register with your work email",
+    signInSubtitle: "Use the email account invited by your admin",
+    signUpTitle: "Accept invitation",
+    signUpSubtitle: "Complete registration via the link in your invitation email",
     noAccount: "Don't have an account?",
     goSignUp: "Sign up",
+    inviteOnlyHint:
+      "Access is invite-only for distributors. Ask your admin to send an invitation email.",
     haveAccount: "Already have an account?",
     goSignIn: "Sign in",
     codeLabel: "Access Code",
