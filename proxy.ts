@@ -27,7 +27,9 @@ export default clerkMiddleware(async (auth, request: NextRequest) => {
     return NextResponse.next();
   }
 
-  await auth.protect();
+  await auth.protect({
+    unauthenticatedUrl: new URL("/sign-in", request.url).toString(),
+  });
 });
 
 export const config = {
