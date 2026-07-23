@@ -23,10 +23,9 @@ export default clerkMiddleware(async (auth, request: NextRequest) => {
 });
 
 export const config = {
-  // Keep /api/health outside Clerk middleware so we can diagnose env without auth.
+  // Exclude /api/health from Clerk entirely (diagnose Vercel env without auth crash).
   matcher: [
     "/((?!_next|api/health|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    "/(api|trpc)(.*)",
     "/__clerk/(.*)",
   ],
 };
