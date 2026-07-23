@@ -197,7 +197,7 @@ npm run build:seed
 
 ## 八、邮箱账号访问控制（Clerk）
 
-邀请码门禁已替换为 **Clerk 邮箱注册 / 登录**。经销商各自使用邮箱账号；你在 [Clerk Dashboard](https://dashboard.clerk.com) 管理用户（查看、禁用、删除、邀请）。
+邀请码门禁已替换为 **Clerk 邮箱登录**。建议对经销商使用 **邀请制（Restricted）**，避免任何人公开注册。
 
 ### 1. 创建 Clerk 应用
 
@@ -205,7 +205,21 @@ npm run build:seed
 2. 启用 **Email** + **Password**（建议开启邮箱验证）  
 3. API Keys 页复制 Publishable Key / Secret Key  
 
-### 2. 本地开发
+### 2. 开启邀请制（重要）
+
+你截图里的 **Email** 页不要关「Sign-up with email」——邀请用户仍需要邮箱注册能力。
+
+正确设置：
+
+1. 左侧 **Configure** → 找 **Restrictions**（访问控制 / 限制）  
+2. **Sign-up mode** 选 **Restricted**（受限 / 邀请制）并保存  
+3. （建议）**SSO connections** 里关掉 **Google**  
+4. 顶部 **Users** → **Invite**，输入经销商邮箱发送邀请  
+5. 对方点邮件链接完成注册后即可登录  
+
+Restricted 开启后：未受邀用户不能自行注册；已有用户可在 Users 里 Ban。
+
+### 3. 本地开发
 
 ```powershell
 copy .env.example .env.local
@@ -217,29 +231,26 @@ copy .env.example .env.local
 - `CLERK_SECRET_KEY`
 - 路径变量保持与 `.env.example` 一致（`/sign-in`、`/sign-up`）
 
-在 Clerk → **Configure → Domains**（或 Paths）确认 Allowed origins 含 `http://localhost:3000`。
+重启 `pnpm dev` 后，访问 http://localhost:3000 会进入 `/sign-in`。
 
-重启 `pnpm dev` 后，访问 http://localhost:3000 会进入 `/sign-in`；可点「注册」创建账号。
-
-### 3. Vercel 生产 / Preview
+### 4. Vercel 生产 / Preview
 
 1. Vercel Dashboard → 项目 → **Settings** → **Environment Variables**  
-2. 添加与本地相同的 Clerk 变量（Production + Preview 均勾选）  
+2. 添加 Clerk 变量（Production + Preview；Value 勿含前后空格）  
 3. **删除**旧的 `ACCESS_CODES`、`AUTH_SECRET`（若仍存在）  
-4. Clerk Dashboard → 添加生产域名（如 `https://longi-pv.vercel.app`）与 Preview 域名模式  
-5. **Redeploy** 一次使变量生效  
+4. **Redeploy** 一次使变量生效  
 
-### 4. 发给经销商（示例）
+### 5. 发给经销商（示例）
 
 > Access URL: `https://你的域名.vercel.app`  
-> 请用工作邮箱在页面注册账号并登录。  
-> 如无法注册，请联系管理员在 Clerk 中开通 / 解除禁用。
+> 请查收管理员发送的 Clerk 邀请邮件，点击链接完成注册后登录。  
+> 未收到邀请请联系管理员。
 
-### 5. 日常账号管理
+### 6. 日常账号管理
 
 - 登录 [Clerk Dashboard → Users](https://dashboard.clerk.com)  
-- 可禁用离职人员、删除账号、或改为 **Allowlist / Invitation-only** 进一步收紧注册  
-- 站内顶栏头像按钮可登出  
+- Invite 新经销商；Ban / 删除离职人员  
+- 可按需再开 Allowlist（仅允许特定邮箱域名）  
 
 ---
 
