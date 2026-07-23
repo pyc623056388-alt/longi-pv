@@ -32,7 +32,7 @@ export function AuthShell({ children }: { children: React.ReactNode }) {
   const isSignUp = pathname.startsWith("/sign-up");
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 px-4">
+    <div className="relative flex min-h-screen flex-col items-center justify-center overflow-x-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 px-5 py-16 sm:px-6">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute top-1/4 left-1/2 h-[900px] w-[900px] -translate-x-1/2 rounded-full bg-gradient-to-br from-[#E40011]/20 via-[#E40011]/5 to-transparent blur-3xl" />
         <div
@@ -45,7 +45,7 @@ export function AuthShell({ children }: { children: React.ReactNode }) {
         />
       </div>
 
-      <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-4 pt-4 sm:px-6">
+      <div className="absolute inset-x-0 top-0 z-20 flex items-center justify-between px-5 pt-5 sm:px-8">
         <Image
           src="/longi-logo.svg"
           alt="LONGi"
@@ -61,21 +61,23 @@ export function AuthShell({ children }: { children: React.ReactNode }) {
         />
       </div>
 
-      <div className="relative z-10 w-full max-w-md">
-        <div className="mb-6 text-center">
-          <h1 className="text-2xl font-extrabold tracking-tight text-white">
+      <div className="relative z-10 mx-auto flex w-full max-w-[400px] flex-col items-center">
+        <div className="mb-6 w-full text-center">
+          <h1 className="text-2xl font-extrabold tracking-tight text-white sm:text-[1.75rem]">
             {isSignUp ? m.signUpTitle : m.signInTitle}
           </h1>
-          <p className="mt-2 text-sm text-white/55">
+          <p className="mt-2 text-sm leading-relaxed text-white/55">
             {isSignUp ? m.signUpSubtitle : m.signInSubtitle}
           </p>
         </div>
 
-        <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/95 p-1 shadow-2xl shadow-black/40">
-          {children}
+        <div className="flex w-full justify-center overflow-hidden rounded-2xl border border-white/10 bg-white shadow-[0_20px_50px_rgba(0,0,0,0.35)]">
+          <div className="w-full [&_.cl-rootBox]:mx-auto [&_.cl-rootBox]:w-full [&_.cl-cardBox]:mx-auto [&_.cl-cardBox]:w-full [&_.cl-card]:mx-auto [&_.cl-card]:w-full">
+            {children}
+          </div>
         </div>
 
-        <p className="mt-5 text-center text-sm text-white/50">
+        <p className="mt-5 w-full px-1 text-center text-sm leading-relaxed text-white/50">
           {isSignUp ? (
             <>
               {m.haveAccount}{" "}
