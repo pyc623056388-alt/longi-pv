@@ -52,6 +52,7 @@ import {
   type CurrencyCode,
   type ModuleRecord,
 } from "@/lib/pv-types";
+import { resolveLongiModuleByModelParam } from "@/lib/resolve-longi-model";
 
 const LOCALE_STORAGE_KEY = "longi-pv:locale";
 
@@ -175,21 +176,36 @@ export default function ModuleComparisonPage() {
     }
   }, [visibleCompetitorModules, selectedCompetitorId]);
 
+  // Deep-link from recommend: /?longiModel=LR7-54HVB-475M#module-compare
   useEffect(() => {
     if (!sessionHydrated || !longiModules.length) return;
     try {
       const model = new URLSearchParams(window.location.search).get("longiModel");
       if (!model) return;
-      const upper = model.toUpperCase();
-      const exact = longiModules.find((m) => m.model.toUpperCase() === upper);
-      const family = upper.replace(/-\d+M$/i, "");
-      const byFamily = longiModules.find((m) =>
-        m.model.toUpperCase().includes(family)
-      );
-      const pick = exact ?? byFamily;
-      if (!pick) return;
-      setSelectedLongiId(pick.id);
-      setModulePairPreset("custom");
+
+      const pick = resolveLongiModuleByModelParam(longiModules, model);
+      if (pick) {
+        setSelectedLongiId(pick.id);
+        setModulePairPreset("custom");
+      } else {
+        toast.message(`对比库暂无 ${model}，请在组件选择中手动挑选`);
+      }
+
+      // Clean query; keep/ensure hash so compare section stays targetable.
+      const url = new URL(window.location.href);
+      url.searchParams.delete("longiModel");
+      const next =
+        url.pathname +
+        (url.searchParams.toString() ? `?${url.searchParams.toString()}` : "") +
+        (url.hash || "#module-compare");
+      window.history.replaceState({}, "", next);
+
+      const timer = window.setTimeout(() => {
+        document
+          .getElementById("module-compare")
+          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 80);
+      return () => window.clearTimeout(timer);
     } catch {
       /* ignore */
     }

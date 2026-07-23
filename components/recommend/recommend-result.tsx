@@ -31,7 +31,7 @@ import {
 import { cn } from "@/lib/utils";
 
 function compareHrefForModel(model: string): string {
-  return `/?longiModel=${encodeURIComponent(model)}`;
+  return `/?longiModel=${encodeURIComponent(model)}#module-compare`;
 }
 
 function photoViewLabel(
