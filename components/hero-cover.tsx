@@ -1,8 +1,13 @@
 "use client";
 
-import { useMemo, useRef } from "react";
-import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { LanguageSwitcher } from "@/components/language-switcher";
+import { SiteToolNav } from "@/components/site-tool-nav";
+import { AccountUserButton } from "@/components/account-user-button";
+import { useI18n } from "@/components/locale-provider";
+import type { AppLocale } from "@/lib/i18n";
+import type { CurrencyCode } from "@/lib/pv-types";
+import { CurrencySwitcher } from "@/components/currency-switcher";
+import { Button } from "@/components/ui/button";
 import {
   ChevronDown,
   Database,
@@ -10,13 +15,9 @@ import {
   Shield,
   Zap,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { CurrencySwitcher } from "@/components/currency-switcher";
-import { LanguageSwitcher } from "@/components/language-switcher";
-import { SiteToolNav } from "@/components/site-tool-nav";
-import { useI18n } from "@/components/locale-provider";
-import type { AppLocale } from "@/lib/i18n";
-import type { CurrencyCode } from "@/lib/pv-types";
+import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
+import { useMemo, useRef } from "react";
 
 interface HeroCoverProps {
   onOpenDatabase: () => void;
@@ -125,6 +126,7 @@ export function HeroCover({
               <Database className="w-4 h-4 sm:mr-2" />
               <span className="hidden sm:inline">{m.common.database}</span>
             </Button>
+            <AccountUserButton />
           </div>
         </div>
         <div className="mt-3 flex justify-center sm:mt-4 sm:justify-start">

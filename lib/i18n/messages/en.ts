@@ -636,7 +636,15 @@ export const enMessages: Messages = {
 
   login: {
     title: "Access Calculator",
-    subtitle: "Enter your authorized access code",
+    subtitle: "Sign in or register with your email",
+    signInTitle: "Sign in",
+    signInSubtitle: "Use your email and password to access LONGi internal tools",
+    signUpTitle: "Create account",
+    signUpSubtitle: "Distributor teams: register with your work email",
+    noAccount: "Don't have an account?",
+    goSignUp: "Sign up",
+    haveAccount: "Already have an account?",
+    goSignIn: "Sign in",
     codeLabel: "Access Code",
     submit: "Continue",
     submitting: "Verifying…",
@@ -644,6 +652,6 @@ export const enMessages: Messages = {
       "Invalid access code. Please check and try again, or contact LONGi for access.",
     serverError: "Service temporarily unavailable. Please try again later.",
     configError: "Access control is not configured. Please contact your administrator.",
-    footer: "Authorized access only · Do not share this code",
+    footer: "Internal use only · Do not share your account",
   },
 };

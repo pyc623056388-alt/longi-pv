@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { SiteToolNav } from "@/components/site-tool-nav";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { AccountUserButton } from "@/components/account-user-button";
 import { useI18n } from "@/components/locale-provider";
 import type { AppLocale } from "@/lib/i18n";
 
@@ -31,14 +32,16 @@ export function RecommendHero({
               priority
               className="h-8 w-auto shrink-0"
             />
-            <div className="sm:hidden">
+            <div className="sm:hidden flex items-center gap-2">
               <LanguageSwitcher locale={locale} onLocaleChange={onLocaleChange} />
+              <AccountUserButton />
             </div>
           </div>
           <div className="flex flex-wrap items-center justify-between gap-3 sm:justify-end">
             <SiteToolNav />
-            <div className="hidden sm:block">
+            <div className="hidden items-center gap-2 sm:flex">
               <LanguageSwitcher locale={locale} onLocaleChange={onLocaleChange} />
+              <AccountUserButton />
             </div>
           </div>
         </div>

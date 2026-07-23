@@ -165,11 +165,11 @@ git push
 | 文件 | 用途 |
 |------|------|
 | `app/page.tsx` | 四屏滚动页面、测算与图表（v3 主体） |
-| `app/login/page.tsx` | 邀请码登录页（未授权访问时跳转） |
-| `middleware.ts` | 全站访问控制，校验登录 Cookie |
-| `lib/auth.ts` | 邀请码解析与 Session Cookie 签名 |
+| `app/sign-in/`、`app/sign-up/` | Clerk 邮箱登录 / 注册页 |
+| `app/login/page.tsx` | 旧邀请码路径，重定向到 `/sign-in` |
+| `proxy.ts` | Next.js 16 全站门禁（Clerk `clerkMiddleware`） |
 | `lib/pv-calculation.ts` | 装机容量 / 发电量 / 成本 / 回本测算 |
-| `app/layout.tsx` | 标题、SEO、Vercel Analytics |
+| `app/layout.tsx` | 标题、SEO、ClerkProvider、Vercel Analytics |
 | `app/globals.css` | 全局样式 |
 | `public/` | 图标与静态资源 |
 | `数据库/` | 隆基 PAN、竞品 PDF 源文件（构建用） |
@@ -195,41 +195,51 @@ npm run build:seed
 
 ---
 
-## 八、邀请码访问控制（登录门禁）
+## 八、邮箱账号访问控制（Clerk）
 
-线上部署需配置环境变量，否则访客只能看到登录页并提示「未配置」。
+邀请码门禁已替换为 **Clerk 邮箱注册 / 登录**。经销商各自使用邮箱账号；你在 [Clerk Dashboard](https://dashboard.clerk.com) 管理用户（查看、禁用、删除、邀请）。
 
-### 1. 本地开发
+### 1. 创建 Clerk 应用
 
-复制模板并填入测试值：
+1. 打开 https://dashboard.clerk.com → Create application  
+2. 启用 **Email** + **Password**（建议开启邮箱验证）  
+3. API Keys 页复制 Publishable Key / Secret Key  
+
+### 2. 本地开发
 
 ```powershell
 copy .env.example .env.local
 ```
 
-编辑 `.env.local`：
+编辑 `.env.local`，填入：
 
-- `ACCESS_CODES`：逗号分隔的邀请码（见 `.env.example` 中 20 个澳洲码）
-- `AUTH_SECRET`：随机字符串（可用 `openssl rand -base64 32` 生成）
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
+- `CLERK_SECRET_KEY`
+- 路径变量保持与 `.env.example` 一致（`/sign-in`、`/sign-up`）
 
-重启 `pnpm dev` 后，访问 http://localhost:3000 会先进入 `/login`。
+在 Clerk → **Configure → Domains**（或 Paths）确认 Allowed origins 含 `http://localhost:3000`。
 
-### 2. Vercel 生产环境
+重启 `pnpm dev` 后，访问 http://localhost:3000 会进入 `/sign-in`；可点「注册」创建账号。
 
-1. Vercel Dashboard → 项目 → **Settings** → **Environment Variables**
-2. 添加 `ACCESS_CODES`（Production / Preview 按需勾选）
-3. 添加 `AUTH_SECRET`（与本地不同，单独生成）
-4. **Redeploy** 一次使变量生效
+### 3. Vercel 生产 / Preview
 
-### 3. 发给客户（示例）
+1. Vercel Dashboard → 项目 → **Settings** → **Environment Variables**  
+2. 添加与本地相同的 Clerk 变量（Production + Preview 均勾选）  
+3. **删除**旧的 `ACCESS_CODES`、`AUTH_SECRET`（若仍存在）  
+4. Clerk Dashboard → 添加生产域名（如 `https://longi-pv.vercel.app`）与 Preview 域名模式  
+5. **Redeploy** 一次使变量生效  
+
+### 4. 发给经销商（示例）
 
 > Access URL: `https://你的域名.vercel.app`  
-> Access Code: `LONGI-AU-NSW-01`  
-> Please do not share this code externally.
+> 请用工作邮箱在页面注册账号并登录。  
+> 如无法注册，请联系管理员在 Clerk 中开通 / 解除禁用。
 
-同一邀请码可发给多个客户（如按区域共用）；码泄露时在 Vercel 环境变量中删除对应码并重新部署即可作废。
+### 5. 日常账号管理
 
-登录成功后 Cookie 有效期 **30 天**，期间无需重复输入。
+- 登录 [Clerk Dashboard → Users](https://dashboard.clerk.com)  
+- 可禁用离职人员、删除账号、或改为 **Allowlist / Invitation-only** 进一步收紧注册  
+- 站内顶栏头像按钮可登出  
 
 ---
 
