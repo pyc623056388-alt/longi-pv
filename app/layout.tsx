@@ -39,6 +39,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const publishableKey =
+    process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?.trim() || undefined;
+
   return (
     <html
       lang="zh-CN"
@@ -46,10 +49,7 @@ export default function RootLayout({
     >
       <body className="font-sans antialiased">
         <ClerkProvider
-          publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?.trim()}
-          signInUrl="/sign-in"
-          signUpUrl="/sign-up"
-          afterSignOutUrl="/sign-in"
+          publishableKey={publishableKey}
           appearance={{
             variables: {
               colorPrimary: "#E40011",
