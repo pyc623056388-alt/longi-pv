@@ -2,11 +2,15 @@ import { describe, expect, it } from "vitest";
 import {
   CASE_CATALOG,
   caseCoverSrc,
+  caseDrivePreviewUrl,
+  caseMediaThumbSrc,
   getCaseStudyBySlug,
   listCaseStudies,
   recommendHrefForSeries,
+  type CaseStudy,
 } from "./case-catalog";
 import { getProductSeriesById } from "./product-matrix-catalog";
+import { driveThumbnailUrl } from "./product-drive-resources";
 
 describe("case-catalog", () => {
   it("has unique slugs and linked series that exist in PRODUCT_MATRIX", () => {
@@ -30,10 +34,32 @@ describe("case-catalog", () => {
     }
   });
 
-  it("resolves cover from local placeholder when Drive id is absent", () => {
+  it("resolves cover from Drive fileId when present", () => {
     const sample = getCaseStudyBySlug("sydney-residential-hvh");
-    expect(sample).toBeTruthy();
-    expect(caseCoverSrc(sample!)).toBe("/products/LR7-54HVH.png");
+    expect(sample?.coverFileId).toBeTruthy();
+    expect(caseCoverSrc(sample!)).toBe(
+      driveThumbnailUrl(sample!.coverFileId!, 1200)
+    );
+  });
+
+  it("falls back to local cover when Drive id is absent", () => {
+    const localOnly: CaseStudy = {
+      ...getCaseStudyBySlug("sydney-residential-hvh")!,
+      coverFileId: undefined,
+      coverLocalSrc: "/products/LR7-54HVH.png",
+    };
+    expect(caseCoverSrc(localOnly)).toBe("/products/LR7-54HVH.png");
+  });
+
+  it("builds Drive preview and media thumb URLs", () => {
+    expect(caseDrivePreviewUrl("abc123")).toBe(
+      "https://drive.google.com/file/d/abc123/preview"
+    );
+    const photo = getCaseStudyBySlug("brisbane-coastal-hvb")!.media[0]!;
+    expect(photo.fileId).toBeTruthy();
+    expect(caseMediaThumbSrc(photo)).toBe(
+      driveThumbnailUrl(photo.fileId!, 800)
+    );
   });
 
   it("builds recommend deep link for series", () => {
