@@ -74,19 +74,19 @@ export const zhMessages = {
     eyebrow: "项目案例",
     title: "客户项目案例",
     subtitle:
-      "汇总可对外讲解的项目故事：照片与视频在站内预览，关联版型通过「查看版型」按钮进入产品选型。Google Drive 素材链接可后续单独锁定。",
+      "汇总可对外讲解的项目故事：YouTube 案例视频站内播放，关联版型通过「查看版型」进入产品选型。照片仍可后续接入 Google Drive。",
     empty: "暂无案例，请在案例目录中添加条目。",
     notFound: "未找到该案例",
     backToList: "返回案例列表",
     galleryTitle: "照片与视频",
-    galleryHint: "点击媒体仅预览，不会跳转页面。",
+    galleryHint: "点击媒体仅站内预览，不会跳转页面。",
     relatedSeriesTitle: "关联版型",
     relatedSeriesHint: "使用下方按钮进入产品选型查看对应系列。",
     viewSeries: "查看版型",
     media: {
       coverPending: "封面待接入",
-      photoPending: "照片待接入 Drive",
-      videoPending: "视频待接入 Drive",
+      photoPending: "照片待接入",
+      videoPending: "视频待接入",
     },
   },
 

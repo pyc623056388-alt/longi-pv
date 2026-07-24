@@ -9,6 +9,7 @@ import {
 import {
   caseDrivePreviewUrl,
   caseMediaThumbSrc,
+  youtubeEmbedUrl,
   type CaseMedia,
 } from "@/lib/case-catalog";
 
@@ -26,9 +27,13 @@ export function CaseMediaLightbox({
 
   const label = locale === "zh" ? media.labelZh : media.labelEn;
   const thumb = caseMediaThumbSrc(media, 1600);
+  const youtubeSrc = media.youtubeVideoId
+    ? youtubeEmbedUrl(media.youtubeVideoId)
+    : null;
   const drivePreview = media.fileId
     ? caseDrivePreviewUrl(media.fileId)
     : null;
+  const iframeSrc = youtubeSrc ?? drivePreview;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -37,12 +42,14 @@ export function CaseMediaLightbox({
           {label}
         </DialogTitle>
         <div className="mt-2 overflow-hidden rounded-lg bg-black">
-          {drivePreview ? (
+          {iframeSrc ? (
             <iframe
               title={label}
-              src={drivePreview}
+              src={iframeSrc}
               className="aspect-video h-auto w-full min-h-[240px] border-0"
-              allow="autoplay"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              referrerPolicy="strict-origin-when-cross-origin"
             />
           ) : media.type === "photo" && thumb ? (
             // eslint-disable-next-line @next/next/no-img-element

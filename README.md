@@ -288,13 +288,15 @@ npx vercel --prod
 
 ## 十、项目案例页（`/cases`）
 
-顶栏「项目案例」进入列表与详情（Layout A 封面网格）。框架已就绪：
+顶栏「项目案例」进入列表与详情（Layout A 封面网格）。
 
 - 案例元数据：`lib/case-catalog.ts`（标题、地点、正文、关联版型 `seriesIds`）
-- 媒体：优先填 Google Drive `fileId`；未填时可用 `localSrc` / `coverLocalSrc` 占位
-- 照片/视频点击仅站内预览；「查看版型」跳转 `/recommend?series=系列ID`
+- **视频**：一案例一 YouTube，`youtubeVideoId`（来自 [Longi-Case 播放列表](https://www.youtube.com/playlist?list=PLZ5M08taeKFs)）；封面用 `i.ytimg.com` 缩略图，详情 lightbox 嵌入 `youtube.com/embed/{id}`
+- **照片**（可选）：Google Drive `fileId`，或 `localSrc` / `coverLocalSrc` 占位
+- 媒体点击仅站内预览；「查看版型」跳转 `/recommend?series=系列ID`
 
-**后续锁定网盘时**：在 Drive 为每个案例建文件夹并上传素材 → 把文件共享为「知道链接的人可查看」→ 将 `fileId` 写入对应案例的 `coverFileId` / `media[].fileId` → 部署即可。若只需替换素材内容，可在 Drive 对同一文件「上传新版本」保留原 `fileId`，无需改代码。
+**换视频**：改对应案例的 `youtubeVideoId`（及文案）后部署即可。  
+**补照片**：Drive 上传并共享为「知道链接的人可查看」→ 写入 `coverFileId` / `media[].fileId`；同文件「上传新版本」可保留原 `fileId`。
 
 ---
 

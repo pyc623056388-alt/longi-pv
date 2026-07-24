@@ -49,20 +49,20 @@ export const enMessages: Messages = {
     eyebrow: "Case studies",
     title: "Customer project cases",
     subtitle:
-      "Shareable project stories: photos and videos preview in-page; use View series to open the product finder. Google Drive links can be locked in later.",
+      "Shareable project stories: YouTube case videos play in-page; use View series for the product finder. Photos can still use Google Drive later.",
     empty: "No cases yet. Add entries in the case catalog.",
     notFound: "Case not found",
     backToList: "Back to cases",
     galleryTitle: "Photos & videos",
-    galleryHint: "Media opens a preview only — it does not navigate away.",
+    galleryHint: "Media opens an in-page preview only — it does not navigate away.",
     relatedSeriesTitle: "Related series",
     relatedSeriesHint:
       "Use the button below to open the matching series in the product finder.",
     viewSeries: "View series",
     media: {
       coverPending: "Cover pending",
-      photoPending: "Photo pending Drive",
-      videoPending: "Video pending Drive",
+      photoPending: "Photo pending",
+      videoPending: "Video pending",
     },
   },
 
