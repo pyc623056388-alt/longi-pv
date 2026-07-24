@@ -129,7 +129,7 @@ export function HeroCover({
             <AccountUserButton />
           </div>
         </div>
-        <div className="mt-3 flex justify-center sm:mt-4 sm:justify-start">
+        <div className="mt-3.5 flex justify-start sm:mt-4">
           <SiteToolNav />
         </div>
       </div>

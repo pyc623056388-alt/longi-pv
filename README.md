@@ -286,7 +286,19 @@ npx vercel --prod
 
 ---
 
-## 十、Legal / 知识产权
+## 十、项目案例页（`/cases`）
+
+顶栏「项目案例」进入列表与详情（Layout A 封面网格）。框架已就绪：
+
+- 案例元数据：`lib/case-catalog.ts`（标题、地点、正文、关联版型 `seriesIds`）
+- 媒体：优先填 Google Drive `fileId`；未填时可用 `localSrc` / `coverLocalSrc` 占位
+- 照片/视频点击仅站内预览；「查看版型」跳转 `/recommend?series=系列ID`
+
+**后续锁定网盘时**：在 Drive 为每个案例建文件夹并上传素材 → 把文件共享为「知道链接的人可查看」→ 将 `fileId` 写入对应案例的 `coverFileId` / `media[].fileId` → 部署即可。若只需替换素材内容，可在 Drive 对同一文件「上传新版本」保留原 `fileId`，无需改代码。
+
+---
+
+## 十一、Legal / 知识产权
 
 本仓库及配套测算工具为**隆基绿能内部专用**：
 

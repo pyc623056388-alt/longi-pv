@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, Compass } from "lucide-react";
+import { motion } from "framer-motion";
+import { BarChart3, Compass, Images } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/components/locale-provider";
 
@@ -10,13 +11,14 @@ export function SiteToolNav({ className }: { className?: string }) {
   const pathname = usePathname();
   const { m } = useI18n();
 
+  /** 左→右：案例 → 选型 → 对比（浏览 → 选型 → 测算） */
   const items = [
     {
-      href: "/",
-      label: m.nav.compare,
-      hint: m.nav.compareHint,
-      icon: BarChart3,
-      active: pathname === "/",
+      href: "/cases",
+      label: m.nav.cases,
+      hint: m.nav.casesHint,
+      icon: Images,
+      active: pathname === "/cases" || pathname.startsWith("/cases/"),
     },
     {
       href: "/recommend",
@@ -25,33 +27,60 @@ export function SiteToolNav({ className }: { className?: string }) {
       icon: Compass,
       active: pathname === "/recommend" || pathname.startsWith("/recommend/"),
     },
+    {
+      href: "/",
+      label: m.nav.compare,
+      hint: m.nav.compareHint,
+      icon: BarChart3,
+      active: pathname === "/",
+    },
   ] as const;
 
   return (
     <nav
       className={cn(
-        "inline-flex max-w-full items-center gap-1 rounded-full border border-white/15 bg-black/35 p-1 backdrop-blur-md",
+        "inline-flex max-w-full items-center gap-0.5 sm:gap-1",
         className
       )}
       aria-label={m.nav.aria}
     >
-      {items.map((item) => {
+      {items.map((item, index) => {
         const Icon = item.icon;
         return (
-          <Link
-            key={item.href}
-            href={item.href}
-            title={item.hint}
-            className={cn(
-              "inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold transition-colors sm:gap-2 sm:px-3.5 sm:text-sm",
-              item.active
-                ? "bg-white text-slate-900"
-                : "text-white/80 hover:bg-white/10 hover:text-white"
-            )}
-          >
-            <Icon className="h-3.5 w-3.5 shrink-0" strokeWidth={1.75} />
-            <span className="whitespace-nowrap">{item.label}</span>
-          </Link>
+          <div key={item.href} className="flex items-center">
+            {index > 0 ? (
+              <span
+                aria-hidden
+                className="mx-0.5 h-px w-3 bg-white/20 sm:mx-1 sm:w-4"
+              />
+            ) : null}
+            <Link
+              href={item.href}
+              title={item.hint}
+              className={cn(
+                "relative inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors sm:gap-2 sm:px-3 sm:py-2 sm:text-sm",
+                item.active
+                  ? "text-white"
+                  : "text-white/55 hover:text-white/90"
+              )}
+            >
+              {item.active ? (
+                <motion.span
+                  layoutId="site-tool-nav-ink"
+                  className="absolute inset-x-1.5 -bottom-0.5 h-[2px] rounded-full bg-[#E40011] sm:inset-x-2"
+                  transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                />
+              ) : null}
+              <Icon
+                className={cn(
+                  "h-3.5 w-3.5 shrink-0 transition-opacity",
+                  item.active ? "opacity-100" : "opacity-70"
+                )}
+                strokeWidth={1.75}
+              />
+              <span className="relative whitespace-nowrap">{item.label}</span>
+            </Link>
+          </div>
         );
       })}
     </nav>

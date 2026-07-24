@@ -36,11 +36,34 @@ export const enMessages: Messages = {
   },
 
   nav: {
-    aria: "Tool switcher",
+    aria: "Path: case studies, product finder, gain compare",
     compare: "Gain compare",
     compareHint: "LONGi vs competitor lifecycle ROI",
     recommend: "Product finder",
     recommendHint: "Recommend a variant from needs",
+    cases: "Case studies",
+    casesHint: "Customer project stories and media",
+  },
+
+  cases: {
+    eyebrow: "Case studies",
+    title: "Customer project cases",
+    subtitle:
+      "Shareable project stories: photos and videos preview in-page; use View series to open the product finder. Google Drive links can be locked in later.",
+    empty: "No cases yet. Add entries in the case catalog.",
+    notFound: "Case not found",
+    backToList: "Back to cases",
+    galleryTitle: "Photos & videos",
+    galleryHint: "Media opens a preview only — it does not navigate away.",
+    relatedSeriesTitle: "Related series",
+    relatedSeriesHint:
+      "Use the button below to open the matching series in the product finder.",
+    viewSeries: "View series",
+    media: {
+      coverPending: "Cover pending",
+      photoPending: "Photo pending Drive",
+      videoPending: "Video pending Drive",
+    },
   },
 
   recommend: {
