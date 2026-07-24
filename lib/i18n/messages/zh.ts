@@ -66,6 +66,28 @@ export const zhMessages = {
     compareHint: "隆基 vs 竞品全生命周期测算",
     recommend: "产品选型",
     recommendHint: "按场景与需求推荐版型",
+    cases: "项目案例",
+    casesHint: "客户项目故事与现场素材",
+  },
+
+  cases: {
+    eyebrow: "项目案例",
+    title: "客户项目案例",
+    subtitle:
+      "汇总可对外讲解的项目故事：照片与视频在站内预览，关联版型通过「查看版型」按钮进入产品选型。Google Drive 素材链接可后续单独锁定。",
+    empty: "暂无案例，请在案例目录中添加条目。",
+    notFound: "未找到该案例",
+    backToList: "返回案例列表",
+    galleryTitle: "照片与视频",
+    galleryHint: "点击媒体仅预览，不会跳转页面。",
+    relatedSeriesTitle: "关联版型",
+    relatedSeriesHint: "使用下方按钮进入产品选型查看对应系列。",
+    viewSeries: "查看版型",
+    media: {
+      coverPending: "封面待接入",
+      photoPending: "照片待接入 Drive",
+      videoPending: "视频待接入 Drive",
+    },
   },
 
   recommend: {

@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { RecommendHero } from "@/components/recommend/recommend-hero";
 import { RecommendStep1 } from "@/components/recommend/recommend-step1";
 import { RecommendResult } from "@/components/recommend/recommend-result";
 import type { AppLocale } from "@/lib/i18n";
+import { getProductSeriesById } from "@/lib/product-matrix-catalog";
 import {
   DEFAULT_PRODUCT_RECOMMEND_INPUT,
   recommendProductSeries,
@@ -31,6 +32,26 @@ export function RecommendWizard({
   const [phase, setPhase] = useState<Phase>("select");
   const [selectedSeriesId, setSelectedSeriesId] = useState("");
   const [powerBand, setPowerBand] = useState<ResultPowerBand>("default");
+
+  /** Deep-link from cases: /recommend?series=LR7-54HVH */
+  useEffect(() => {
+    const seriesId = new URLSearchParams(window.location.search).get("series");
+    if (!seriesId) return;
+    const series = getProductSeriesById(seriesId);
+    if (!series) return;
+
+    setInput({
+      ...DEFAULT_PRODUCT_RECOMMEND_INPUT,
+      scenario: "flexible",
+    });
+    setSelectedSeriesId(series.id);
+    setPowerBand(defaultPowerBandForSeries(series));
+    setPhase("result");
+
+    const url = new URL(window.location.href);
+    url.searchParams.delete("series");
+    window.history.replaceState({}, "", `${url.pathname}${url.hash}`);
+  }, []);
 
   const ranked = useMemo(() => recommendProductSeries(input), [input]);
   const primary = ranked[0];

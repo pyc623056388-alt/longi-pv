@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, Compass } from "lucide-react";
+import { BarChart3, Compass, Images } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/components/locale-provider";
 
@@ -24,6 +24,13 @@ export function SiteToolNav({ className }: { className?: string }) {
       hint: m.nav.recommendHint,
       icon: Compass,
       active: pathname === "/recommend" || pathname.startsWith("/recommend/"),
+    },
+    {
+      href: "/cases",
+      label: m.nav.cases,
+      hint: m.nav.casesHint,
+      icon: Images,
+      active: pathname === "/cases" || pathname.startsWith("/cases/"),
     },
   ] as const;
 
