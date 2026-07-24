@@ -1,12 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, MapPin, Play } from "lucide-react";
 import { motion } from "framer-motion";
 import { CaseMediaLightbox } from "@/components/cases/case-media-lightbox";
-import { SiteToolNav } from "@/components/site-tool-nav";
+import { SiteToolHeader } from "@/components/site-tool-header";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { AccountUserButton } from "@/components/account-user-button";
 import { useI18n } from "@/components/locale-provider";
@@ -46,35 +45,17 @@ export function CaseDetail({
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <header className="relative overflow-hidden bg-[radial-gradient(ellipse_at_top,_rgba(228,0,17,0.22),_transparent_55%),linear-gradient(180deg,#0b1220_0%,#111827_100%)]">
         <div className="mx-auto flex w-full max-w-6xl flex-col px-5 pt-6 sm:px-6">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center justify-between gap-3">
-              <Image
-                src="/longi-logo.svg"
-                alt="LONGi"
-                width={86}
-                height={40}
-                priority
-                className="h-8 w-auto shrink-0"
-              />
-              <div className="flex items-center gap-2 sm:hidden">
+          <SiteToolHeader
+            utilities={
+              <>
                 <LanguageSwitcher
                   locale={locale}
                   onLocaleChange={onLocaleChange}
                 />
                 <AccountUserButton />
-              </div>
-            </div>
-            <div className="flex flex-wrap items-center justify-between gap-3 sm:justify-end">
-              <SiteToolNav />
-              <div className="hidden items-center gap-2 sm:flex">
-                <LanguageSwitcher
-                  locale={locale}
-                  onLocaleChange={onLocaleChange}
-                />
-                <AccountUserButton />
-              </div>
-            </div>
-          </div>
+              </>
+            }
+          />
 
           <div className="mt-8 mb-6">
             <Link

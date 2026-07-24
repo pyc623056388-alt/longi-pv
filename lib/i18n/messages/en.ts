@@ -36,7 +36,7 @@ export const enMessages: Messages = {
   },
 
   nav: {
-    aria: "Tool switcher",
+    aria: "Path: case studies, product finder, gain compare",
     compare: "Gain compare",
     compareHint: "LONGi vs competitor lifecycle ROI",
     recommend: "Product finder",

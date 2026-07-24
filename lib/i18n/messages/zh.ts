@@ -61,7 +61,7 @@ export const zhMessages = {
   },
 
   nav: {
-    aria: "工具切换",
+    aria: "浏览路径：项目案例、产品选型、增益对比",
     compare: "增益对比",
     compareHint: "隆基 vs 竞品全生命周期测算",
     recommend: "产品选型",
