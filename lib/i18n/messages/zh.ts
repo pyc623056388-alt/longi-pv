@@ -80,8 +80,8 @@ export const zhMessages = {
     backToList: "返回案例列表",
     galleryTitle: "照片与视频",
     galleryHint: "点击媒体仅站内预览，不会跳转页面。",
-    relatedSeriesTitle: "关联版型",
-    relatedSeriesHint: "使用下方按钮进入产品选型查看对应系列。",
+    relatedSeriesTitle: "推荐相关版型",
+    relatedSeriesHint: "以下为推荐参考系列，可使用下方按钮进入产品选型查看。",
     viewSeries: "查看版型",
     media: {
       coverPending: "封面待接入",

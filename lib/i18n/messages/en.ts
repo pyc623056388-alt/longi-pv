@@ -55,9 +55,9 @@ export const enMessages: Messages = {
     backToList: "Back to cases",
     galleryTitle: "Photos & videos",
     galleryHint: "Media opens an in-page preview only — it does not navigate away.",
-    relatedSeriesTitle: "Related series",
+    relatedSeriesTitle: "Recommended series",
     relatedSeriesHint:
-      "Use the button below to open the matching series in the product finder.",
+      "These are recommended reference series — use the button below to open them in the product finder.",
     viewSeries: "View series",
     media: {
       coverPending: "Cover pending",

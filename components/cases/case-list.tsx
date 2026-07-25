@@ -4,11 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { MapPin } from "lucide-react";
 import { useI18n } from "@/components/locale-provider";
-import {
-  caseCoverSrc,
-  caseLinkedSeries,
-  listCaseStudies,
-} from "@/lib/case-catalog";
+import { caseCoverSrc, listCaseStudies } from "@/lib/case-catalog";
 
 export function CaseList() {
   const { locale, m } = useI18n();
@@ -32,7 +28,6 @@ export function CaseList() {
           const location =
             locale === "zh" ? item.locationZh : item.locationEn;
           const cover = caseCoverSrc(item);
-          const series = caseLinkedSeries(item);
 
           return (
             <motion.div
@@ -68,18 +63,6 @@ export function CaseList() {
                     <h2 className="text-base font-bold leading-snug text-white sm:text-lg">
                       {title}
                     </h2>
-                    {series.length > 0 ? (
-                      <div className="mt-2 flex flex-wrap gap-1.5">
-                        {series.map((s) => (
-                          <span
-                            key={s.id}
-                            className="rounded bg-white/15 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-white backdrop-blur-sm"
-                          >
-                            {s.modelFamily}
-                          </span>
-                        ))}
-                      </div>
-                    ) : null}
                   </div>
                 </div>
               </Link>
