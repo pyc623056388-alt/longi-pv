@@ -19,9 +19,9 @@ export const PRODUCT_DRIVE_RESOURCES: Record<string, ProductDriveResources> =
 {
   "LR7-54HVB": {
     "datasheet": {
-      "label": "AU_Datasheet_X10_LR7-54HVB_475-495.pdf",
-      "url": "https://drive.google.com/file/d/1I4d549GcbGgTDg-iWi_yRtqUESrY--Ck/view",
-      "fileId": "1I4d549GcbGgTDg-iWi_yRtqUESrY--Ck"
+      "label": "AU_Datasheet_X10_LR7-54HVB_475-500.pdf",
+      "url": "https://drive.google.com/file/d/1zpHyfIhy8OD08uAnUImUMr2emsUgTIAr/view",
+      "fileId": "1zpHyfIhy8OD08uAnUImUMr2emsUgTIAr"
     },
     "warranty": {
       "label": "AU Limited Warranty for LONGi Hi-MOX10 Solar Modules (Distributed Generation Market).pdf",
@@ -179,9 +179,9 @@ export const PRODUCT_DRIVE_RESOURCES: Record<string, ProductDriveResources> =
   },
   "LR7-54HVHF": {
     "datasheet": {
-      "label": "AU_Datasheet_X10_LR7-54HVHF_480-500.pdf",
-      "url": "https://drive.google.com/file/d/1rbq6u0F-ZvSznczst7WWK6OdPda6olH2/view",
-      "fileId": "1rbq6u0F-ZvSznczst7WWK6OdPda6olH2"
+      "label": "AU_Datasheet_X10_LR7-54HVHF_475-500.pdf",
+      "url": "https://drive.google.com/file/d/1BTWtXy196YnoHfjVQjH2PmjaxnAjEsNQ/view",
+      "fileId": "1BTWtXy196YnoHfjVQjH2PmjaxnAjEsNQ"
     },
     "warranty": {
       "label": "AU Limited Warranty for LONGi Hi-MOX10 Solar Modules (Distributed Generation Market).pdf",

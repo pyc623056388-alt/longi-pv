@@ -33,7 +33,13 @@ describe("product-sku-catalog datasheet power range", () => {
 
   it("exposes datasheet power ranges per series", () => {
     expect(formatDatasheetPowerRange(getProductSeriesById("LR7-54HVB")!)).toBe(
-      "475~495"
+      "475~500"
+    );
+    expect(formatDatasheetPowerRange(getProductSeriesById("LR7-54HVHF")!)).toBe(
+      "475~500"
+    );
+    expect(formatDatasheetPowerRange(getProductSeriesById("LR8-66HYD")!)).toBe(
+      "635~670"
     );
     expect(formatDatasheetPowerRange(getProductSeriesById("LR7-54HVD")!)).toBe(
       "475~500"

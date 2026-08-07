@@ -16,7 +16,15 @@ describe("product-drive-resources", () => {
   });
 
   it("covers anti-dust and lightweight series", () => {
-    expect(getProductDriveResources("LR7-54HVHF")?.datasheet).toBeTruthy();
+    expect(getProductDriveResources("LR7-54HVHF")?.datasheet?.fileId).toBe(
+      "1BTWtXy196YnoHfjVQjH2PmjaxnAjEsNQ"
+    );
+    expect(getProductDriveResources("LR7-54HVHF")?.datasheet?.label).toContain(
+      "475-500"
+    );
+    expect(getProductDriveResources("LR7-54HVB")?.datasheet?.fileId).toBe(
+      "1zpHyfIhy8OD08uAnUImUMr2emsUgTIAr"
+    );
     expect(
       getProductDriveResources("LR7-60HVHL")?.installationManual
     ).toBeTruthy();

@@ -67,10 +67,26 @@ describe("PRODUCT_MATRIX AU warranty and key specs", () => {
     }
   });
 
-  it("keeps HYD power band within AU datasheet 640–670", () => {
+  it("aligns HYD power band to Drive Glass 2.0 datasheet 635–670", () => {
     const hyd = getProductSeriesById("LR8-66HYD")!;
-    expect(hyd.powerMinWp).toBe(640);
+    expect(hyd.powerMinWp).toBe(635);
     expect(hyd.powerMaxWp).toBe(670);
+    expect(hyd.datasheetFile).toBe(
+      "Datasheet_LR8-66HYD_Glass2.0+2_635-670_V5.0_EN.pdf"
+    );
+  });
+
+  it("aligns LR7-54HVB / HVHF to Drive datasheet 475–500", () => {
+    const hvb = getProductSeriesById("LR7-54HVB")!;
+    expect(hvb.powerMinWp).toBe(475);
+    expect(hvb.powerMaxWp).toBe(500);
+    expect(hvb.datasheetFile).toBe("AU_Datasheet_X10_LR7-54HVB_475-500.pdf");
+
+    const hvhf = getProductSeriesById("LR7-54HVHF")!;
+    expect(hvhf.powerMinWp).toBe(475);
+    expect(hvhf.powerMaxWp).toBe(500);
+    expect(hvhf.representativeModel).toBe("LR7-54HVHF-475M");
+    expect(hvhf.datasheetFile).toBe("AU_Datasheet_X10_LR7-54HVHF_475-500.pdf");
   });
 
   it("maps LR7-54HVD to transparent dual-glass 475–500", () => {
