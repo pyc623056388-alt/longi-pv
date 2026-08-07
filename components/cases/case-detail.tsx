@@ -98,6 +98,19 @@ export function CaseDetail({
             <MapPin className="h-4 w-4" />
             {location}
           </p>
+          <div className="mb-3 flex flex-wrap items-center gap-2">
+            <span className="rounded border border-slate-200 bg-white px-2 py-0.5 text-xs font-medium text-slate-600">
+              {cm.labels.sector[caseStudy.sector]}
+            </span>
+            {caseStudy.scale !== "unspecified" ? (
+              <span className="rounded border border-slate-200 bg-white px-2 py-0.5 text-xs font-medium text-slate-600">
+                {cm.labels.scale[caseStudy.scale]}
+              </span>
+            ) : null}
+            <span className="rounded border border-slate-200 bg-white px-2 py-0.5 text-xs font-medium text-slate-600">
+              {cm.labels.country[caseStudy.country]}
+            </span>
+          </div>
           <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
             {title}
           </h1>

@@ -11,6 +11,13 @@ import {
 
 export type CaseMediaType = "photo" | "video";
 
+export type CaseCountry = "AU" | "NZ";
+
+export type CaseSector = "residential" | "commercial";
+
+/** 装机规模分档；未知容量用 unspecified */
+export type CaseScale = "lt50" | "50to100" | "gt100" | "unspecified";
+
 export interface CaseMedia {
   type: CaseMediaType;
   labelZh: string;
@@ -33,7 +40,15 @@ export interface CaseStudy {
   summaryEn: string;
   bodyZh: string[];
   bodyEn: string[];
-  /** 关联 PRODUCT_MATRIX 系列 id */
+  /** 结构化国家（筛选用） */
+  country: CaseCountry;
+  /** 州/都会区；空字符串表示无细地区，不进入地区筛选项 */
+  region: string;
+  /** 户用 / 工商业（学校、机构、俱乐部等算工商业） */
+  sector: CaseSector;
+  /** 装机规模分档 */
+  scale: CaseScale;
+  /** 关联 PRODUCT_MATRIX 系列 id（亦作「所用组件」筛选） */
   seriesIds: string[];
   /** 主视频（封面优先用其 YouTube 缩略图） */
   youtubeVideoId?: string;
@@ -41,6 +56,22 @@ export interface CaseStudy {
   coverLocalSrc?: string;
   media: CaseMedia[];
   publishedAt: string;
+}
+
+export interface CaseFilters {
+  country?: CaseCountry | "";
+  region?: string;
+  sector?: CaseSector | "";
+  scale?: CaseScale | "";
+  seriesId?: string;
+}
+
+export interface CaseFilterOptions {
+  countries: CaseCountry[];
+  regions: string[];
+  sectors: CaseSector[];
+  scales: CaseScale[];
+  seriesIds: string[];
 }
 
 export function youtubeThumbUrl(videoId: string, quality: "hq" | "mq" | "sd" = "hq"): string {
@@ -74,6 +105,10 @@ export const CASE_CATALOG: CaseStudy[] = [
       "Sourced from the Longi-Case playlist—useful when walking customers through a C&I rooftop story.",
       "Play the project video in-page; use View series to open the linked product finder series.",
     ],
+    country: "NZ",
+    region: "Auckland",
+    sector: "commercial",
+    scale: "unspecified",
     seriesIds: ["LR7-72HVD"],
     youtubeVideoId: "21F3Vf8owgQ",
     media: [
@@ -103,6 +138,10 @@ export const CASE_CATALOG: CaseStudy[] = [
       "A compact C&I rooftop story—good for install scale, schedule, and branded retail sites.",
       "Video plays in-page; linked to mid-size HVH and adjustable in the catalog.",
     ],
+    country: "NZ",
+    region: "Auckland",
+    sector: "commercial",
+    scale: "lt50",
     seriesIds: ["LR7-60HVH"],
     youtubeVideoId: "LCTZaLjCIFU",
     media: [
@@ -130,6 +169,10 @@ export const CASE_CATALOG: CaseStudy[] = [
     bodyEn: [
       "Residential sample: start from the case video, then jump to HVH residential materials and gain compare.",
     ],
+    country: "NZ",
+    region: "Auckland",
+    sector: "residential",
+    scale: "unspecified",
     seriesIds: ["LR7-54HVH"],
     youtubeVideoId: "21GHXk1eeBo",
     media: [
@@ -157,6 +200,10 @@ export const CASE_CATALOG: CaseStudy[] = [
     bodyEn: [
       "Useful for sports / club C&I conversations and the path into series recommendation.",
     ],
+    country: "NZ",
+    region: "Titirangi",
+    sector: "commercial",
+    scale: "unspecified",
     seriesIds: ["LR7-72HVD"],
     youtubeVideoId: "9y0_ACQYumM",
     media: [
@@ -184,6 +231,10 @@ export const CASE_CATALOG: CaseStudy[] = [
     bodyEn: [
       "Institutional customer story: video for narrative, CTA into the C&I series finder.",
     ],
+    country: "NZ",
+    region: "Auckland",
+    sector: "commercial",
+    scale: "unspecified",
     seriesIds: ["LR7-72HVD"],
     youtubeVideoId: "Xz64GK0wB7Y",
     media: [
@@ -212,6 +263,10 @@ export const CASE_CATALOG: CaseStudy[] = [
     bodyEn: [
       "Education-sector C&I project—good for capacity talk tracks and campus rooftops.",
     ],
+    country: "AU",
+    region: "NSW",
+    sector: "commercial",
+    scale: "50to100",
     seriesIds: ["LR7-72HVD"],
     youtubeVideoId: "ybnpWjR3kpg",
     media: [
@@ -240,6 +295,10 @@ export const CASE_CATALOG: CaseStudy[] = [
     bodyEn: [
       "Residential storytelling case—useful before moving customers into product selection.",
     ],
+    country: "AU",
+    region: "",
+    sector: "residential",
+    scale: "unspecified",
     seriesIds: ["LR7-54HVH"],
     youtubeVideoId: "5GSfdCgNk9Q",
     media: [
@@ -262,6 +321,73 @@ export function listCaseStudies(): CaseStudy[] {
 
 export function getCaseStudyBySlug(slug: string): CaseStudy | undefined {
   return CASE_CATALOG.find((c) => c.slug === slug);
+}
+
+export function emptyCaseFilters(): CaseFilters {
+  return {
+    country: "",
+    region: "",
+    sector: "",
+    scale: "",
+    seriesId: "",
+  };
+}
+
+export function hasActiveCaseFilters(filters: CaseFilters): boolean {
+  return Boolean(
+    filters.country ||
+      filters.region ||
+      filters.sector ||
+      filters.scale ||
+      filters.seriesId
+  );
+}
+
+/** 多条件 AND；空值表示该维不限。组件筛选用 seriesIds 命中任一即可。 */
+export function filterCaseStudies(
+  cases: CaseStudy[],
+  filters: CaseFilters
+): CaseStudy[] {
+  return cases.filter((item) => {
+    if (filters.country && item.country !== filters.country) return false;
+    if (filters.region && item.region !== filters.region) return false;
+    if (filters.sector && item.sector !== filters.sector) return false;
+    if (filters.scale && item.scale !== filters.scale) return false;
+    if (filters.seriesId && !item.seriesIds.includes(filters.seriesId)) {
+      return false;
+    }
+    return true;
+  });
+}
+
+export function getCaseFilterOptions(
+  cases: CaseStudy[] = CASE_CATALOG
+): CaseFilterOptions {
+  const countries = new Set<CaseCountry>();
+  const regions = new Set<string>();
+  const sectors = new Set<CaseSector>();
+  const scales = new Set<CaseScale>();
+  const seriesIds = new Set<string>();
+
+  for (const item of cases) {
+    countries.add(item.country);
+    if (item.region.trim()) regions.add(item.region);
+    sectors.add(item.sector);
+    scales.add(item.scale);
+    for (const id of item.seriesIds) seriesIds.add(id);
+  }
+
+  const countryOrder: CaseCountry[] = ["AU", "NZ"];
+  const sectorOrder: CaseSector[] = ["residential", "commercial"];
+  const scaleOrder: CaseScale[] = ["lt50", "50to100", "gt100", "unspecified"];
+
+  return {
+    countries: countryOrder.filter((c) => countries.has(c)),
+    regions: [...regions].sort((a, b) => a.localeCompare(b)),
+    sectors: sectorOrder.filter((s) => sectors.has(s)),
+    scales: scaleOrder.filter((s) => scales.has(s)),
+    seriesIds: [...seriesIds].sort((a, b) => a.localeCompare(b)),
+  };
 }
 
 export function caseCoverSrc(caseStudy: CaseStudy, size = 1200): string | null {

@@ -51,6 +51,7 @@ export const enMessages: Messages = {
     subtitle:
       "Shareable project stories: YouTube case videos play in-page; use View series for the product finder. Photos can still use Google Drive later.",
     empty: "No cases yet. Add entries in the case catalog.",
+    noMatch: "No cases match the current filters.",
     notFound: "Case not found",
     backToList: "Back to cases",
     galleryTitle: "Photos & videos",
@@ -63,6 +64,33 @@ export const enMessages: Messages = {
       coverPending: "Cover pending",
       photoPending: "Photo pending",
       videoPending: "Video pending",
+    },
+    filters: {
+      country: "Country",
+      region: "Region",
+      sector: "Sector",
+      scale: "Scale",
+      series: "Modules used",
+      all: "All",
+      clear: "Clear filters",
+      resultCount: (shown: number, total: number) =>
+        `Showing ${shown} of ${total}`,
+    },
+    labels: {
+      country: {
+        AU: "Australia",
+        NZ: "New Zealand",
+      },
+      sector: {
+        residential: "Residential",
+        commercial: "C&I",
+      },
+      scale: {
+        lt50: "<50 kW",
+        "50to100": "50–100 kW",
+        gt100: ">100 kW",
+        unspecified: "Scale TBD",
+      },
     },
   },
 
