@@ -165,11 +165,11 @@ git push
 | 文件 | 用途 |
 |------|------|
 | `app/page.tsx` | 四屏滚动页面、测算与图表（v3 主体） |
-| `app/login/page.tsx` | 邀请码登录页（未授权访问时跳转） |
-| `middleware.ts` | 全站访问控制，校验登录 Cookie |
-| `lib/auth.ts` | 邀请码解析与 Session Cookie 签名 |
+| `app/sign-in/`、`app/sign-up/` | Clerk 邮箱登录 / 注册页 |
+| `app/login/page.tsx` | 旧邀请码路径，重定向到 `/sign-in` |
+| `proxy.ts` | Next.js 16 全站门禁（Clerk `clerkMiddleware`） |
 | `lib/pv-calculation.ts` | 装机容量 / 发电量 / 成本 / 回本测算 |
-| `app/layout.tsx` | 标题、SEO、Vercel Analytics |
+| `app/layout.tsx` | 标题、SEO、ClerkProvider、Vercel Analytics |
 | `app/globals.css` | 全局样式 |
 | `public/` | 图标与静态资源 |
 | `数据库/` | 隆基 PAN、竞品 PDF 源文件（构建用） |
@@ -195,41 +195,62 @@ npm run build:seed
 
 ---
 
-## 八、邀请码访问控制（登录门禁）
+## 八、邮箱账号访问控制（Clerk）
 
-线上部署需配置环境变量，否则访客只能看到登录页并提示「未配置」。
+邀请码门禁已替换为 **Clerk 邮箱登录**。建议对经销商使用 **邀请制（Restricted）**，避免任何人公开注册。
 
-### 1. 本地开发
+### 1. 创建 Clerk 应用
 
-复制模板并填入测试值：
+1. 打开 https://dashboard.clerk.com → Create application  
+2. 启用 **Email** + **Password**（建议开启邮箱验证）  
+3. API Keys 页复制 Publishable Key / Secret Key  
+
+### 2. 开启邀请制（重要）
+
+你截图里的 **Email** 页不要关「Sign-up with email」——邀请用户仍需要邮箱注册能力。
+
+正确设置：
+
+1. 左侧 **Configure** → 找 **Restrictions**（访问控制 / 限制）  
+2. **Sign-up mode** 选 **Restricted**（受限 / 邀请制）并保存  
+3. （建议）**SSO connections** 里关掉 **Google**  
+4. 顶部 **Users** → **Invite**，输入经销商邮箱发送邀请  
+5. 对方点邮件链接完成注册后即可登录  
+
+Restricted 开启后：未受邀用户不能自行注册；已有用户可在 Users 里 Ban。
+
+### 3. 本地开发
 
 ```powershell
 copy .env.example .env.local
 ```
 
-编辑 `.env.local`：
+编辑 `.env.local`，填入：
 
-- `ACCESS_CODES`：逗号分隔的邀请码（见 `.env.example` 中 20 个澳洲码）
-- `AUTH_SECRET`：随机字符串（可用 `openssl rand -base64 32` 生成）
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
+- `CLERK_SECRET_KEY`
+- 路径变量保持与 `.env.example` 一致（`/sign-in`、`/sign-up`）
 
-重启 `pnpm dev` 后，访问 http://localhost:3000 会先进入 `/login`。
+重启 `pnpm dev` 后，访问 http://localhost:3000 会进入 `/sign-in`。
 
-### 2. Vercel 生产环境
+### 4. Vercel 生产 / Preview
 
-1. Vercel Dashboard → 项目 → **Settings** → **Environment Variables**
-2. 添加 `ACCESS_CODES`（Production / Preview 按需勾选）
-3. 添加 `AUTH_SECRET`（与本地不同，单独生成）
-4. **Redeploy** 一次使变量生效
+1. Vercel Dashboard → 项目 → **Settings** → **Environment Variables**  
+2. 添加 Clerk 变量（Production + Preview；Value 勿含前后空格）  
+3. **删除**旧的 `ACCESS_CODES`、`AUTH_SECRET`（若仍存在）  
+4. **Redeploy** 一次使变量生效  
 
-### 3. 发给客户（示例）
+### 5. 发给经销商（示例）
 
 > Access URL: `https://你的域名.vercel.app`  
-> Access Code: `LONGI-AU-NSW-01`  
-> Please do not share this code externally.
+> 请查收管理员发送的 Clerk 邀请邮件，点击链接完成注册后登录。  
+> 未收到邀请请联系管理员。
 
-同一邀请码可发给多个客户（如按区域共用）；码泄露时在 Vercel 环境变量中删除对应码并重新部署即可作废。
+### 6. 日常账号管理
 
-登录成功后 Cookie 有效期 **30 天**，期间无需重复输入。
+- 登录 [Clerk Dashboard → Users](https://dashboard.clerk.com)  
+- Invite 新经销商；Ban / 删除离职人员  
+- 可按需再开 Allowlist（仅允许特定邮箱域名）  
 
 ---
 
@@ -265,7 +286,21 @@ npx vercel --prod
 
 ---
 
-## 十、Legal / 知识产权
+## 十、项目案例页（`/cases`）
+
+顶栏「项目案例」进入列表与详情（Layout A 封面网格）。
+
+- 案例元数据：`lib/case-catalog.ts`（标题、地点、正文、关联版型 `seriesIds`）
+- **视频**：一案例一 YouTube，`youtubeVideoId`（来自 [Longi-Case 播放列表](https://www.youtube.com/playlist?list=PLZ5M08taeKFs)）；封面用 `i.ytimg.com` 缩略图，详情 lightbox 嵌入 `youtube.com/embed/{id}`
+- **照片**（可选）：Google Drive `fileId`，或 `localSrc` / `coverLocalSrc` 占位
+- 媒体点击仅站内预览；「查看版型」跳转 `/recommend?series=系列ID`
+
+**换视频**：改对应案例的 `youtubeVideoId`（及文案）后部署即可。  
+**补照片**：Drive 上传并共享为「知道链接的人可查看」→ 写入 `coverFileId` / `media[].fileId`；同文件「上传新版本」可保留原 `fileId`。
+
+---
+
+## 十一、Legal / 知识产权
 
 本仓库及配套测算工具为**隆基绿能内部专用**：
 

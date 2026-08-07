@@ -35,6 +35,201 @@ export const enMessages: Messages = {
     actions: "Actions",
   },
 
+  nav: {
+    aria: "Path: case studies, product finder, gain compare",
+    compare: "Gain compare",
+    compareHint: "LONGi vs competitor lifecycle ROI",
+    recommend: "Product finder",
+    recommendHint: "Recommend a variant from needs",
+    cases: "Case studies",
+    casesHint: "Customer project stories and media",
+  },
+
+  cases: {
+    eyebrow: "Case studies",
+    title: "Customer project cases",
+    subtitle:
+      "Shareable project stories: YouTube case videos play in-page; use View series for the product finder. Photos can still use Google Drive later.",
+    empty: "No cases yet. Add entries in the case catalog.",
+    noMatch: "No cases match the current filters.",
+    notFound: "Case not found",
+    backToList: "Back to cases",
+    galleryTitle: "Photos & videos",
+    galleryHint: "Media opens an in-page preview only — it does not navigate away.",
+    relatedSeriesTitle: "Recommended series",
+    relatedSeriesHint:
+      "These are recommended reference series — use the button below to open them in the product finder.",
+    viewSeries: "View series",
+    media: {
+      coverPending: "Cover pending",
+      photoPending: "Photo pending",
+      videoPending: "Video pending",
+    },
+    filters: {
+      country: "Country",
+      region: "Region",
+      sector: "Sector",
+      scale: "Scale",
+      series: "Modules used",
+      all: "All",
+      clear: "Clear filters",
+      resultCount: (shown: number, total: number) =>
+        `Showing ${shown} of ${total}`,
+    },
+    labels: {
+      country: {
+        AU: "Australia",
+        NZ: "New Zealand",
+      },
+      sector: {
+        residential: "Residential",
+        commercial: "C&I",
+      },
+      scale: {
+        lt50: "<50 kW",
+        "50to100": "50–100 kW",
+        gt100: ">100 kW",
+        unspecified: "Scale TBD",
+      },
+    },
+  },
+
+  recommend: {
+    eyebrow: "Product finder",
+    title: "Find the right LONGi version",
+    subtitle:
+      "Recommend a Hi-MO X10 series from scenario, generation type, and feature needs—with key specs. Use this for selection; use the compare tool for ROI.",
+    scrollHint: "Scroll down to start",
+    formHint: "Conflicting options that yield no modules are disabled",
+    formTitle: "Filters",
+    stepBadge: "Step 1",
+    stepTitle: "Choose customer needs",
+    stepSubtitle:
+      "Set scenario and feature requirements; we recommend matching LONGi variants",
+    matchCount: (n: number) => `Estimated matches: ${n} series`,
+    matchNone: "No series match this combination",
+    optionDisabled: "Conflicts with current filters; no matching module",
+    apply: "Apply & view recommendation",
+    backToFilters: "Edit filters",
+    weakAlternatives: "Weak alternatives",
+    weakAlternativesHint: "Click to inspect that series",
+    photoFront: "Front",
+    photoRear: "Rear",
+    photoSide: "Side",
+    photoBevel: "Bevel",
+    photoOther: "Photo",
+    sections: {
+      scenario: "Application",
+      roofLoad: "Roof load",
+      generation: "Generation type",
+      power: "Power band",
+      needs: "Feature needs",
+    },
+    scenario: {
+      residential: "Residential DG",
+      commercial: "C&I rooftop",
+      flexible: "Any / flexible",
+    },
+    scenarioDesc: {
+      residential: "Homes and small distributed projects",
+      commercial: "C&I rooftops and larger systems",
+      flexible: "No scenario limit; wider catalog",
+    },
+    roofLoad: {
+      normal: "Normal load",
+      limited: "Limited load (lightweight)",
+    },
+    roofLoadDesc: {
+      normal: "Standard roof load; full catalog",
+      limited: "Only lightweight HVHL-class options",
+    },
+    generation: {
+      any: "Any",
+      monofacial: "Monofacial",
+      bifacial: "Bifacial",
+      transparent: "Transparent bifacial",
+    },
+    power: {
+      auto: "Auto from scenario",
+      residential: "Residential ~475W",
+      medium: "Mid-size ~540W",
+      large: "Large ~650W",
+    },
+    needs: {
+      antiHotspot: {
+        label: "Anti-hotspot / fire prevention",
+        hint: "Lower localized overheating risk",
+      },
+      antiDust: {
+        label: "Anti-dust",
+        hint: "Prefers HVHF anti-dust frames",
+      },
+      antiGlare: {
+        label: "Anti-glare",
+        hint: "Airports, roads, glare-sensitive sites",
+      },
+      antiShading: {
+        label: "Anti-shading",
+        hint: "Less power loss under partial shade",
+      },
+      lightweight: {
+        label: "Lightweight",
+        hint: "HVHL for low load-bearing roofs",
+      },
+      saltMist: {
+        label: "Salt mist / coastal",
+        hint: "Salt-mist certified environments",
+      },
+      ammonia: {
+        label: "Ammonia / farming",
+        hint: "Livestock and farm sites",
+      },
+      hail: {
+        label: "Hail",
+        hint: "Hail-certified use cases",
+      },
+    },
+    result: {
+      badge: "Recommendation",
+      title: "Suggested module & key data",
+      empty: "No good match—relax filters and try again",
+      efficiency: "Peak efficiency",
+      weight: "Weight",
+      tempCoef: "Temp. coefficient",
+      degradation: "Year-1 / annual deg.",
+      warranty: "Product / power warranty",
+      glass: "Glass",
+      dualGlass: "Dual glass",
+      singleGlass: "Single glass",
+      openCompare: "Compare gains with this model",
+      alternative: "Alternative",
+      pickSeries: "Model",
+      pickSeriesSearch: "Search model or series…",
+      pickSeriesEmpty: "No matching model",
+      powerBand: "Power band",
+      powerBandDefault: "475/480",
+      powerBandMedium: "540",
+      powerBandLarge: "650",
+      powerBandUnavailable: "Not available for this model",
+      manualBrowse: "Manual browse",
+      recommendedMatch: "Matched filters",
+    },
+    resources: {
+      title: "Product files (Google Drive)",
+      subtitle:
+        "Open datasheet, warranty, installation manual, and certificates—files stay on Drive",
+      coreDocs: "Core documents",
+      datasheet: "Datasheet",
+      warranty: "Warranty",
+      installationManual: "Installation manual",
+      photos: "Product photos",
+      certificates: "Certificates",
+      photosEmpty: "No photos linked for this series yet",
+      certsEmpty: "No certificates linked for this series yet",
+      unavailable: "No Drive files linked yet",
+    },
+  },
+
   hero: {
     titleLine1: "LONGi Smart PV",
     titleLine2: "Lifecycle Gain Calculator",
@@ -154,6 +349,45 @@ export const enMessages: Messages = {
     },
     fieldHints: {
       dimensions: "L×W mm, e.g. 2278×1134",
+    },
+    versionFinder: {
+      title: "Find your version",
+      subtitle:
+        "Select customer needs (anti-dust, anti-hotspot, etc.) to auto-match a LONGi variant",
+      powerBand: "Power band",
+      powerBandOptions: {
+        475: "Residential 475W",
+        540: "Mid-size 540W",
+        650: "Large 650W",
+      },
+      needsLegend: "Customer needs",
+      needs: {
+        antiHotspot: {
+          label: "Anti-hotspot / fire prevention",
+          hint: "Reduces localized overheating risk",
+        },
+        antiDust: {
+          label: "Anti-dust",
+          hint: "Prefers HVHF / HVDF anti-dust frame variants",
+        },
+        antiGlare: {
+          label: "Anti-glare",
+          hint: "Prefers non-F HVH / HVD anti-glare variants",
+        },
+        antiShading: {
+          label: "Anti-shading",
+          hint: "Limits power loss under partial shading",
+        },
+        lightweight: {
+          label: "Lightweight",
+          hint: "Prefers HVHL for load-limited roofs",
+        },
+      },
+      previewLabel: "Recommended model",
+      previewEmpty: "No model in this power band",
+      partialMatch: "No exact match; showing the closest variant",
+      apply: "Apply recommended version",
+      appliedToast: (model: string) => `Selected ${model}`,
     },
   },
 
@@ -453,7 +687,17 @@ export const enMessages: Messages = {
 
   login: {
     title: "Access Calculator",
-    subtitle: "Enter your authorized access code",
+    subtitle: "Sign in with an invited email account",
+    signInTitle: "Sign in",
+    signInSubtitle: "Use the email account invited by your admin",
+    signUpTitle: "Accept invitation",
+    signUpSubtitle: "Complete registration via the link in your invitation email",
+    noAccount: "Don't have an account?",
+    goSignUp: "Sign up",
+    inviteOnlyHint:
+      "Access is invite-only for distributors. Ask your admin to send an invitation email.",
+    haveAccount: "Already have an account?",
+    goSignIn: "Sign in",
     codeLabel: "Access Code",
     submit: "Continue",
     submitting: "Verifying…",
@@ -461,6 +705,6 @@ export const enMessages: Messages = {
       "Invalid access code. Please check and try again, or contact LONGi for access.",
     serverError: "Service temporarily unavailable. Please try again later.",
     configError: "Access control is not configured. Please contact your administrator.",
-    footer: "Authorized access only · Do not share this code",
+    footer: "Internal use only · Do not share your account",
   },
 };

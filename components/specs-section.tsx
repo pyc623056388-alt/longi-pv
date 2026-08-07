@@ -316,9 +316,10 @@ export function SpecsSection({
 
   return (
     <motion.section
+      id="module-compare"
       ref={ref}
       style={{ opacity, y }}
-      className="min-h-screen flex items-center py-32 bg-gradient-to-b from-white via-slate-50 to-white"
+      className="min-h-screen flex items-center py-32 bg-gradient-to-b from-white via-slate-50 to-white scroll-mt-4"
     >
       <div className="max-w-7xl mx-auto px-6 w-full">
         <motion.div
