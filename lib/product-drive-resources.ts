@@ -371,7 +371,28 @@ export const PRODUCT_DRIVE_RESOURCES: Record<string, ProductDriveResources> =
       "url": "https://drive.google.com/file/d/1kIwLL7acAwV6S7BXyR79W11IrHDNt3CF/view",
       "fileId": "1kIwLL7acAwV6S7BXyR79W11IrHDNt3CF"
     },
-    "photos": [],
+    "photos": [
+      {
+        "label": "Front view",
+        "url": "https://drive.google.com/file/d/1Hmi2rEF59et3vJczUvNw-2sakUa5JJZK/view",
+        "fileId": "1Hmi2rEF59et3vJczUvNw-2sakUa5JJZK"
+      },
+      {
+        "label": "Rear view",
+        "url": "https://drive.google.com/file/d/1eb55sm_9LxKg75GE0PkRFr1TETWOqO2x/view",
+        "fileId": "1eb55sm_9LxKg75GE0PkRFr1TETWOqO2x"
+      },
+      {
+        "label": "Side view",
+        "url": "https://drive.google.com/file/d/1jVsmMimXBWizGdxCtWrABtDIZNzU9kYk/view",
+        "fileId": "1jVsmMimXBWizGdxCtWrABtDIZNzU9kYk"
+      },
+      {
+        "label": "Bevel view",
+        "url": "https://drive.google.com/file/d/1fDOPakfTVS2X_zPe_18RuJ9t0Zj4YwAD/view",
+        "fileId": "1fDOPakfTVS2X_zPe_18RuJ9t0Zj4YwAD"
+      }
+    ],
     "certificates": [
       {
         "label": "Ammonia · Ammonia_IEC62716_Single_Cert.pdf",
@@ -421,7 +442,28 @@ export const PRODUCT_DRIVE_RESOURCES: Record<string, ProductDriveResources> =
       "url": "https://drive.google.com/file/d/1K4SFe8KgFWQOqhXr4KwHTxqIC5ZJWvsq/view",
       "fileId": "1K4SFe8KgFWQOqhXr4KwHTxqIC5ZJWvsq"
     },
-    "photos": [],
+    "photos": [
+      {
+        "label": "Front view",
+        "url": "https://drive.google.com/file/d/19fIYZmC2VutKQLoC67ni4YlGCpf5Bf7f/view",
+        "fileId": "19fIYZmC2VutKQLoC67ni4YlGCpf5Bf7f"
+      },
+      {
+        "label": "Rear view",
+        "url": "https://drive.google.com/file/d/1ljSbpdewJE-jJfZEfmFHW53Pxiga13wf/view",
+        "fileId": "1ljSbpdewJE-jJfZEfmFHW53Pxiga13wf"
+      },
+      {
+        "label": "Side view",
+        "url": "https://drive.google.com/file/d/1_rcFYVXCP-1NAPt_lmPc7IuLP3rpWLJD/view",
+        "fileId": "1_rcFYVXCP-1NAPt_lmPc7IuLP3rpWLJD"
+      },
+      {
+        "label": "Bevel view",
+        "url": "https://drive.google.com/file/d/1qikFDmUsYvVXz-oDxc6GnSIZfQuyolMc/view",
+        "fileId": "1qikFDmUsYvVXz-oDxc6GnSIZfQuyolMc"
+      }
+    ],
     "certificates": [
       {
         "label": "Ammonia · Ammonia_IEC62716_Double_Cert.pdf",
@@ -477,7 +519,28 @@ export const PRODUCT_DRIVE_RESOURCES: Record<string, ProductDriveResources> =
       "url": "https://drive.google.com/file/d/19nQx-KirWnaNK2sFw8lIdaX6vky-1CZ8/view",
       "fileId": "19nQx-KirWnaNK2sFw8lIdaX6vky-1CZ8"
     },
-    "photos": [],
+    "photos": [
+      {
+        "label": "Front view",
+        "url": "https://drive.google.com/file/d/1cLC9pPzlpPLL8wYjKNFgZZ9d-guaYCnM/view",
+        "fileId": "1cLC9pPzlpPLL8wYjKNFgZZ9d-guaYCnM"
+      },
+      {
+        "label": "Rear view",
+        "url": "https://drive.google.com/file/d/1V4HYZoMD2TXbEbIflF8QYV3JMQh6AkCS/view",
+        "fileId": "1V4HYZoMD2TXbEbIflF8QYV3JMQh6AkCS"
+      },
+      {
+        "label": "Side view",
+        "url": "https://drive.google.com/file/d/1mElE4ecPAO8ORUyckL8gzwjCUuMkMXIX/view",
+        "fileId": "1mElE4ecPAO8ORUyckL8gzwjCUuMkMXIX"
+      },
+      {
+        "label": "Bevel view",
+        "url": "https://drive.google.com/file/d/1Jk59jQAjRzv-5v42IWLT1civaHWtT0cp/view",
+        "fileId": "1Jk59jQAjRzv-5v42IWLT1civaHWtT0cp"
+      }
+    ],
     "certificates": [
       {
         "label": "Ammonia · Ammonia_IEC62716_Single_Cert.pdf",
@@ -513,9 +576,9 @@ export const PRODUCT_DRIVE_RESOURCES: Record<string, ProductDriveResources> =
   },
   "LR7-72HVD": {
     "datasheet": {
-      "label": "AU_Datasheet_X10_LR7-72HVD_640-665.pdf",
-      "url": "https://drive.google.com/file/d/1y4fGrXDDnMmnUNDtA_U5F-VngaEGptSN/view",
-      "fileId": "1y4fGrXDDnMmnUNDtA_U5F-VngaEGptSN"
+      "label": "AU_Datasheet_X10_LR7-72HVD_645-670.pdf",
+      "url": "https://drive.google.com/file/d/1d0ELAektPSX7L21m-EiHa7dS8MI1L4F2/view",
+      "fileId": "1d0ELAektPSX7L21m-EiHa7dS8MI1L4F2"
     },
     "warranty": {
       "label": "AU Limited Warranty for LONGi Hi-MOX10 Solar Modules (Distributed Generation Market).pdf",
@@ -529,9 +592,9 @@ export const PRODUCT_DRIVE_RESOURCES: Record<string, ProductDriveResources> =
     },
     "photos": [
       {
-        "label": "Bevel view",
-        "url": "https://drive.google.com/file/d/1Y8pD0CCoLrXgjivG1dqMxDB1_Oaj1oU5/view",
-        "fileId": "1Y8pD0CCoLrXgjivG1dqMxDB1_Oaj1oU5"
+        "label": "Front view",
+        "url": "https://drive.google.com/file/d/19dHimWZnVNqQYaJIFPaSLruOPBkzQ6wa/view",
+        "fileId": "19dHimWZnVNqQYaJIFPaSLruOPBkzQ6wa"
       },
       {
         "label": "Rear view",
@@ -542,6 +605,11 @@ export const PRODUCT_DRIVE_RESOURCES: Record<string, ProductDriveResources> =
         "label": "Side view",
         "url": "https://drive.google.com/file/d/1h33jAAOo1H39SbvMcWdVI7Ec1iYNN_u4/view",
         "fileId": "1h33jAAOo1H39SbvMcWdVI7Ec1iYNN_u4"
+      },
+      {
+        "label": "Bevel view",
+        "url": "https://drive.google.com/file/d/1Y8pD0CCoLrXgjivG1dqMxDB1_Oaj1oU5/view",
+        "fileId": "1Y8pD0CCoLrXgjivG1dqMxDB1_Oaj1oU5"
       }
     ],
     "certificates": [
@@ -716,9 +784,9 @@ export const PRODUCT_DRIVE_RESOURCES: Record<string, ProductDriveResources> =
     }
   ],
   "datasheet": {
-    "label": "AU_Datasheet_X10_LR7-72HVHF_640-670.pdf",
-    "url": "https://drive.google.com/file/d/1NCnF5_NqyBddvGj9usbes9isyVtsIxoh/view",
-    "fileId": "1NCnF5_NqyBddvGj9usbes9isyVtsIxoh"
+    "label": "AU_Datasheet_X10_LR7-72HVHF_645-670.pdf",
+    "url": "https://drive.google.com/file/d/1NPKhba9LMO0B659J7ukOO4TvB3bqBOQ7/view",
+    "fileId": "1NPKhba9LMO0B659J7ukOO4TvB3bqBOQ7"
   },
   "installationManual": {
     "label": "AU Installation Manual for LONGi Solar PV Modules（DGBG Only）V3.1 202511 (2).pdf",
@@ -799,9 +867,9 @@ export const PRODUCT_DRIVE_RESOURCES: Record<string, ProductDriveResources> =
     }
   ],
   "datasheet": {
-    "label": "AU_Datasheet_X10_LR7-72HVDF_640-665.pdf",
-    "url": "https://drive.google.com/file/d/1PrUuz21oJQPxl0vRVtbltwglHnwhE_r0/view",
-    "fileId": "1PrUuz21oJQPxl0vRVtbltwglHnwhE_r0"
+    "label": "AU_Datasheet_X10_LR7-72HVDF_645-670.pdf",
+    "url": "https://drive.google.com/file/d/1RpXrAt9blgND6Vy2yjzaMlkfEBnGqwZw/view",
+    "fileId": "1RpXrAt9blgND6Vy2yjzaMlkfEBnGqwZw"
   },
   "installationManual": {
     "label": "AU Installation Manual for LONGi Solar PV Modules（DGBG Only）V3.1 202511 (2).pdf",

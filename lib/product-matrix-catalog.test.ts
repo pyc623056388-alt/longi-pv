@@ -58,6 +58,15 @@ describe("PRODUCT_MATRIX AU warranty and key specs", () => {
     }
   );
 
+  it("keeps LR7-72 series unified at datasheet 645–670", () => {
+    for (const id of ["LR7-72HVD", "LR7-72HVDF", "LR7-72HVH", "LR7-72HVHF"]) {
+      const s = getProductSeriesById(id)!;
+      expect(s.powerMinWp).toBe(645);
+      expect(s.powerMaxWp).toBe(670);
+      expect(s.datasheetFile).toBe(`AU_Datasheet_X10_${id}_645-670.pdf`);
+    }
+  });
+
   it("keeps HYD power band within AU datasheet 640–670", () => {
     const hyd = getProductSeriesById("LR8-66HYD")!;
     expect(hyd.powerMinWp).toBe(640);
