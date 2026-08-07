@@ -16,7 +16,9 @@ describe("product-sku-catalog power bands", () => {
       "LR7-54HVB",
       "LR7-54HVH",
       "LR7-54HVHF",
-      "LR7-54HVDT",
+      "LR7-54HVD",
+      "LR8-48HVH",
+      "LR8-48HVD",
       "LR7-60HVH",
       "LR7-60HVD",
       "LR7-60HVHL",
@@ -28,8 +30,7 @@ describe("product-sku-catalog power bands", () => {
       "LR8-66HVDF",
       "LR8-66HYD",
     ]);
-    expect(ids).not.toContain("LR7-54HVD");
-    expect(ids).not.toContain("LR8-48HVH");
+    expect(ids).not.toContain("LR7-54HVDT");
   });
 
   it("uses 475 or 480 for default, 540 mid, 650 large", () => {
@@ -52,8 +53,11 @@ describe("product-sku-catalog power bands", () => {
     expect(buildSku(getProductSeriesById("LR7-54HVB")!, "default")?.model).toBe(
       "LR7-54HVB-475M"
     );
-    expect(buildSku(getProductSeriesById("LR7-54HVDT")!, "default")?.model).toBe(
-      "LR7-54HVD-T-475M"
+    expect(buildSku(getProductSeriesById("LR7-54HVD")!, "default")?.model).toBe(
+      "LR7-54HVD-475M"
+    );
+    expect(buildSku(getProductSeriesById("LR8-48HVH")!, "default")?.model).toBe(
+      "LR8-48HVH-475M"
     );
     expect(skuFromSeriesAndBand("LR7-72HVD", "large")?.model).toBe(
       "LR7-72HVD-650M"

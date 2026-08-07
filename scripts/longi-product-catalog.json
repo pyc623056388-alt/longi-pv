@@ -42,6 +42,14 @@
       "widthMm": 1134
     },
     {
+      "model": "LR8-48HVD-475M",
+      "cellCount": 48,
+      "powerWp": 475,
+      "family": "hvd",
+      "lengthMm": 1762,
+      "widthMm": 1134
+    },
+    {
       "model": "LR8-48HVHF-475M",
       "cellCount": 48,
       "powerWp": 475,

@@ -9,7 +9,9 @@ describe("PRODUCT_MATRIX AU warranty and key specs", () => {
         "LR7-54HVB",
         "LR7-54HVH",
         "LR7-54HVHF",
-        "LR7-54HVDT",
+        "LR7-54HVD",
+        "LR8-48HVH",
+        "LR8-48HVD",
         "LR7-60HVH",
         "LR7-60HVD",
         "LR7-60HVHL",
@@ -28,7 +30,9 @@ describe("PRODUCT_MATRIX AU warranty and key specs", () => {
     ["LR7-54HVB", 30, 30, 21.6, "1800×1134×30", 24.3],
     ["LR7-54HVH", 25, 30, 21.6, "1800×1134×30", 24.5],
     ["LR7-54HVHF", 25, 30, 21.6, "1800×1134×30", 24.5],
-    ["LR7-54HVDT", 25, 30, 23.5, "1800×1134×30", 24.25],
+    ["LR7-54HVD", 25, 30, 23.5, "1800×1134×30", 24.5],
+    ["LR8-48HVH", 25, 30, 21.6, "1762×1134×30", 24.5],
+    ["LR8-48HVD", 25, 30, 23.5, "1762×1134×30", 24.5],
     ["LR7-60HVH", 25, 30, 25, "1990×1134×30", 24.8],
     ["LR7-60HVD", 25, 30, 28, "1990×1134×30", 24.6],
     ["LR7-60HVHL", 25, 30, 16.3, "1990×1134×30", 24.8],
@@ -58,5 +62,15 @@ describe("PRODUCT_MATRIX AU warranty and key specs", () => {
     const hyd = getProductSeriesById("LR8-66HYD")!;
     expect(hyd.powerMinWp).toBe(640);
     expect(hyd.powerMaxWp).toBe(670);
+  });
+
+  it("maps LR7-54HVD to transparent dual-glass 475–500", () => {
+    const hvd = getProductSeriesById("LR7-54HVD")!;
+    expect(hvd.generation).toBe("transparent");
+    expect(hvd.glass).toBe("dual");
+    expect(hvd.powerMinWp).toBe(475);
+    expect(hvd.powerMaxWp).toBe(500);
+    expect(hvd.representativeModel).toBe("LR7-54HVD-475M");
+    expect(hvd.datasheetFile).toBe("AU_Datasheet_X10_LR7-54HVD_475-500.pdf");
   });
 });

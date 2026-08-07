@@ -33,9 +33,6 @@ export interface ProductSku {
 }
 
 export function modelForPower(series: ProductSeries, powerWp: number): string {
-  if (series.id === "LR7-54HVDT") {
-    return `LR7-54HVD-T-${powerWp}M`;
-  }
   return `${series.modelFamily}-${powerWp}M`;
 }
 
