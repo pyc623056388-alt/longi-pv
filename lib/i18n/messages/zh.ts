@@ -76,6 +76,7 @@ export const zhMessages = {
     subtitle:
       "汇总可对外讲解的项目故事：YouTube 案例视频站内播放，关联版型通过「查看版型」进入产品选型。照片仍可后续接入 Google Drive。",
     empty: "暂无案例，请在案例目录中添加条目。",
+    noMatch: "没有符合当前筛选条件的案例。",
     notFound: "未找到该案例",
     backToList: "返回案例列表",
     galleryTitle: "照片与视频",
@@ -87,6 +88,33 @@ export const zhMessages = {
       coverPending: "封面待接入",
       photoPending: "照片待接入",
       videoPending: "视频待接入",
+    },
+    filters: {
+      country: "国家",
+      region: "地区",
+      sector: "场景",
+      scale: "规模",
+      series: "所用组件",
+      all: "全部",
+      clear: "清空筛选",
+      resultCount: (shown: number, total: number) =>
+        `显示 ${shown} / ${total} 个案例`,
+    },
+    labels: {
+      country: {
+        AU: "澳大利亚",
+        NZ: "新西兰",
+      },
+      sector: {
+        residential: "户用",
+        commercial: "工商业",
+      },
+      scale: {
+        lt50: "<50 kW",
+        "50to100": "50–100 kW",
+        gt100: ">100 kW",
+        unspecified: "规模待定",
+      },
     },
   },
 
