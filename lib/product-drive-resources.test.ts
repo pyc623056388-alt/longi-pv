@@ -16,11 +16,35 @@ describe("product-drive-resources", () => {
   });
 
   it("covers anti-dust and lightweight series", () => {
-    expect(getProductDriveResources("LR7-54HVHF")?.datasheet).toBeTruthy();
+    expect(getProductDriveResources("LR7-54HVHF")?.datasheet?.fileId).toBe(
+      "1BTWtXy196YnoHfjVQjH2PmjaxnAjEsNQ"
+    );
+    expect(getProductDriveResources("LR7-54HVHF")?.datasheet?.label).toContain(
+      "475-500"
+    );
+    expect(getProductDriveResources("LR7-54HVB")?.datasheet?.fileId).toBe(
+      "1zpHyfIhy8OD08uAnUImUMr2emsUgTIAr"
+    );
     expect(
       getProductDriveResources("LR7-60HVHL")?.installationManual
     ).toBeTruthy();
     expect(getProductDriveResources("LR7-72HVD")?.warranty).toBeTruthy();
+  });
+
+  it("wires mid-size 60-cell photos and unified 72 datasheets", () => {
+    expect(getProductPhotos("LR7-60HVH").length).toBe(4);
+    expect(getProductPhotos("LR7-60HVD").length).toBe(4);
+    expect(getProductPhotos("LR7-60HVHL").length).toBe(4);
+    expect(getProductDriveResources("LR7-72HVD")?.datasheet?.fileId).toBe(
+      "1d0ELAektPSX7L21m-EiHa7dS8MI1L4F2"
+    );
+    expect(getProductDriveResources("LR7-72HVDF")?.datasheet?.label).toContain(
+      "645-670"
+    );
+    expect(getProductDriveResources("LR7-72HVHF")?.datasheet?.label).toContain(
+      "645-670"
+    );
+    expect(getProductPhotos("LR7-72HVD").length).toBe(4);
   });
 
   it("links Drive folders for 72HVH, LR8-66HVD, and renamed 54HVD", () => {

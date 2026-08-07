@@ -33,7 +33,13 @@ describe("product-sku-catalog datasheet power range", () => {
 
   it("exposes datasheet power ranges per series", () => {
     expect(formatDatasheetPowerRange(getProductSeriesById("LR7-54HVB")!)).toBe(
-      "475~495"
+      "475~500"
+    );
+    expect(formatDatasheetPowerRange(getProductSeriesById("LR7-54HVHF")!)).toBe(
+      "475~500"
+    );
+    expect(formatDatasheetPowerRange(getProductSeriesById("LR8-66HYD")!)).toBe(
+      "635~670"
     );
     expect(formatDatasheetPowerRange(getProductSeriesById("LR7-54HVD")!)).toBe(
       "475~500"
@@ -42,7 +48,10 @@ describe("product-sku-catalog datasheet power range", () => {
       "530~555"
     );
     expect(formatDatasheetPowerRange(getProductSeriesById("LR7-72HVD")!)).toBe(
-      "640~665"
+      "645~670"
+    );
+    expect(formatDatasheetPowerRange(getProductSeriesById("LR7-72HVHF")!)).toBe(
+      "645~670"
     );
   });
 
@@ -57,7 +66,7 @@ describe("product-sku-catalog datasheet power range", () => {
       "LR8-48HVH-475M"
     );
     expect(skuFromSeriesId("LR7-72HVD")?.model).toBe("LR7-72HVD-650M");
-    expect(skuFromSeriesId("LR7-72HVD")?.powerMinWp).toBe(640);
-    expect(skuFromSeriesId("LR7-72HVD")?.powerMaxWp).toBe(665);
+    expect(skuFromSeriesId("LR7-72HVD")?.powerMinWp).toBe(645);
+    expect(skuFromSeriesId("LR7-72HVD")?.powerMaxWp).toBe(670);
   });
 });
