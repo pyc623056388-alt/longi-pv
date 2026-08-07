@@ -39,7 +39,7 @@ describe("product-recommend-engine", () => {
       generation: "transparent",
       powerPref: "residential",
     });
-    expect(top?.series.id).toBe("LR7-54HVDT");
+    expect(top?.series.id).toBe("LR7-54HVD");
   });
 
   it("ranks large bifacial for commercial + large power", () => {

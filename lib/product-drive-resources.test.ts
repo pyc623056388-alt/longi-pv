@@ -23,12 +23,30 @@ describe("product-drive-resources", () => {
     expect(getProductDriveResources("LR7-72HVD")?.warranty).toBeTruthy();
   });
 
-  it("links Drive folders for 72HVH and LR8-66HVD", () => {
+  it("links Drive folders for 72HVH, LR8-66HVD, and renamed 54HVD", () => {
     expect(getProductDriveResources("LR7-72HVH")?.datasheet?.fileId).toBeTruthy();
     expect(getProductDriveResources("LR7-72HVH")?.photos.length).toBe(4);
     expect(getProductDriveResources("LR8-66HVD")?.datasheet?.fileId).toBeTruthy();
     expect(getProductDriveResources("LR8-66HYD")?.datasheet?.fileId).toBeTruthy();
-    expect(getProductDriveResources("LR7-54HVD")).toBeUndefined();
+    expect(getProductDriveResources("LR7-54HVDT")).toBeUndefined();
+    expect(getProductDriveResources("LR7-54HVD")?.datasheet?.fileId).toBe(
+      "1D0kKhIFFRzIZyp_lJk6u9yeAhdykXXkf"
+    );
+    expect(getProductDriveResources("LR7-54HVD")?.photos.length).toBe(4);
+  });
+
+  it("ships LR8-48 photos without requiring datasheet yet", () => {
+    const hvh = getProductDriveResources("LR8-48HVH");
+    const hvd = getProductDriveResources("LR8-48HVD");
+    expect(hvh?.datasheet).toBeUndefined();
+    expect(hvd?.datasheet).toBeUndefined();
+    expect(getProductPhotos("LR8-48HVH").map((p) => p.label)).toEqual([
+      "Front view",
+      "Rear view",
+      "Side view",
+      "Bevel view",
+    ]);
+    expect(getProductPhotos("LR8-48HVD").length).toBe(4);
   });
 
   it("returns all product view photos sorted front→rear→side→bevel", () => {

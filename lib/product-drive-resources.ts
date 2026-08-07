@@ -227,11 +227,11 @@ export const PRODUCT_DRIVE_RESOURCES: Record<string, ProductDriveResources> =
       }
     ]
   },
-  "LR7-54HVDT": {
+  "LR7-54HVD": {
     "datasheet": {
-      "label": "AU_Datasheet_X10_LR7-54HVDT_465-495.pdf",
-      "url": "https://drive.google.com/file/d/1n-yzflthllcHQOM1Odvgl16x_EwroZE4/view",
-      "fileId": "1n-yzflthllcHQOM1Odvgl16x_EwroZE4"
+      "label": "AU_Datasheet_X10_LR7-54HVD_475-500.pdf",
+      "url": "https://drive.google.com/file/d/1D0kKhIFFRzIZyp_lJk6u9yeAhdykXXkf/view",
+      "fileId": "1D0kKhIFFRzIZyp_lJk6u9yeAhdykXXkf"
     },
     "warranty": {
       "label": "AU Limited Warranty for LONGi Hi-MOX10 Solar Modules (Distributed Generation Market).pdf",
@@ -243,7 +243,28 @@ export const PRODUCT_DRIVE_RESOURCES: Record<string, ProductDriveResources> =
       "url": "https://drive.google.com/file/d/1bLl6qH_CDlMEVleW0D61KvOLNcRbKf4j/view",
       "fileId": "1bLl6qH_CDlMEVleW0D61KvOLNcRbKf4j"
     },
-    "photos": [],
+    "photos": [
+      {
+        "label": "Front view",
+        "url": "https://drive.google.com/file/d/1bkLqLV9e1zp4jpRi8TPVg6CbYHNdeSbq/view",
+        "fileId": "1bkLqLV9e1zp4jpRi8TPVg6CbYHNdeSbq"
+      },
+      {
+        "label": "Rear view",
+        "url": "https://drive.google.com/file/d/1B9XNPtKYqbjmXtd5hY4IIvIWQwSzvHIn/view",
+        "fileId": "1B9XNPtKYqbjmXtd5hY4IIvIWQwSzvHIn"
+      },
+      {
+        "label": "Side view",
+        "url": "https://drive.google.com/file/d/1xJGjbCRmJsrENDt9Jp7t5sDfI2xiPxMW/view",
+        "fileId": "1xJGjbCRmJsrENDt9Jp7t5sDfI2xiPxMW"
+      },
+      {
+        "label": "Bevel view",
+        "url": "https://drive.google.com/file/d/1vDNBb577ZAoqeFQfK_aSuF6lZ6LsTCSG/view",
+        "fileId": "1vDNBb577ZAoqeFQfK_aSuF6lZ6LsTCSG"
+      }
+    ],
     "certificates": [
       {
         "label": "Ammonia · Ammonia_IEC62716_Double_Cert.pdf",
@@ -282,6 +303,57 @@ export const PRODUCT_DRIVE_RESOURCES: Record<string, ProductDriveResources> =
         "fileId": "1MpDIFxFY8UYS7amsGDRFrAEsda5IrkCC"
       }
     ]
+  },
+  /** LR8-48：Drive 已有四视角照片；datasheet / 证书 / 质保暂缺，后补 */
+  "LR8-48HVH": {
+    "photos": [
+      {
+        "label": "Front view",
+        "url": "https://drive.google.com/file/d/1uBL2mjV4FlnxluV1HiFq8nkBMoMdWthR/view",
+        "fileId": "1uBL2mjV4FlnxluV1HiFq8nkBMoMdWthR"
+      },
+      {
+        "label": "Rear view",
+        "url": "https://drive.google.com/file/d/1nq2vG2ye7GI-lB3sVT8AUOd2D8qep61F/view",
+        "fileId": "1nq2vG2ye7GI-lB3sVT8AUOd2D8qep61F"
+      },
+      {
+        "label": "Side view",
+        "url": "https://drive.google.com/file/d/1UJ4ipKfJUP1dF6feLeXVAVsFS2jzyAAR/view",
+        "fileId": "1UJ4ipKfJUP1dF6feLeXVAVsFS2jzyAAR"
+      },
+      {
+        "label": "Bevel view",
+        "url": "https://drive.google.com/file/d/10O-suqdPSkZ-62w_H4QVwhQ6rM9h_U0D/view",
+        "fileId": "10O-suqdPSkZ-62w_H4QVwhQ6rM9h_U0D"
+      }
+    ],
+    "certificates": []
+  },
+  "LR8-48HVD": {
+    "photos": [
+      {
+        "label": "Front view",
+        "url": "https://drive.google.com/file/d/1e0Mo48tomNokFlLnOKIjkceBKbWFUIlP/view",
+        "fileId": "1e0Mo48tomNokFlLnOKIjkceBKbWFUIlP"
+      },
+      {
+        "label": "Rear view",
+        "url": "https://drive.google.com/file/d/1zb3671-WPx6YfNmQIR8BV-bjK1rsBDrH/view",
+        "fileId": "1zb3671-WPx6YfNmQIR8BV-bjK1rsBDrH"
+      },
+      {
+        "label": "Side view",
+        "url": "https://drive.google.com/file/d/18MhaO0UdLk0DnufoDOQHLDLlhiK2WWWC/view",
+        "fileId": "18MhaO0UdLk0DnufoDOQHLDLlhiK2WWWC"
+      },
+      {
+        "label": "Bevel view",
+        "url": "https://drive.google.com/file/d/11J7Rh9Ymp0T3J84iIRMyyvwNScf9lcQv/view",
+        "fileId": "11J7Rh9Ymp0T3J84iIRMyyvwNScf9lcQv"
+      }
+    ],
+    "certificates": []
   },
   "LR7-60HVH": {
     "datasheet": {
