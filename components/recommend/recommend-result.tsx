@@ -16,12 +16,9 @@ import { SearchableSelect } from "@/components/ui/searchable-select";
 import { useI18n } from "@/components/locale-provider";
 import type { ProductRecommendMatch } from "@/lib/product-recommend-engine";
 import {
-  RESULT_POWER_BANDS,
-  defaultPowerBandForSeries,
-  isPowerBandAvailable,
+  formatDatasheetPowerRange,
   listDriveProductModels,
-  skuFromSeriesAndBand,
-  type ResultPowerBand,
+  skuFromSeriesId,
 } from "@/lib/product-sku-catalog";
 import {
   driveThumbnailUrl,
@@ -56,9 +53,7 @@ interface RecommendResultProps {
   primary: ProductRecommendMatch;
   alternatives: ProductRecommendMatch[];
   selectedSeriesId: string;
-  powerBand: ResultPowerBand;
   onSelectSeries: (seriesId: string) => void;
-  onSelectPowerBand: (band: ResultPowerBand) => void;
   onBack: () => void;
 }
 
@@ -66,9 +61,7 @@ export function RecommendResult({
   primary,
   alternatives,
   selectedSeriesId,
-  powerBand,
   onSelectSeries,
-  onSelectPowerBand,
   onBack,
 }: RecommendResultProps) {
   const { m, locale } = useI18n();
@@ -84,14 +77,11 @@ export function RecommendResult({
   );
 
   const sku =
-    skuFromSeriesAndBand(selectedSeriesId, powerBand) ??
-    skuFromSeriesAndBand(
-      primary.series.id,
-      defaultPowerBandForSeries(primary.series)
-    )!;
+    skuFromSeriesId(selectedSeriesId) ?? skuFromSeriesId(primary.series.id)!;
   const series = sku.series;
   const currentMatch = rankedMatches.find((x) => x.series.id === series.id);
   const isManualBrowse = !matchedIds.has(series.id);
+  const datasheetPowerRange = formatDatasheetPowerRange(series);
 
   const photos = getProductPhotos(series.id);
   const hasPhotos = photos.length > 0;
@@ -137,17 +127,6 @@ export function RecommendResult({
 
   const handleSeriesChange = (seriesId: string) => {
     onSelectSeries(seriesId);
-    const next = listDriveProductModels().find((s) => s.id === seriesId);
-    if (!next) return;
-    if (!isPowerBandAvailable(next, powerBand)) {
-      onSelectPowerBand(defaultPowerBandForSeries(next));
-    }
-  };
-
-  const powerBandLabels: Record<ResultPowerBand, string> = {
-    default: rm.result.powerBandDefault,
-    medium: rm.result.powerBandMedium,
-    large: rm.result.powerBandLarge,
   };
 
   return (
@@ -256,36 +235,10 @@ export function RecommendResult({
 
                     <div className="space-y-1">
                       <p className="text-[10px] font-semibold tracking-wide text-slate-400 uppercase">
-                        {rm.result.powerBand}
+                        {rm.result.powerRange}
                       </p>
-                      <div className="grid grid-cols-3 gap-1.5 sm:flex sm:flex-wrap">
-                        {RESULT_POWER_BANDS.map((band) => {
-                          const available = isPowerBandAvailable(series, band);
-                          const active = powerBand === band;
-                          return (
-                            <button
-                              key={band}
-                              type="button"
-                              disabled={!available}
-                              title={
-                                available
-                                  ? undefined
-                                  : rm.result.powerBandUnavailable
-                              }
-                              onClick={() => onSelectPowerBand(band)}
-                              className={cn(
-                                "inline-flex h-9 items-center justify-center rounded-lg border px-2.5 text-xs font-semibold transition sm:min-w-[4.5rem]",
-                                active
-                                  ? "border-[#E40011] bg-[#E40011]/10 text-[#E40011]"
-                                  : "border-slate-200 bg-white text-slate-700 hover:border-slate-300",
-                                !available &&
-                                  "cursor-not-allowed opacity-35 hover:border-slate-200"
-                              )}
-                            >
-                              {powerBandLabels[band]}
-                            </button>
-                          );
-                        })}
+                      <div className="inline-flex h-9 min-w-[7.5rem] items-center justify-center rounded-lg border border-[#E40011] bg-[#E40011]/10 px-3 text-xs font-semibold text-[#E40011] sm:min-w-[8.5rem]">
+                        {datasheetPowerRange}W
                       </div>
                     </div>
                   </div>
@@ -295,7 +248,7 @@ export function RecommendResult({
                       {sku.model}
                     </span>
                     {" · "}
-                    {sku.powerWp} W
+                    {datasheetPowerRange}W
                     <span className="hidden sm:inline">
                       {" · "}
                       {series.dimensionMm} mm

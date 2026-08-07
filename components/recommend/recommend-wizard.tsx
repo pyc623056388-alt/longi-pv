@@ -12,10 +12,6 @@ import {
   recommendProductSeries,
   type ProductRecommendInput,
 } from "@/lib/product-recommend-engine";
-import {
-  defaultPowerBandForSeries,
-  type ResultPowerBand,
-} from "@/lib/product-sku-catalog";
 
 type Phase = "select" | "result";
 
@@ -31,7 +27,6 @@ export function RecommendWizard({
   );
   const [phase, setPhase] = useState<Phase>("select");
   const [selectedSeriesId, setSelectedSeriesId] = useState("");
-  const [powerBand, setPowerBand] = useState<ResultPowerBand>("default");
 
   /** Deep-link from cases: /recommend?series=LR7-54HVH */
   useEffect(() => {
@@ -45,7 +40,6 @@ export function RecommendWizard({
       scenario: "flexible",
     });
     setSelectedSeriesId(series.id);
-    setPowerBand(defaultPowerBandForSeries(series));
     setPhase("result");
 
     const url = new URL(window.location.href);
@@ -60,7 +54,6 @@ export function RecommendWizard({
   const handleApply = () => {
     if (!primary) return;
     setSelectedSeriesId(primary.series.id);
-    setPowerBand(defaultPowerBandForSeries(primary.series));
     setPhase("result");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -93,9 +86,7 @@ export function RecommendWizard({
             primary={primary}
             alternatives={alternatives}
             selectedSeriesId={selectedSeriesId || primary.series.id}
-            powerBand={powerBand}
             onSelectSeries={setSelectedSeriesId}
-            onSelectPowerBand={setPowerBand}
             onBack={handleBack}
           />
         ) : null}
