@@ -61,13 +61,15 @@ export const zhMessages = {
   },
 
   nav: {
-    aria: "浏览路径：项目案例、产品选型、增益对比",
+    aria: "浏览路径：项目案例、产品展示、产品选型、增益对比",
     compare: "增益对比",
     compareHint: "隆基 vs 竞品全生命周期测算",
     recommend: "产品选型",
     recommendHint: "按场景与需求推荐版型",
     cases: "项目案例",
     casesHint: "客户项目故事与现场素材",
+    products: "产品展示",
+    productsHint: "按应用场景浏览产品与资料",
   },
 
   cases: {
@@ -246,6 +248,26 @@ export const zhMessages = {
       certsEmpty: "该系列暂无已挂载证书",
       unavailable: "暂未关联 Drive 资料",
     },
+  },
+
+  products: {
+    eyebrow: "产品展示",
+    title: "按应用场景选择隆基产品",
+    subtitle:
+      "依据 Hi-MO X10 场景化矩阵，先按应用场景挑选，再进入具体版型查看照片与 Datasheet、质保、证书等资料。",
+    scenariosTitle: "应用场景",
+    productCount: (n: number) => `${n} 个型号`,
+    backToScenarios: "返回产品展示",
+    backToScenario: "返回该场景",
+    viewDetail: "查看详情",
+    detail: {
+      specs: "关键规格",
+      openRecommend: "去产品选型",
+      openCompare: "去增益对比",
+    },
+    empty: "该场景暂无可展示的产品。",
+    scenarioNotFound: "未找到该应用场景",
+    notFound: "未找到该产品",
   },
 
   hero: {

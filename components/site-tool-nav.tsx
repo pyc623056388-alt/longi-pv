@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { BarChart3, Compass, Images } from "lucide-react";
+import { BarChart3, Compass, Images, LayoutGrid } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useI18n } from "@/components/locale-provider";
 
@@ -11,7 +11,7 @@ export function SiteToolNav({ className }: { className?: string }) {
   const pathname = usePathname();
   const { m } = useI18n();
 
-  /** 左→右：案例 → 选型 → 对比（浏览 → 选型 → 测算） */
+  /** 左→右：案例 → 产品展示 → 选型 → 对比（浏览 → 选择 → 测算） */
   const items = [
     {
       href: "/cases",
@@ -19,6 +19,13 @@ export function SiteToolNav({ className }: { className?: string }) {
       hint: m.nav.casesHint,
       icon: Images,
       active: pathname === "/cases" || pathname.startsWith("/cases/"),
+    },
+    {
+      href: "/products",
+      label: m.nav.products,
+      hint: m.nav.productsHint,
+      icon: LayoutGrid,
+      active: pathname === "/products" || pathname.startsWith("/products/"),
     },
     {
       href: "/recommend",
