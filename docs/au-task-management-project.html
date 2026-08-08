@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>AU Distribution Task Management 项目说明</title>
+  <style>
+    @page { size: A4; margin: 18mm 16mm; }
+    body {
+      font-family: "Microsoft YaHei", "微软雅黑", SimSun, sans-serif;
+      font-size: 10.5pt;
+      line-height: 1.55;
+      color: #1a1a1a;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    h1 { font-size: 22pt; margin: 0 0 8px; color: #0b3d2e; }
+    h2 {
+      font-size: 14pt;
+      color: #0b3d2e;
+      border-bottom: 2px solid #0b3d2e;
+      padding-bottom: 4px;
+      margin-top: 28px;
+      page-break-after: avoid;
+    }
+    h3 { font-size: 11.5pt; color: #1f5c45; margin-top: 16px; page-break-after: avoid; }
+    .subtitle { font-size: 12pt; color: #444; margin-bottom: 4px; }
+    .meta { font-size: 9.5pt; color: #666; margin-bottom: 24px; }
+    .cover-box {
+      border: 2px solid #0b3d2e;
+      padding: 28px 24px;
+      margin: 40px 0 32px;
+      background: #f7faf8;
+    }
+    .tag {
+      display: inline-block;
+      background: #0b3d2e;
+      color: #fff;
+      font-size: 9pt;
+      padding: 2px 8px;
+      margin-bottom: 12px;
+    }
+    p { margin: 8px 0; }
+    ul, ol { margin: 6px 0 10px 22px; padding: 0; }
+    li { margin: 3px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 16px;
+      font-size: 9.5pt;
+      page-break-inside: avoid;
+    }
+    th, td {
+      border: 1px solid #c5d0ca;
+      padding: 6px 8px;
+      vertical-align: top;
+      text-align: left;
+    }
+    th { background: #e8f2ec; color: #0b3d2e; font-weight: 600; }
+    tr:nth-child(even) td { background: #fafcfa; }
+    .note {
+      background: #f3f6f4;
+      border-left: 3px solid #0b3d2e;
+      padding: 8px 12px;
+      margin: 12px 0;
+      font-size: 9.5pt;
+    }
+    .flow {
+      font-family: Consolas, "Courier New", monospace;
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+      padding: 12px 14px;
+      font-size: 9.5pt;
+      white-space: pre;
+      line-height: 1.4;
+      page-break-inside: avoid;
+    }
+    .do { color: #0b3d2e; font-weight: 600; }
+    .dont { color: #8b1a1a; font-weight: 600; }
+    .page-break { page-break-before: always; }
+    .footer-note { font-size: 9pt; color: #777; margin-top: 28px; }
+    code { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; }
+  </style>
+</head>
+<body>
+
+  <div class="cover-box">
+    <div class="tag">PROJECT BRIEF · FOR MANAGEMENT</div>
+    <h1>AU Distribution Task Management</h1>
+    <p class="subtitle">隆易 KK / 钉钉 AI 表格 · 团队任务管理项目说明</p>
+    <p class="meta">
+      受众：管理者及核心对齐同事（如 Jack）<br />
+      平台：隆易 KK · AI 表格（Task Collection Form + 数据表 + 多视图）<br />
+      版本：v1.0 · 2026-07
+    </p>
+    <p><strong>一句话定位：</strong>统一需求收集、按角色线分工跟踪、支撑周会治理——把 Task Management Table 当作一个可运营的 Project，而不是第二张周会 Excel。</p>
+  </div>
+
+  <h2>A. 项目目标与范围</h2>
+  <h3>要解决什么</h3>
+  <ul>
+    <li><strong>统一入口：</strong>通过 Task Collection Form 收集任务需求，避免散落在聊天与周报里。</li>
+    <li><strong>主责清晰：</strong>Task Type = 角色线；Workstream = 该类角色下的一般分工；负责人唯一。</li>
+    <li><strong>状态可见：</strong>进行中 / 阻塞 / 逾期可筛选，周会可投屏跟进。</li>
+    <li><strong>支持可升级：</strong>需要跨人协助时结构化标记（支持人 / 说明），可触发提醒。</li>
+  </ul>
+  <h3>明确不解决什么（边界）</h3>
+  <ul>
+    <li>合同明细台账、授信全量档案</li>
+    <li>库存 MW / POD 明细运营报表</li>
+    <li>全年活动总日历与营销基金完整台账</li>
+  </ul>
+  <div class="note">上述专项内容继续用独立表格或文档维护，在任务记录中用<strong>链接 / 附件</strong>挂接即可，避免 Task 表膨胀成「万能表」。</div>
+
+  <h2>B. 整体流程</h2>
+  <div class="flow">Task Collection Form（提交需求）
+        │
+        ▼
+   Tasks 数据表（一条记录 = 一项任务）
+        │
+        ├──────────────► 自动化：DDL 提醒 / 需支持通知 / 周更提醒
+        │
+        ▼
+   多视图：My Tasks · Weekly Meeting · Kanban · Overdue · Archive
+        │
+        ▼
+   周会投屏 Weekly Meeting（只盯 P0/P1、需支持、将逾期）</div>
+  <p><strong>角色分工：</strong>任何人可通过表单提单 → 指定负责人执行与更新进展 → 管理者用视图做周会治理与例外管理。</p>
+
+  <h2>C. 字段说明</h2>
+  <h3>C1. 表单可见字段（Task Collection Form）</h3>
+  <table>
+    <thead>
+      <tr><th>字段</th><th>类型</th><th>必填</th><th>说明</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Task Type</td><td>单选</td><td>是</td><td>角色线（见 D 章 5 项）</td></tr>
+      <tr><td>Workstream / 任务分工</td><td>单选</td><td>是</td><td>该角色下的一般分工（新增）</td></tr>
+      <tr><td>任务需求</td><td>长文本</td><td>是</td><td>具体事项：客户名、柜数、活动名、动作</td></tr>
+      <tr><td>需求人</td><td>人员</td><td>是</td><td>提出需求的人</td></tr>
+      <tr><td>重要程度</td><td>单选</td><td>是</td><td>建议：P0 / P1 / P2</td></tr>
+      <tr><td>负责人</td><td>人员</td><td>是</td><td>唯一主责 Owner</td></tr>
+      <tr><td>截止日期</td><td>日期</td><td>是</td><td>Target DDL</td></tr>
+      <tr><td>附件</td><td>附件</td><td>否</td><td>相关文件、截图、链接材料</td></tr>
+      <tr><td>支持人</td><td>人员</td><td>否</td><td>需要协助时指定</td></tr>
+    </tbody>
+  </table>
+
+  <h3>C2. 底层数据表建议字段（表单可隐藏）</h3>
+  <table>
+    <thead>
+      <tr><th>字段</th><th>类型</th><th>说明</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Status</td><td>单选</td><td>默认 Not started；提交后由负责人更新</td></tr>
+      <tr><td>Latest Progress</td><td>长文本</td><td>本周最新进展</td></tr>
+      <tr><td>Next Action</td><td>文本</td><td>下一步明确动作</td></tr>
+      <tr><td>Need Support</td><td>复选框</td><td>勾选后便于周会筛选与自动化通知</td></tr>
+      <tr><td>Support Note</td><td>文本</td><td>需要什么支持（可与支持人配合）</td></tr>
+      <tr><td>Last Updated</td><td>日期</td><td>可用自动化在更新进展时刷新</td></tr>
+      <tr><td>Related Links</td><td>链接</td><td>挂接专项表 / Drive / Zoho 等</td></tr>
+    </tbody>
+  </table>
+  <div class="note">表单负责「收需求」；进度与状态在数据表 / 看板中维护。不要把周会汇报长文塞进收集表。</div>
+
+  <h2 class="page-break">D. Task Type（角色线）与 Workstream（任务分工）</h2>
+  <p>Task Type 表示团队中的<strong>角色线</strong>；Workstream 是该角色下较 general 的任务分工。具体细节写在「任务需求」中。</p>
+
+  <h3>D0. Task Type 清单</h3>
+  <table>
+    <thead>
+      <tr><th>Task Type</th><th>角色线说明</th><th>典型负责人（参考）</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Delivery &amp; Logistics</td><td>合同、授信、出货、仓配、例行运营汇报</td><td>Helen 等</td></tr>
+      <tr><td>Marketing</td><td>活动、品牌旅程、联合营销、内容与线索</td><td>Jessie / Camellia 等</td></tr>
+      <tr><td>Sales Support</td><td>赋能、仓配支持、线索分发、访厂协调、工具送达</td><td>Camellia 等</td></tr>
+      <tr><td>Product &amp; Solution</td><td>认证、售后、技术支持、方案与产品赋能（原 Product）</td><td>Dennis 等</td></tr>
+      <tr><td>Sales</td><td>线索推进、客户互动、能力建设、周同步</td><td>Alex / Reiko / Jack 等</td></tr>
+    </tbody>
+  </table>
+
+  <h3>D1. Delivery &amp; Logistics</h3>
+  <table>
+    <thead><tr><th>Workstream</th><th>覆盖的一般工作</th></tr></thead>
+    <tbody>
+      <tr><td>Contract &amp; Order</td><td>合同流程、签回、LC/付款条款、价格更正</td></tr>
+      <tr><td>Credit &amp; Risk</td><td>授信申请/续期、中信保、额度调配</td></tr>
+      <tr><td>Shipment &amp; Delivery</td><td>订舱、ETD、柜数、出货跟踪、POD</td></tr>
+      <tr><td>Production &amp; Stock</td><td>排产、可用库存、bonded 清库</td></tr>
+      <tr><td>Warehouse Ops</td><td>本地仓进出、TMS/WMS、费用异常、盘点/审计</td></tr>
+      <tr><td>Ops Reporting</td><td>周/日跟踪、PSI、仓日报等例行汇报</td></tr>
+    </tbody>
+  </table>
+
+  <h3>D2. Marketing</h3>
+  <table>
+    <thead><tr><th>Workstream</th><th>覆盖的一般工作</th></tr></thead>
+    <tbody>
+      <tr><td>Events &amp; Exhibitions</td><td>SEC、All Energy、Roadshow、Workshop、展台物料</td></tr>
+      <tr><td>Brand Tours &amp; Visits</td><td>LONGi Tour、客户访厂、行程与邀请</td></tr>
+      <tr><td>Co-marketing &amp; Retailer</td><td>Retailer program、联合活动、欢迎包/物料</td></tr>
+      <tr><td>Content &amp; Assets</td><td>资料包、社媒、对比文案、官网/素材结构</td></tr>
+      <tr><td>Leads &amp; Campaign</td><td>展会线索清洗、Installer case、导流到销售</td></tr>
+      <tr><td>Marketing Fund &amp; Admin</td><td>营销基金台账、月度 funding plan、工具库存</td></tr>
+    </tbody>
+  </table>
+
+  <h3>D3. Sales Support</h3>
+  <table>
+    <thead><tr><th>Workstream</th><th>覆盖的一般工作</th></tr></thead>
+    <tbody>
+      <tr><td>Onboarding &amp; Enablement</td><td>新人系统/产品/交易条款培训</td></tr>
+      <tr><td>Warehouse &amp; Logistics Support</td><td>进出仓、运保、库存协助、月盘</td></tr>
+      <tr><td>CRM &amp; Lead Routing</td><td>Zoho 分发线索、跟进督促</td></tr>
+      <tr><td>Market Insight</td><td>月度 Insight、行业会展摸排</td></tr>
+      <tr><td>Customer Visit Coord</td><td>访厂接待、行程/车餐礼、保密流程</td></tr>
+      <tr><td>Sales Toolkit Delivery</td><td>标准 PPT、礼品/易拉宝/遮阴袋等到各州</td></tr>
+      <tr><td>Travel &amp; Event Calendar</td><td>销售活动日历、差旅提前预订提醒</td></tr>
+    </tbody>
+  </table>
+
+  <h3>D4. Product &amp; Solution</h3>
+  <table>
+    <thead><tr><th>Workstream</th><th>覆盖的一般工作</th></tr></thead>
+    <tbody>
+      <tr><td>Certification &amp; Compliance</td><td>CEC listing、风载测试、PEG racking 等</td></tr>
+      <tr><td>Aftersales &amp; Quality</td><td>质保案例跟踪、与 RT 快速响应、质量沟通</td></tr>
+      <tr><td>Technical Support</td><td>夹具/导轨、结构荷载、Anti-UV、换板方案等</td></tr>
+      <tr><td>Solution Development</td><td>屋面类型限制、场景方案、C&amp;I 销售工具</td></tr>
+      <tr><td>Product Enablement</td><td>Datasheet/参数校对、对比文档、内部培训/CPD</td></tr>
+      <tr><td>Knowledge &amp; Docs</td><td>File Index、邮件分流规则、产品文档体系</td></tr>
+      <tr><td>Field &amp; Event Support</td><td>展会/活动现场技术支持、demo kit、物料协助</td></tr>
+    </tbody>
+  </table>
+
+  <h3>D5. Sales</h3>
+  <table>
+    <thead><tr><th>Workstream</th><th>覆盖的一般工作</th></tr></thead>
+    <tbody>
+      <tr><td>Pipeline &amp; Leads</td><td>线索跟进、Zoho 更新、客户推进</td></tr>
+      <tr><td>Customer Engagement</td><td>拜访、活动邀约、现场支持</td></tr>
+      <tr><td>Capability Building</td><td>系统使用、交易条款、产品知识学习</td></tr>
+      <tr><td>Weekly Sales Sync</td><td>周进展摘要、需支持事项（偏汇报）</td></tr>
+    </tbody>
+  </table>
+  <div class="note">交叉事项（如仓、线索）按<strong>主责角色</strong>选 Task Type，同一件事不要建两条线。Workstream 保持每角色约 5–7 个，细节放在任务需求标题/正文。</div>
+
+  <h2 class="page-break">E. 与 AU Action Tracking 的对应与迁移</h2>
+  <p>现有 <code>AU Distribution Team Action Tracking</code> 是「周会汇报稿 + 任务跟踪」混排的层级 Excel。迁入 AI 表格时不要 1:1 粘贴。</p>
+  <table>
+    <thead>
+      <tr><th>原表问题</th><th>AI 表格做法</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>类别 / Key Tasks 靠空单元格「继承」</td><td>每行补全 Task Type + Workstream</td></tr>
+      <tr><td>任务、周会提问、运营汇总混在一行</td><td>一行一事；汇总类可少迁或挂链接</td></tr>
+      <tr><td>Status 写法不统一（Done / Under way / Ongoing…）</td><td>统一为固定单选（见 H）</td></tr>
+      <tr><td>【Latest Status】与【Planned Action】挤在一格</td><td>拆成 Latest Progress + Next Action</td></tr>
+      <tr><td>Comments 里自由 @ 人</td><td>支持人 + Need Support + Support Note</td></tr>
+    </tbody>
+  </table>
+  <h3>迁移原则</h3>
+  <ol>
+    <li>优先迁移 <strong>仍进行中</strong> 的项；已 Done 进 Archive 或暂不迁。</li>
+    <li>把原「类别」映射到 Task Type；「Key Tasks」映射到最接近的 Workstream。</li>
+    <li>Product → 一律改为 <strong>Product &amp; Solution</strong>。</li>
+    <li>清洗完成后再开全员填写；先小范围试跑 10–15 条。</li>
+  </ol>
+
+  <h2>F. 推荐视图与自动化</h2>
+  <h3>视图</h3>
+  <table>
+    <thead>
+      <tr><th>视图名</th><th>用途</th><th>建议筛选 / 分组</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>My Tasks</td><td>个人待办</td><td>负责人 = 我；Status ≠ Done</td></tr>
+      <tr><td>Weekly Meeting</td><td>周会投屏</td><td>P0/P1，或 Need Support，或近 7 天有更新 / 将逾期</td></tr>
+      <tr><td>By Type</td><td>按角色线审视</td><td>按 Task Type 分组</td></tr>
+      <tr><td>Kanban</td><td>状态流转</td><td>按 Status 看板</td></tr>
+      <tr><td>Overdue</td><td>例外管理</td><td>截止日期 &lt; 今天 且未 Done</td></tr>
+      <tr><td>Archive</td><td>历史</td><td>Status = Done（默认不进周会）</td></tr>
+    </tbody>
+  </table>
+  <h3>自动化（优先 3 条）</h3>
+  <ol>
+    <li><strong>DDL 前提醒：</strong>截止日期前 2–3 天通知负责人。</li>
+    <li><strong>需支持通知：</strong>勾选 Need Support 或填写支持人时，通知对应人员。</li>
+    <li><strong>周更提醒：</strong>固定工作日提醒更新 Latest Progress + Next Action。</li>
+  </ol>
+
+  <h2>G. 填写规范与周会用法</h2>
+  <h3>Do</h3>
+  <ul>
+    <li class="do">一行一事；Owner 唯一；选对 Task Type + Workstream。</li>
+    <li class="do">每周更新 Latest Progress，并写清 Next Action（可执行、有对象）。</li>
+    <li class="do">需要别人做事：勾选 Need Support，指定支持人，写清需要什么。</li>
+    <li class="do">周会只投屏 Weekly Meeting，按例外与阻塞推进。</li>
+  </ul>
+  <h3>Don’t</h3>
+  <ul>
+    <li class="dont">不要用空行「继承」上一行的类别（Excel 习惯）。</li>
+    <li class="dont">不要把整段周报、库存 MW、活动长名单塞进一条任务。</li>
+    <li class="dont">不要自创 Status 文案；不要多人并列「共同 Owner」。</li>
+    <li class="dont">不要双写：AI 表格已跟进的事项，不必再在旧 Action Tracking 重复维护。</li>
+  </ul>
+  <div class="note"><strong>周会建议节奏：</strong>先看 Overdue → 再看 Need Support → 再看各角色线 P0/P1 → 当场改 Status / 指定支持 / 调整 DDL。</div>
+
+  <h2 class="page-break">H. 一页速查（配置清单）</h2>
+  <p>以下选项可直接用于隆易 KK AI 表格字段配置。</p>
+
+  <h3>H1. Task Type（单选）</h3>
+  <ul>
+    <li>Delivery &amp; Logistics</li>
+    <li>Marketing</li>
+    <li>Sales Support</li>
+    <li>Product &amp; Solution</li>
+    <li>Sales</li>
+  </ul>
+
+  <h3>H2. Workstream（单选，建议带角色前缀以免混淆）</h3>
+  <p><strong>Delivery &amp; Logistics</strong></p>
+  <ul>
+    <li>DL | Contract &amp; Order</li>
+    <li>DL | Credit &amp; Risk</li>
+    <li>DL | Shipment &amp; Delivery</li>
+    <li>DL | Production &amp; Stock</li>
+    <li>DL | Warehouse Ops</li>
+    <li>DL | Ops Reporting</li>
+  </ul>
+  <p><strong>Marketing</strong></p>
+  <ul>
+    <li>MKT | Events &amp; Exhibitions</li>
+    <li>MKT | Brand Tours &amp; Visits</li>
+    <li>MKT | Co-marketing &amp; Retailer</li>
+    <li>MKT | Content &amp; Assets</li>
+    <li>MKT | Leads &amp; Campaign</li>
+    <li>MKT | Marketing Fund &amp; Admin</li>
+  </ul>
+  <p><strong>Sales Support</strong></p>
+  <ul>
+    <li>SS | Onboarding &amp; Enablement</li>
+    <li>SS | Warehouse &amp; Logistics Support</li>
+    <li>SS | CRM &amp; Lead Routing</li>
+    <li>SS | Market Insight</li>
+    <li>SS | Customer Visit Coord</li>
+    <li>SS | Sales Toolkit Delivery</li>
+    <li>SS | Travel &amp; Event Calendar</li>
+  </ul>
+  <p><strong>Product &amp; Solution</strong></p>
+  <ul>
+    <li>PS | Certification &amp; Compliance</li>
+    <li>PS | Aftersales &amp; Quality</li>
+    <li>PS | Technical Support</li>
+    <li>PS | Solution Development</li>
+    <li>PS | Product Enablement</li>
+    <li>PS | Knowledge &amp; Docs</li>
+    <li>PS | Field &amp; Event Support</li>
+  </ul>
+  <p><strong>Sales</strong></p>
+  <ul>
+    <li>SALES | Pipeline &amp; Leads</li>
+    <li>SALES | Customer Engagement</li>
+    <li>SALES | Capability Building</li>
+    <li>SALES | Weekly Sales Sync</li>
+  </ul>
+
+  <h3>H3. Status（单选，推荐）</h3>
+  <ul>
+    <li>Not started</li>
+    <li>In progress</li>
+    <li>Blocked</li>
+    <li>Done</li>
+    <li>On hold</li>
+  </ul>
+
+  <h3>H4. 重要程度（单选，推荐）</h3>
+  <ul>
+    <li>P0</li>
+    <li>P1</li>
+    <li>P2</li>
+  </ul>
+
+  <h3>H5. 落地检查清单</h3>
+  <ol>
+    <li>数据表字段与表单字段对齐；表单增加 Workstream。</li>
+    <li>Product 选项更名为 Product &amp; Solution。</li>
+    <li>配置 Status 默认值 = Not started。</li>
+    <li>建立 My Tasks / Weekly Meeting / Kanban / Overdue / Archive 视图。</li>
+    <li>配置 3 条自动化提醒。</li>
+    <li>试跑 10–15 条真实任务 → 开周会只用 Weekly Meeting → 再批量迁移进行中项。</li>
+  </ol>
+
+  <p class="footer-note">文档性质：项目管理说明（面向管理者）。配置平台：隆易 KK · 钉钉 AI 表格。内容依据 AU Distribution Team Action Tracking 与现有 Task Collection Form 对齐整理。</p>
+
+</body>
+</html>
