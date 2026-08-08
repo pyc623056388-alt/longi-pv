@@ -36,13 +36,15 @@ export const enMessages: Messages = {
   },
 
   nav: {
-    aria: "Path: case studies, product finder, gain compare",
+    aria: "Path: case studies, product showcase, product finder, gain compare",
     compare: "Gain compare",
     compareHint: "LONGi vs competitor lifecycle ROI",
     recommend: "Product finder",
     recommendHint: "Recommend a variant from needs",
     cases: "Case studies",
     casesHint: "Customer project stories and media",
+    products: "Products",
+    productsHint: "Browse products and docs by scenario",
   },
 
   cases: {
@@ -224,6 +226,26 @@ export const enMessages: Messages = {
       certsEmpty: "No certificates linked for this series yet",
       unavailable: "No Drive files linked yet",
     },
+  },
+
+  products: {
+    eyebrow: "Products",
+    title: "Choose LONGi products by scenario",
+    subtitle:
+      "Based on the Hi-MO X10 scenario matrix: pick an application scenario first, then open a variant for photos and Datasheet, warranty and certificate files.",
+    scenariosTitle: "Application scenarios",
+    productCount: (n: number) => `${n} model${n === 1 ? "" : "s"}`,
+    backToScenarios: "Back to products",
+    backToScenario: "Back to scenario",
+    viewDetail: "View details",
+    detail: {
+      specs: "Key specs",
+      openRecommend: "Open product finder",
+      openCompare: "Open gain compare",
+    },
+    empty: "No products to show for this scenario yet.",
+    scenarioNotFound: "Scenario not found",
+    notFound: "Product not found",
   },
 
   hero: {
