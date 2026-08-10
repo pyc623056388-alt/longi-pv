@@ -5,6 +5,8 @@ export interface DriveResourceLink {
   url: string;
   fileId: string;
   category?: string;
+  /** 可选本地静态资源；有则优先于 Drive 缩略图展示 */
+  localSrc?: string;
 }
 
 export interface ProductDriveResources {
@@ -593,8 +595,10 @@ export const PRODUCT_DRIVE_RESOURCES: Record<string, ProductDriveResources> =
     "photos": [
       {
         "label": "Front view",
-        "url": "https://drive.google.com/file/d/19dHimWZnVNqQYaJIFPaSLruOPBkzQ6wa/view",
-        "fileId": "19dHimWZnVNqQYaJIFPaSLruOPBkzQ6wa"
+        // 白底正面图（用户更新）；原全黑 Front 19dHimWZnVNqQYaJIFPaSLruOPBkzQ6wa 已弃用
+        "url": "https://drive.google.com/file/d/1IjRYTp96ALgZNwcaAPGSjq3hyh7qGiYt/view",
+        "fileId": "1IjRYTp96ALgZNwcaAPGSjq3hyh7qGiYt",
+        "localSrc": "/products/LR7-72HVD-front.jpg"
       },
       {
         "label": "Rear view",
@@ -1152,5 +1156,14 @@ export function getFrontRearPhotos(seriesId: string): DriveResourceLink[] {
 /** Drive 预览缩略图（需文件对「知道链接的人」可见） */
 export function driveThumbnailUrl(fileId: string, size = 800): string {
   return `https://drive.google.com/thumbnail?id=${fileId}&sz=w${size}`;
+}
+
+/** 产品照片展示地址：优先 localSrc，否则 Drive 缩略图 */
+export function productPhotoSrc(
+  photo: Pick<DriveResourceLink, "fileId" | "localSrc">,
+  size = 800
+): string {
+  if (photo.localSrc) return photo.localSrc;
+  return driveThumbnailUrl(photo.fileId, size);
 }
 

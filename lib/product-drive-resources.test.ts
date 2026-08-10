@@ -3,6 +3,7 @@ import {
   getFrontRearPhotos,
   getProductDriveResources,
   getProductPhotos,
+  productPhotoSrc,
 } from "./product-drive-resources";
 
 describe("product-drive-resources", () => {
@@ -88,6 +89,16 @@ describe("product-drive-resources", () => {
     const hvd72 = getProductPhotos("LR7-72HVD");
     expect(hvd72.length).toBeGreaterThan(0);
     expect(hvd72[0]?.label.toLowerCase()).toMatch(/front|rear|side|bevel/);
+  });
+
+  it("uses white-base front photo for LR7-72HVD with local fallback", () => {
+    const front = getProductPhotos("LR7-72HVD")[0];
+    expect(front?.label).toMatch(/front/i);
+    // 不再使用全黑旧 Front
+    expect(front?.fileId).not.toBe("19dHimWZnVNqQYaJIFPaSLruOPBkzQ6wa");
+    expect(front?.fileId).toBe("1IjRYTp96ALgZNwcaAPGSjq3hyh7qGiYt");
+    expect(front?.localSrc).toBe("/products/LR7-72HVD-front.jpg");
+    expect(productPhotoSrc(front!)).toBe("/products/LR7-72HVD-front.jpg");
   });
 
   it("getFrontRearPhotos still returns only front/rear", () => {

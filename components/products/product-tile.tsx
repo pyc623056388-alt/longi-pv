@@ -5,15 +5,15 @@ import { motion } from "framer-motion";
 import { useI18n } from "@/components/locale-provider";
 import type { ProductSeries } from "@/lib/product-matrix-catalog";
 import {
-  driveThumbnailUrl,
   getProductPhotos,
+  productPhotoSrc,
 } from "@/lib/product-drive-resources";
 import { formatDatasheetPowerRange } from "@/lib/product-sku-catalog";
 
-/** 取产品索引图：优先 Drive 正面照 → 系列内置图 → 无 */
+/** 取产品索引图：优先正面照（localSrc / Drive）→ 系列内置图 → 无 */
 function productTileImage(series: ProductSeries): string | null {
   const photo = getProductPhotos(series.id)[0];
-  if (photo) return driveThumbnailUrl(photo.fileId, 800);
+  if (photo) return productPhotoSrc(photo, 800);
   return series.imageSrc ?? null;
 }
 

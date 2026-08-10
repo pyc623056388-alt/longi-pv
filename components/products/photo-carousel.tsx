@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, ExternalLink } from "lucide-react";
 import {
-  driveThumbnailUrl,
+  productPhotoSrc,
   type DriveResourceLink,
 } from "@/lib/product-drive-resources";
 import { cn } from "@/lib/utils";
@@ -61,8 +61,8 @@ export function PhotoCarousel({
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            key={photo.fileId}
-            src={driveThumbnailUrl(photo.fileId, 1000)}
+            key={photo.localSrc ?? photo.fileId}
+            src={productPhotoSrc(photo, 1000)}
             alt={photo.label}
             className="max-h-full max-w-full object-contain p-2 transition group-hover:scale-[1.01] sm:p-3 lg:p-4"
           />
