@@ -395,7 +395,7 @@ export const PRODUCT_MATRIX: ProductSeries[] = [
     },
     highlightsZh: ["大版型双面", "防眩光认证可选", "遮挡下温升更低"],
     highlightsEn: ["Large bifacial", "Anti-glare option", "Lower shade temperature"],
-    imageSrc: "/products/LR7-72HVD-front.png",
+    imageSrc: "/products/LR7-72HVD-front.jpg",
     datasheetFile: "AU_Datasheet_X10_LR7-72HVD_645-670.pdf",
   },
   {

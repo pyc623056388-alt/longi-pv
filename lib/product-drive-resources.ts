@@ -595,10 +595,10 @@ export const PRODUCT_DRIVE_RESOURCES: Record<string, ProductDriveResources> =
     "photos": [
       {
         "label": "Front view",
-        // 白底正面图（格子线清晰）；原全黑 Front fileId 19dHimWZnVNqQYaJIFPaSLruOPBkzQ6wa 已弃用
-        "url": "https://drive.google.com/file/d/18LEMH9lKP4s53H03RxvmvWhRMVEHeDjf/view",
-        "fileId": "18LEMH9lKP4s53H03RxvmvWhRMVEHeDjf",
-        "localSrc": "/products/LR7-72HVD-front.png"
+        // 白底正面图（用户更新）；原全黑 Front 19dHimWZnVNqQYaJIFPaSLruOPBkzQ6wa 已弃用
+        "url": "https://drive.google.com/file/d/1IjRYTp96ALgZNwcaAPGSjq3hyh7qGiYt/view",
+        "fileId": "1IjRYTp96ALgZNwcaAPGSjq3hyh7qGiYt",
+        "localSrc": "/products/LR7-72HVD-front.jpg"
       },
       {
         "label": "Rear view",

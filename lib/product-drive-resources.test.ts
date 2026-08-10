@@ -96,9 +96,9 @@ describe("product-drive-resources", () => {
     expect(front?.label).toMatch(/front/i);
     // 不再使用全黑旧 Front
     expect(front?.fileId).not.toBe("19dHimWZnVNqQYaJIFPaSLruOPBkzQ6wa");
-    expect(front?.fileId).toBe("18LEMH9lKP4s53H03RxvmvWhRMVEHeDjf");
-    expect(front?.localSrc).toBe("/products/LR7-72HVD-front.png");
-    expect(productPhotoSrc(front!)).toBe("/products/LR7-72HVD-front.png");
+    expect(front?.fileId).toBe("1IjRYTp96ALgZNwcaAPGSjq3hyh7qGiYt");
+    expect(front?.localSrc).toBe("/products/LR7-72HVD-front.jpg");
+    expect(productPhotoSrc(front!)).toBe("/products/LR7-72HVD-front.jpg");
   });
 
   it("getFrontRearPhotos still returns only front/rear", () => {
