@@ -222,6 +222,25 @@ export function syncBuiltinModules(): void {
   localStorage.setItem(SEED_KEY, "1");
 }
 
+function overlaySeedElectrical(
+  modules: ModuleRecord[],
+  seed: ModuleRecord[]
+): ModuleRecord[] {
+  const byId = new Map(seed.map((m) => [m.id, m]));
+  return modules.map((m) => {
+    const s = byId.get(m.id);
+    if (!s) return m;
+    return {
+      ...m,
+      voc: m.voc ?? s.voc,
+      isc: m.isc ?? s.isc,
+      vmp: m.vmp ?? s.vmp,
+      imp: m.imp ?? s.imp,
+      vocTempCoefPct: m.vocTempCoefPct ?? s.vocTempCoefPct,
+    };
+  });
+}
+
 export function listModules(library: ModuleLibrary): ModuleRecord[] {
   ensureSeedData();
   const fallback =
@@ -231,7 +250,11 @@ export function listModules(library: ModuleLibrary): ModuleRecord[] {
   const modules = readJson(MODULE_KEY(library), fallback);
   const merged =
     library === "competitor" ? withTopconPresets(modules) : modules;
-  return enrichModuleList(merged);
+  const seeded =
+    library === "longi"
+      ? (seedData.longiModules as ModuleRecord[])
+      : prepareCompetitorList(seedCompetitorModules());
+  return enrichModuleList(overlaySeedElectrical(merged, seeded));
 }
 
 export function saveModules(library: ModuleLibrary, modules: ModuleRecord[]): void {

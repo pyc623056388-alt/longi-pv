@@ -48,6 +48,7 @@ describe("builtin seed data (curated)", () => {
     );
 
     expect(seed.longiModules[0].voc).toBeDefined();
+    expect(seed.longiModules.some((m: { vocTempCoefPct?: number }) => (m.vocTempCoefPct ?? 0) < 0)).toBe(true);
     expect(manifest.longi.catalogCount).toBe(15);
     expect(seed.competitorModules.length).toBe(10);
     expect(manifest.longi.filtered).toBe(true);

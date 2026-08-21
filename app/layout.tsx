@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "@/components/ui/sonner";
+import { getClerkPublishableKey } from "@/lib/clerk-config";
 import "./globals.css";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
@@ -39,8 +40,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const publishableKey =
-    process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY?.trim() || undefined;
+  const publishableKey = getClerkPublishableKey();
+
+  const body = (
+    <>
+      {children}
+      <Toaster richColors position="top-center" />
+      {process.env.NODE_ENV === "production" && <Analytics />}
+    </>
+  );
 
   return (
     <html
@@ -48,18 +56,20 @@ export default function RootLayout({
       className={`${geist.variable} ${geistMono.variable} bg-slate-950 scroll-smooth`}
     >
       <body className="font-sans antialiased">
-        <ClerkProvider
-          publishableKey={publishableKey}
-          appearance={{
-            variables: {
-              colorPrimary: "#E40011",
-            },
-          }}
-        >
-          {children}
-          <Toaster richColors position="top-center" />
-          {process.env.NODE_ENV === "production" && <Analytics />}
-        </ClerkProvider>
+        {publishableKey ? (
+          <ClerkProvider
+            publishableKey={publishableKey}
+            appearance={{
+              variables: {
+                colorPrimary: "#E40011",
+              },
+            }}
+          >
+            {body}
+          </ClerkProvider>
+        ) : (
+          body
+        )}
       </body>
     </html>
   );

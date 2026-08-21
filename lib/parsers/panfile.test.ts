@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  inferModuleLibrary,
   isPlausiblePmpTempCoef,
   parsePanFileContent,
 } from "./panfile";
@@ -100,6 +101,24 @@ describe("parsePanFileContent", () => {
     expect(record?.rShuntOhm).toBe(350);
   });
 
+  it("converts muVocSpec mV/°C into Voc %/°C", () => {
+    const content = `
+      Manufacturer=LONGi solar
+      Model=LR7-72HVD-650M
+      Width=1.134
+      Height=2.382
+      PNom=650.0
+      Voc=54.22
+      Isc=15.140
+      Vmp=44.87
+      Imp=14.490
+      muVocSpec=-118.0
+      muPmpReq=-0.272
+    `;
+    const record = parsePanFileContent(content, "longi");
+    expect(record?.vocTempCoefPct).toBeCloseTo(-0.2176, 3);
+  });
+
   it("prefers muPmpReq over lower-priority keys", () => {
     const content = `
       Model=M
@@ -112,5 +131,16 @@ describe("parsePanFileContent", () => {
     `;
     const record = parsePanFileContent(content, "longi");
     expect(record?.pmpTempCoef).toBe(-0.3);
+  });
+});
+
+describe("inferModuleLibrary", () => {
+  it("treats LONGi manufacturer or LR models as longi", () => {
+    expect(inferModuleLibrary("LONGi solar", "LR7-72HVD-650M")).toBe("longi");
+    expect(inferModuleLibrary("Custom", "LR8-66HVD-650M")).toBe("longi");
+  });
+
+  it("treats other brands as competitor", () => {
+    expect(inferModuleLibrary("Jinko Solar", "JKM630N")).toBe("competitor");
   });
 });

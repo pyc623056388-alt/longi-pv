@@ -24,6 +24,8 @@ export interface ModuleRecord {
   vmp?: number;
   imp?: number;
   pmpTempCoef?: number;
+  /** Voc 温度系数（%/°C），通常为负；来自 PAN muVocSpec */
+  vocTempCoefPct?: number;
   firstYearDegradationPct?: number;
   annualDegradationPct?: number;
   /** 相对 STC 的弱光相对效率（%），来自 PAN RelEffic* */

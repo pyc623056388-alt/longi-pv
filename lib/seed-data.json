@@ -13,7 +13,8 @@
       "imp": 14.49,
       "pmpTempCoef": -0.26,
       "library": "longi",
-      "source": "pan"
+      "source": "pan",
+      "vocTempCoefPct": -0.2176
     },
     {
       "id": "mod_longi_longi_solar_lr7_72hvdf_650m",
@@ -28,7 +29,8 @@
       "imp": 14.49,
       "pmpTempCoef": -0.26,
       "library": "longi",
-      "source": "pan_synthesized"
+      "source": "pan_synthesized",
+      "vocTempCoefPct": -0.2176
     },
     {
       "id": "mod_longi_longi_solar_lr7_72hvh_650m",
@@ -43,7 +45,8 @@
       "imp": 14.59,
       "pmpTempCoef": -0.26,
       "library": "longi",
-      "source": "pan"
+      "source": "pan",
+      "vocTempCoefPct": -0.2096
     },
     {
       "id": "mod_longi_longi_solar_lr7_72hvhf_650m",
@@ -58,7 +61,8 @@
       "imp": 14.59,
       "pmpTempCoef": -0.26,
       "library": "longi",
-      "source": "pan_synthesized"
+      "source": "pan_synthesized",
+      "vocTempCoefPct": -0.2096
     },
     {
       "id": "mod_longi_longi_solar_lr8_66hvd_650m",
@@ -73,7 +77,8 @@
       "imp": 14.49,
       "pmpTempCoef": -0.26,
       "library": "longi",
-      "source": "pan_synthesized"
+      "source": "pan_synthesized",
+      "vocTempCoefPct": -0.2176
     },
     {
       "id": "mod_longi_longi_solar_lr8_66hvdf_650m",
@@ -88,7 +93,8 @@
       "imp": 14.49,
       "pmpTempCoef": -0.26,
       "library": "longi",
-      "source": "pan_synthesized"
+      "source": "pan_synthesized",
+      "vocTempCoefPct": -0.2176
     },
     {
       "id": "mod_longi_longi_solar_lr7_60hvd_540m",
@@ -103,7 +109,8 @@
       "imp": 14.23,
       "pmpTempCoef": -0.258,
       "library": "longi",
-      "source": "pan_synthesized"
+      "source": "pan_synthesized",
+      "vocTempCoefPct": -0.2021
     },
     {
       "id": "mod_longi_longi_solar_lr7_60hvh_540m",
@@ -118,7 +125,8 @@
       "imp": 14.53,
       "pmpTempCoef": -0.257,
       "library": "longi",
-      "source": "pan_synthesized"
+      "source": "pan_synthesized",
+      "vocTempCoefPct": -0.1998
     },
     {
       "id": "mod_longi_longi_solar_lr7_60hvhl_540m",
@@ -148,7 +156,8 @@
       "imp": 14.53,
       "pmpTempCoef": -0.257,
       "library": "longi",
-      "source": "pan_synthesized"
+      "source": "pan_synthesized",
+      "vocTempCoefPct": -0.1998
     },
     {
       "id": "mod_longi_longi_solar_lr7_54hvd_475m",
@@ -163,7 +172,8 @@
       "imp": 14.53,
       "pmpTempCoef": -0.257,
       "library": "longi",
-      "source": "pan_synthesized"
+      "source": "pan_synthesized",
+      "vocTempCoefPct": -0.2022
     },
     {
       "id": "mod_longi_longi_solar_lr7_54hvd_t_475m",
@@ -178,7 +188,8 @@
       "imp": 14.23,
       "pmpTempCoef": -0.258,
       "library": "longi",
-      "source": "pan_synthesized"
+      "source": "pan_synthesized",
+      "vocTempCoefPct": -0.2021
     },
     {
       "id": "mod_longi_longi_solar_lr7_54hvh_475m",
@@ -193,7 +204,8 @@
       "imp": 14.53,
       "pmpTempCoef": -0.257,
       "library": "longi",
-      "source": "pan_synthesized"
+      "source": "pan_synthesized",
+      "vocTempCoefPct": -0.1998
     },
     {
       "id": "mod_longi_longi_solar_lr8_48hvh_475m",
@@ -208,7 +220,8 @@
       "imp": 14.53,
       "pmpTempCoef": -0.257,
       "library": "longi",
-      "source": "pan_synthesized"
+      "source": "pan_synthesized",
+      "vocTempCoefPct": -0.1998
     },
     {
       "id": "mod_longi_longi_solar_lr8_48hvhf_475m",
@@ -223,7 +236,8 @@
       "imp": 14.53,
       "pmpTempCoef": -0.257,
       "library": "longi",
-      "source": "pan_synthesized"
+      "source": "pan_synthesized",
+      "vocTempCoefPct": -0.1998
     }
   ],
   "competitorModules": [

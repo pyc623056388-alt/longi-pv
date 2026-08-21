@@ -1,6 +1,7 @@
 import { clerkMiddleware } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { isClerkServerConfigured } from "@/lib/clerk-config";
 
 function isPublicPath(pathname: string): boolean {
   if (pathname.startsWith("/sign-in")) return true;
@@ -10,8 +11,6 @@ function isPublicPath(pathname: string): boolean {
   return false;
 }
 
-// Strip accidental whitespace from Vercel Dashboard pastes (do not pass
-// secretKey as clerkMiddleware options — that requires a separate encryption key).
 if (process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) {
   process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY =
     process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY.trim();
@@ -20,17 +19,23 @@ if (process.env.CLERK_SECRET_KEY) {
   process.env.CLERK_SECRET_KEY = process.env.CLERK_SECRET_KEY.trim();
 }
 
-export default clerkMiddleware(async (auth, request: NextRequest) => {
-  const { pathname } = request.nextUrl;
+function passthrough(_request: NextRequest) {
+  return NextResponse.next();
+}
 
-  if (isPublicPath(pathname)) {
-    return NextResponse.next();
-  }
+export default isClerkServerConfigured()
+  ? clerkMiddleware(async (auth, request: NextRequest) => {
+      const { pathname } = request.nextUrl;
 
-  await auth.protect({
-    unauthenticatedUrl: new URL("/sign-in", request.url).toString(),
-  });
-});
+      if (isPublicPath(pathname)) {
+        return NextResponse.next();
+      }
+
+      await auth.protect({
+        unauthenticatedUrl: new URL("/sign-in", request.url).toString(),
+      });
+    })
+  : passthrough;
 
 export const config = {
   matcher: [

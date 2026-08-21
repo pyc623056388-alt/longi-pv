@@ -20,6 +20,9 @@ export interface ParsedPanModule {
   voc?: number;
   isc?: number;
   pmpTempCoef?: number;
+  /** PAN muVocSpec，mV/°C 或 %/°C */
+  muVocSpec?: number;
+  vocTempCoefPct?: number;
   firstYearDegradationPct?: number;
   annualDegradationPct?: number;
   lowLightRelEffic?: LowLightRelEffic;
@@ -47,6 +50,25 @@ const PMP_TEMP_COEF_KEY_PRIORITY = [
 type PmpTempCoefKey = (typeof PMP_TEMP_COEF_KEY_PRIORITY)[number];
 
 const PMP_TEMP_COEF_KEY_SET = new Set<string>(PMP_TEMP_COEF_KEY_PRIORITY);
+
+/**
+ * PVsyst muVocSpec is usually mV/°C (e.g. −118). Convert to %/°C.
+ * Values already in %/°C (about −0.2) are passed through.
+ */
+export function vocTempCoefPctFromMuVocSpec(
+  muVocSpec: number,
+  vocStc: number
+): number | undefined {
+  if (!Number.isFinite(muVocSpec) || muVocSpec >= 0) return undefined;
+  if (Math.abs(muVocSpec) <= 1.5) {
+    if (muVocSpec < -0.01) return muVocSpec;
+    return undefined;
+  }
+  if (!(vocStc > 0)) return undefined;
+  const pct = muVocSpec / (10 * vocStc);
+  if (pct < -1.5 || pct > -0.01) return undefined;
+  return Math.round(pct * 10000) / 10000;
+}
 
 /** 晶硅组件 Pmp 温度系数合理范围（%/°C，通常为负） */
 export function isPlausiblePmpTempCoef(value: number): boolean {
@@ -109,6 +131,8 @@ function parseIniContent(content: string, type: "PAN"): ParsedPanModule | null {
         key === "efficiencylossyear2"
       ) {
         if (Number.isFinite(num)) n.annualDegradationPct = num;
+      } else if (key === "muvocspec" && Number.isFinite(num)) {
+        n.muVocSpec = num;
       } else if (key === "rserie" && Number.isFinite(num)) {
         n.rSerieOhm = num;
       } else if (key === "rshunt" && Number.isFinite(num)) {
@@ -127,6 +151,9 @@ function parseIniContent(content: string, type: "PAN"): ParsedPanModule | null {
   }
 
   n.pmpTempCoef = pickPmpTempCoef(tempCoefCandidates);
+  if (n.muVocSpec != null && n.voc != null) {
+    n.vocTempCoefPct = vocTempCoefPctFromMuVocSpec(n.muVocSpec, n.voc);
+  }
 
   if (!n.model) {
     for (const line of lines) {
@@ -140,6 +167,16 @@ function parseIniContent(content: string, type: "PAN"): ParsedPanModule | null {
 
   if (!n.model || !n.pnom || !n.length || !n.width) return null;
   return n;
+}
+
+export function inferModuleLibrary(
+  manufacturer?: string,
+  model?: string
+): ModuleLibrary {
+  if (/longi/i.test(manufacturer ?? "") || /^lr\d/i.test(model ?? "")) {
+    return "longi";
+  }
+  return "competitor";
 }
 
 export function parsePanFileContent(
@@ -167,6 +204,7 @@ export function parsePanFileContent(
     vmp: parsed.vmp,
     imp: parsed.imp,
     pmpTempCoef: parsed.pmpTempCoef,
+    vocTempCoefPct: parsed.vocTempCoefPct,
     firstYearDegradationPct: parsed.firstYearDegradationPct,
     annualDegradationPct: parsed.annualDegradationPct,
     lowLightRelEffic: parsed.lowLightRelEffic,

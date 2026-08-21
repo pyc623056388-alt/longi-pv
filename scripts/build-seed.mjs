@@ -141,6 +141,7 @@ function parsePanIni(content) {
     else if (key === "pnom" || key === "pmpp") n.pnom = num;
     else if (key === "height") n.length = 1000 * num;
     else if (key === "width") n.width = 1000 * num;
+    else if (key === "muvocspec" && Number.isFinite(num)) n.muVocSpec = num;
     else if (PMP_TEMP_COEF_KEY_SET.has(key) && Number.isFinite(num)) {
       tempCoefCandidates[key] = num;
     } else if (
@@ -157,6 +158,15 @@ function parsePanIni(content) {
   }
 
   n.pmpTempCoef = pickPmpTempCoef(tempCoefCandidates);
+  if (Number.isFinite(n.muVocSpec) && Number.isFinite(n.voc) && n.voc > 0) {
+    const pct =
+      Math.abs(n.muVocSpec) <= 1.5
+        ? n.muVocSpec
+        : n.muVocSpec / (10 * n.voc);
+    if (pct < 0 && pct >= -1.5 && pct <= -0.01) {
+      n.vocTempCoefPct = Math.round(pct * 10000) / 10000;
+    }
+  }
 
   if (!n.model) {
     for (const line of lines) {
@@ -293,6 +303,7 @@ function panToRecord(parsed, library, overrides = {}) {
     vmp: parsed.vmp,
     imp: parsed.imp,
     pmpTempCoef: parsed.pmpTempCoef,
+    vocTempCoefPct: parsed.vocTempCoefPct,
     firstYearDegradationPct: parsed.firstYearDegradationPct,
     annualDegradationPct: parsed.annualDegradationPct,
     library,
@@ -493,6 +504,7 @@ const HVH_PARAM_FIELDS = [
   "vmp",
   "imp",
   "pmpTempCoef",
+  "vocTempCoefPct",
   "firstYearDegradationPct",
   "annualDegradationPct",
 ];

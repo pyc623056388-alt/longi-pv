@@ -13,10 +13,12 @@ export function SiteToolHeader({
   utilities,
   className,
   navAlign = "start",
+  showNav = true,
 }: {
   utilities?: ReactNode;
   className?: string;
   navAlign?: "start" | "center";
+  showNav?: boolean;
 }) {
   return (
     <div className={cn("flex flex-col gap-4", className)}>
@@ -35,14 +37,16 @@ export function SiteToolHeader({
           </div>
         ) : null}
       </div>
-      <div
-        className={cn(
-          "flex",
-          navAlign === "center" ? "justify-center" : "justify-start"
-        )}
-      >
-        <SiteToolNav />
-      </div>
+      {showNav ? (
+        <div
+          className={cn(
+            "flex",
+            navAlign === "center" ? "justify-center" : "justify-start"
+          )}
+        >
+          <SiteToolNav />
+        </div>
+      ) : null}
     </div>
   );
 }
