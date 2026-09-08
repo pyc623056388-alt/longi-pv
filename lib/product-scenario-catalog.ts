@@ -5,6 +5,7 @@
  * 规则：
  * - 型号别名：LR7-54HVDT 归并为 LR7-54HVD；LR7-72HVDA 不在 PRODUCT_MATRIX，解析时被过滤。
  * - Grade 层：key === "_base" 视为「无 Grade」，直接展示型号；其余命名 Grade 保留为分组。
+ * - Anti-Dust 只收 F 尾缀防积灰版型（HVHF / HVDF 等），不含 HVB / HVD / HVH / HVHL。
  * - hidden 的场景（Agri-Ammonia / Marine / Fire-ClassA）暂不在前台展示，数据保留以后启用。
  */
 
@@ -58,7 +59,16 @@ const MODEL_ID_ALIASES: Record<string, string> = {
   "LR7-54HVDT": "LR7-54HVD",
 };
 
+/** 防积灰场景：仅 F 尾缀（HVHF / HVDF）。 */
 const ANTIDUST_MODELS = [
+  "LR7-54HVHF",
+  "LR7-72HVDF",
+  "LR7-72HVHF",
+  "LR8-66HVDF",
+];
+
+/** Agri-Ammonia 暂隐藏，保留 Drive 原始型号清单（与防积灰筛选无关）。 */
+const AGRI_AMMONIA_MODELS = [
   "LR7-54HVB",
   "LR7-54HVDT",
   "LR7-54HVH",
@@ -173,7 +183,7 @@ export const PRODUCT_SCENARIOS: ProductScenario[] = [
     taglineEn: "Anti-dust certified, less cleaning",
     hidden: false,
     featured: false,
-    heroSeriesId: "LR7-72HVD",
+    heroSeriesId: "LR7-72HVHF",
     tileImage: "/products/scenarios/antidust.png",
     grades: [
       {
@@ -267,7 +277,7 @@ export const PRODUCT_SCENARIOS: ProductScenario[] = [
         key: "Certified",
         labelZh: "防氨认证",
         labelEn: "Ammonia Certified",
-        modelIds: ANTIDUST_MODELS,
+        modelIds: AGRI_AMMONIA_MODELS,
       },
     ],
   },

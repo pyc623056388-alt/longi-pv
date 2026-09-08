@@ -60,6 +60,19 @@ describe("product-scenario-catalog", () => {
     expect(ids).toHaveLength(6);
   });
 
+  it("Anti-Dust only lists F-suffix variants (HVHF / HVDF)", () => {
+    const antidust = getScenarioById("antidust")!;
+    const ids = scenarioFlatSeries(antidust).map((s) => s.id);
+    expect(ids).toEqual([
+      "LR7-54HVHF",
+      "LR7-72HVDF",
+      "LR7-72HVHF",
+      "LR8-66HVDF",
+    ]);
+    expect(ids.every((id) => /HV[A-Z]*F$/i.test(id))).toBe(true);
+    expect(antidust.heroSeriesId).toBe("LR7-72HVHF");
+  });
+
   it("groups AntiGlare into 1.0 and 2.0 grades", () => {
     const antiglare = getScenarioById("antiglare")!;
     const groups = scenarioGradeGroups(antiglare);
