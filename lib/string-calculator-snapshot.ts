@@ -12,6 +12,8 @@ export interface StringWeatherInfo {
   stationName: string;
   wmo: string;
   distanceKm: number | null;
+  stationLat?: number | null;
+  stationLon?: number | null;
   period: string;
   ashraeVersion: AshraeVersion | string;
   tEamdbtC: number;

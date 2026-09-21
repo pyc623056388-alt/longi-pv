@@ -60,6 +60,13 @@ describe("IEC 62548-1:2023 F.1.1.b", () => {
     const { ku } = iecCorrectionFactor(49.2, -0.002, 11.0);
     expect(Math.round(ku * 29 * 49.2)).toBe(1467);
   });
+
+  it("matches the Majors Creek 655W example at 7.7°C", () => {
+    const { betaVPerC, ku } = iecCorrectionFactor(49.82, -0.002, 17.7);
+    expect(betaVPerC).toBeCloseTo(-0.09964, 5);
+    expect(ku).toBeCloseTo(1.0146, 4);
+    expect(Math.round(ku * 29 * 49.82)).toBe(1466);
+  });
 });
 
 describe("calculateModuleString", () => {

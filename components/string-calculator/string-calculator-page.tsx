@@ -237,6 +237,8 @@ export function StringCalculatorPage({
         wmo: selectedStation?.wmo ?? stationParams?.station.wmo ?? "",
         distanceKm:
           selectedStation?.distanceKm ?? stationParams?.station.distanceKm ?? null,
+        stationLat: selectedStation?.lat ?? stationParams?.station.lat ?? null,
+        stationLon: selectedStation?.lon ?? stationParams?.station.lon ?? null,
         period: stationParams?.period ?? "",
         ashraeVersion,
         tEamdbtC: tminNum,
